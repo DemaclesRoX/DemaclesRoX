@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Administration - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Admin Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-shield-check" style="color: #60A5FA;"></i> KhamarBD Admin
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="ph ph-squares-four"></i> Overview
+                </a>
+                <a href="users.html" class="nav-item">
+                    <i class="ph ph-users"></i> User Verification
+                    <span class="badge badge-warning" style="margin-left: auto;">4 Pending</span>
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> Farms Directory
+                </a>
+                <a href="marketplace.html" class="nav-item">
+                    <i class="ph ph-storefront"></i> Listing Moderation
+                </a>
+                <a href="subscriptions.html" class="nav-item">
+                    <i class="ph ph-credit-card"></i> Subscriptions
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Topbar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">
+                        Central Management Console
+                    </h3>
+                    <span class="badge badge-primary">Platform Administrator &bull; ROLE_ADMIN</span>
+                </div>
+                
+                <div class="topbar-actions">
+                    <span class="badge badge-success"><i class="ph ph-check-circle"></i> System Status: Operational</span>
+                    <button class="profile-btn">
+                        <i class="ph-fill ph-user-gear" style="color: var(--primary-color);"></i>
+                        <span>System Root</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Platform KPIs -->
+            <div class="ledger-kpi-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="stat-box income">
+                    <span class="stat-label">Total Registered Users</span>
+                    <h3 class="stat-value">1,248</h3>
+                    <span class="stat-sub">1,120 Farmers, 68 Suppliers, 60 Specialists</span>
+                </div>
+                <div class="stat-box profit">
+                    <span class="stat-label">Active Production Farms</span>
+                    <h3 class="stat-value">840 Farms</h3>
+                    <span class="stat-sub">Across 4 Agricultural Sectors</span>
+                </div>
+                <div class="stat-box expense">
+                    <span class="stat-label">Verification Queue</span>
+                    <h3 class="stat-value text-danger">4 Credentials</h3>
+                    <span class="stat-sub">2 Suppliers, 2 Specialists</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Live Marketplace Listings</span>
+                    <h3 class="stat-value">312 Items</h3>
+                    <span class="stat-sub">Farm supplies & produce</span>
+                </div>
+            </div>
+
+            <div class="dash-grid">
+                
+                <!-- Left Column: Pending Verifications -->
+                <div class="dash-col-main">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <div>
+                                <h3><i class="ph ph-user-check"></i> Pending Practitioner & Merchant Verifications</h3>
+                                <p class="text-sm text-muted">Verify professional credentials prior to granting public directory and prescription issuance rights</p>
+                            </div>
+                            <a href="users.html" class="link-btn">View All Users</a>
+                        </div>
+
+                        <div class="task-list">
+                            
+                            <!-- Item 1: Specialist -->
+                            <div class="task-item" style="border-left-color: var(--primary-color);">
+                                <div class="task-info">
+                                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 4px;">
+                                        <h4>Dr. Tariqul Islam, DVM</h4>
+                                        <span class="badge badge-primary">Specialist (Veterinary)</span>
+                                    </div>
+                                    <span class="meta">Credential: BMDC Reg #14920 &bull; Submitted 3 hours ago &bull; Bogura</span>
+                                    <p class="text-xs text-muted" style="margin-top: 4px;">
+                                        B.Sc. Veterinary Science, BAU. Applying for poultry & ruminant tele-consultation access.
+                                    </p>
+                                </div>
+                                <div style="display: flex; gap: 6px;">
+                                    <button class="btn btn-primary btn-sm" onclick="alert('Dr. Tariqul Islam approved as Verified Specialist!')">
+                                        <i class="ph ph-check"></i> Approve
+                                    </button>
+                                    <button class="btn btn-outline btn-sm text-danger" onclick="alert('Application rejected.')">
+                                        Reject
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Item 2: Supplier -->
+                            <div class="task-item" style="border-left-color: var(--secondary-color);">
+                                <div class="task-info">
+                                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 4px;">
+                                        <h4>Bismillah Feed & Agro Traders</h4>
+                                        <span class="badge badge-success">Supplier (S03 Feed Dealer)</span>
+                                    </div>
+                                    <span class="meta">Trade License: TL-NAT-2025-410 &bull; Submitted yesterday &bull; Natore</span>
+                                    <p class="text-xs text-muted" style="margin-top: 4px;">
+                                        Authorized regional distributor for CP Bangladesh fish & poultry feeds.
+                                    </p>
+                                </div>
+                                <div style="display: flex; gap: 6px;">
+                                    <button class="btn btn-primary btn-sm" onclick="alert('Merchant verified!')">
+                                        <i class="ph ph-check"></i> Approve
+                                    </button>
+                                    <button class="btn btn-outline btn-sm text-danger" onclick="alert('Rejected.')">
+                                        Reject
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Weather Rule Engine Management (M16) -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <div>
+                                <h3><i class="ph ph-cloud-sun"></i> Weather Advisory Rule Engine (M16)</h3>
+                                <p class="text-sm text-muted">Configurable sector triggers synced with Open-Meteo forecasts</p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="ledger-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rule ID</th>
+                                        <th>Target Sector</th>
+                                        <th>Trigger Condition</th>
+                                        <th>Advisory Message Template</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>WTR-01</code></td>
+                                        <td><span class="badge badge-accent">Poultry</span></td>
+                                        <td>Rainfall > 35mm / 24h</td>
+                                        <td class="text-xs text-muted">Secure curtain vents, replenish dry bedding litter, clean perimeter drainage.</td>
+                                        <td><span class="badge badge-success">Active</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>WTR-02</code></td>
+                                        <td><span class="badge badge-primary">Fisheries</span></td>
+                                        <td>Temp > 36°C & DO &lt; 4.0</td>
+                                        <td class="text-xs text-muted">Run aerators continuous night shift; suspend feeding during midday heat spike.</td>
+                                        <td><span class="badge badge-success">Active</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>WTR-03</code></td>
+                                        <td><span class="badge badge-success">Agriculture</span></td>
+                                        <td>Humidity > 85% & Fog</td>
+                                        <td class="text-xs text-muted">Potato Late Blight alert: apply preventive contact Mancozeb fungicide spray.</td>
+                                        <td><span class="badge badge-success">Active</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Database Health & Architecture Overview -->
+                <div class="dash-col-side">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3><i class="ph ph-database"></i> 10 Core Entities Audit</h3>
+                        </div>
+                        <p class="text-xs text-muted" style="margin-bottom: 1rem;">
+                            Strict database architecture compliance check:
+                        </p>
+                        <div class="eco-shortcuts-list">
+                            <div class="eco-shortcut">
+                                <span class="badge-unit">1</span>
+                                <div style="flex: 1;"><h4 class="text-xs">User</h4></div>
+                                <span class="badge badge-success text-xs">Healthy</span>
+                            </div>
+                            <div class="eco-shortcut">
+                                <span class="badge-unit">2</span>
+                                <div style="flex: 1;"><h4 class="text-xs">Farm</h4></div>
+                                <span class="badge badge-success text-xs">Healthy</span>
+                            </div>
+                            <div class="eco-shortcut">
+                                <span class="badge-unit">3</span>
+                                <div style="flex: 1;"><h4 class="text-xs">Lot_Or_Animal</h4></div>
+                                <span class="badge badge-success text-xs">Healthy</span>
+                            </div>
+                            <div class="eco-shortcut">
+                                <span class="badge-unit">4</span>
+                                <div style="flex: 1;"><h4 class="text-xs">Farm_Ledger</h4></div>
+                                <span class="badge badge-success text-xs">Healthy</span>
+                            </div>
+                            <div class="eco-shortcut">
+                                <span class="badge-unit">5</span>
+                                <div style="flex: 1;"><h4 class="text-xs">Marketplace_Listing</h4></div>
+                                <span class="badge badge-success text-xs">Healthy</span>
+                            </div>
+                            <div class="eco-shortcut">
+                                <span class="badge-unit">6</span>
+                                <div style="flex: 1;"><h4 class="text-xs">Order_Transaction</h4></div>
+                                <span class="badge badge-success text-xs">Healthy</span>
+                            </div>
+                            <div class="eco-shortcut">
+                                <span class="badge-unit">7</span>
+                                <div style="flex: 1;"><h4 class="text-xs">Specialist_Consultation</h4></div>
+                                <span class="badge badge-success text-xs">Healthy</span>
+                            </div>
+                            <div class="eco-shortcut">
+                                <span class="badge-unit">8</span>
+                                <div style="flex: 1;"><h4 class="text-xs">Subscription_History</h4></div>
+                                <span class="badge badge-success text-xs">Healthy</span>
+                            </div>
+                            <div class="eco-shortcut">
+                                <span class="badge-unit">9</span>
+                                <div style="flex: 1;"><h4 class="text-xs">Prescription</h4></div>
+                                <span class="badge badge-success text-xs">Healthy</span>
+                            </div>
+                            <div class="eco-shortcut">
+                                <span class="badge-unit">10</span>
+                                <div style="flex: 1;"><h4 class="text-xs">Prescription_Item</h4></div>
+                                <span class="badge badge-success text-xs">Healthy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+</body>
+</html>

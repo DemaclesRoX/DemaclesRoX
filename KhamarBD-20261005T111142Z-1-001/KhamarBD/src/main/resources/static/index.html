@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KhamarBD - Modern Farm Management Platform</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="#sectors">Sectors</a>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#ecosystem">Ecosystem</a>
+                <a href="pages/public/marketplace.html">Marketplace</a>
+                <a href="pages/auth/login.html" class="btn btn-outline">Login</a>
+                <a href="pages/auth/register.html" class="btn btn-primary">Sign Up</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid-2col">
+                
+                <!-- Left: Headline & Actions -->
+                <div class="hero-text">
+                    <div class="hero-pill-badge">
+                        <span class="pulse-dot"></span>
+                        <span>Farm Management First Agro-Tech</span>
+                    </div>
+
+                    <h1><span class="highlight-text">Manage Your Complete Farm</span> in One Unified System</h1>
+                    
+                    <p>From livestock & poultry batches to pond aquaculture and field crops—track daily routines, financial ledgers, digital health records, and advisory updates effortlessly.</p>
+                    
+                    <div class="hero-buttons">
+                        <a href="pages/auth/register.html?role=farmer" class="btn btn-primary btn-lg">
+                            <i class="ph-fill ph-sparkle"></i> Start as Farmer
+                        </a>
+                        <a href="pages/public/marketplace.html" class="btn btn-outline btn-lg">
+                            <i class="ph ph-storefront"></i> Browse Marketplace
+                        </a>
+                    </div>
+
+                    <div class="hero-mini-stats">
+                        <div class="hero-mini-stat">
+                            <i class="ph-fill ph-check-circle"></i>
+                            <span>Scientific Health Routines</span>
+                        </div>
+                        <div class="hero-mini-stat">
+                            <i class="ph-fill ph-shield-check"></i>
+                            <span>0% Commission P2P</span>
+                        </div>
+                        <div class="hero-mini-stat">
+                            <i class="ph-fill ph-cloud-sun"></i>
+                            <span>Micro-climate Advisory</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: High-Tech Smart Farm Visual Mockup -->
+                <div class="hero-visual-wrap">
+                    <div class="hero-main-img-card">
+                        <img src="assets/images/hero-smart-farm.jpg" alt="KhamarBD Smart Farm Ecosystem" onerror="this.style.display='none'">
+                    </div>
+
+                    <!-- Top Floating Telemetry Tag -->
+                    <div class="hero-float-card top-floating">
+                        <div class="float-icon-box green">
+                            <i class="ph-fill ph-activity"></i>
+                        </div>
+                        <div class="float-info">
+                            <h4>Batch Routine Active</h4>
+                            <p>Sonali Feed Schedule • FCR 1.62</p>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Floating Profit Tag -->
+                    <div class="hero-float-card bottom-floating">
+                        <div class="float-icon-box amber">
+                            <i class="ph-fill ph-trend-up"></i>
+                        </div>
+                        <div class="float-info">
+                            <h4>Unit Net Profit +28.4%</h4>
+                            <p>Income: ৳84,200 | Cost: ৳61,500</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Ribbon Bar -->
+    <div class="container stats-strip-container">
+        <div class="stats-strip-grid">
+            <div class="stat-strip-item">
+                <div class="stat-strip-icon"><i class="ph ph-squares-four"></i></div>
+                <div>
+                    <div class="stat-strip-num">Major Sectors</div>
+                    <div class="stat-strip-label">Poultry, Dairy, Fish & Crops</div>
+                </div>
+            </div>
+            <div class="stat-strip-item">
+                <div class="stat-strip-icon"><i class="ph ph-calendar-check"></i></div>
+                <div>
+                    <div class="stat-strip-num">Health Routines</div>
+                    <div class="stat-strip-label">Scientific Automated Tasks</div>
+                </div>
+            </div>
+            <div class="stat-strip-item">
+                <div class="stat-strip-icon"><i class="ph ph-hand-coins"></i></div>
+                <div>
+                    <div class="stat-strip-num">৳ 0% Fee</div>
+                    <div class="stat-strip-label">Direct Buyer-Seller Commerce</div>
+                </div>
+            </div>
+            <div class="stat-strip-item">
+                <div class="stat-strip-icon"><i class="ph ph-heartbeat"></i></div>
+                <div>
+                    <div class="stat-strip-num">24/7 Digital</div>
+                    <div class="stat-strip-label">Health & Ledger Records</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Sector Explorer -->
+    <section id="sectors" class="section">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge badge-primary">Comprehensive Agro Lifecycle</span>
+                <h2>Built for Major Agricultural Sectors</h2>
+                <p>Select any agricultural vertical to explore how KhamarBD structures automated daily management and lot records.</p>
+            </div>
+
+            <div class="sector-explorer">
+                <!-- Sector Navigation Tabs -->
+                <div class="sector-nav-tabs">
+                    <button class="sector-nav-btn active" onclick="switchSector('poultry', this)">
+                        <i class="ph-fill ph-egg"></i> Poultry Farming
+                    </button>
+                    <button class="sector-nav-btn" onclick="switchSector('dairy', this)">
+                        <i class="ph-fill ph-cow"></i> Dairy & Cattle
+                    </button>
+                    <button class="sector-nav-btn" onclick="switchSector('fisheries', this)">
+                        <i class="ph-fill ph-fish"></i> Aquaculture & Fish
+                    </button>
+                    <button class="sector-nav-btn" onclick="switchSector('agri', this)">
+                        <i class="ph-fill ph-plant"></i> Field Crops & Agronomy
+                    </button>
+                </div>
+
+                <!-- Tab 1: Poultry -->
+                <div class="sector-pane active" id="pane-poultry">
+                    <div class="sector-info">
+                        <span class="sector-tag sector-poultry"><i class="ph-fill ph-egg"></i> Poultry Sector</span>
+                        <h3>Broiler, Sonali & Layer Batch Precision</h3>
+                        <p>Track bird flock lifecycles from Day 1 brooding to harvest. KhamarBD automatically schedules vaccine schedules (ND/IB, Gumboro), daily feed rations, mortality tracking, and Feed Conversion Ratio (FCR).</p>
+                        
+                        <div class="routine-feature-list">
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Automated Brooding Temperature Alerts</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Daily Grams/Bird Feed Prompt</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Flock Weight Sampling Milestones</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Lot-Level Cost & Sale Balance Sheet</div>
+                        </div>
+
+                        <a href="pages/auth/register.html?role=farmer" class="btn btn-primary btn-sm">
+                            <i class="ph ph-user-plus"></i> Start as Farmer
+                        </a>
+                    </div>
+                    
+                    <div class="sector-card-preview">
+                        <div class="preview-header">
+                            <strong><i class="ph ph-calendar"></i> Live Day 14 Routine Preview</strong>
+                            <span class="badge badge-success">On Schedule</span>
+                        </div>
+                        <div class="preview-row">
+                            <span>Morning Feed (Starter)</span>
+                            <strong>38g / bird (76 kg total)</strong>
+                        </div>
+                        <div class="preview-row">
+                            <span>Vaccination Alert</span>
+                            <span class="text-danger font-semibold">Gumboro (IBD) 2nd Dose</span>
+                        </div>
+                        <div class="preview-row">
+                            <span>Litter Management</span>
+                            <span>Rake & Dry Moisture Check</span>
+                        </div>
+                        <div class="preview-row">
+                            <span>Target Body Weight</span>
+                            <strong class="text-primary">480g - 520g</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Dairy -->
+                <div class="sector-pane" id="pane-dairy">
+                    <div class="sector-info">
+                        <span class="sector-tag sector-dairy"><i class="ph-fill ph-cow"></i> Dairy & Livestock</span>
+                        <h3>Herd Registry, Milking Logs & Reproduction</h3>
+                        <p>Manage individual cow and cattle profiles, daily morning/evening milk yield logs, deworming calendars, FMD/Anthrax vaccinations, and artificial insemination gestation timers.</p>
+                        
+                        <div class="routine-feature-list">
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Individual Ear-Tag Cow Profiles</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Daily Morning & Evening Milk Log</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Insemination Gestation Countdown</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Feed Concentrate & Roughage Planner</div>
+                        </div>
+
+                        <a href="pages/auth/register.html?role=farmer" class="btn btn-primary btn-sm">
+                            <i class="ph ph-user-plus"></i> Start as Farmer
+                        </a>
+                    </div>
+                    
+                    <div class="sector-card-preview">
+                        <div class="preview-header">
+                            <strong><i class="ph ph-cow"></i> Cow #COW-04 (Lactation 2)</strong>
+                            <span class="badge badge-primary">High Yield</span>
+                        </div>
+                        <div class="preview-row">
+                            <span>Morning Milk Yield</span>
+                            <strong>14.5 Liters (৳1,160)</strong>
+                        </div>
+                        <div class="preview-row">
+                            <span>Evening Milk Yield</span>
+                            <strong>11.0 Liters (৳880)</strong>
+                        </div>
+                        <div class="preview-row">
+                            <span>Feed Ratio</span>
+                            <span>6kg Concentrate + Green Napier</span>
+                        </div>
+                        <div class="preview-row">
+                            <span>Deworming Status</span>
+                            <span class="text-success font-semibold">Completed (Due in 42d)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Fisheries -->
+                <div class="sector-pane" id="pane-fisheries">
+                    <div class="sector-info">
+                        <span class="sector-tag sector-fisheries"><i class="ph-fill ph-fish"></i> Aquaculture Sector</span>
+                        <h3>Pond Water Quality & Bi-Weekly Sampling</h3>
+                        <p>Designed for Tilapia, Pangas, Rui, and Carp polyculture. Track fingerling stocking density, daily floating pellet dosage, dissolved oxygen/pH tests, and harvest growth curve.</p>
+                        
+                        <div class="routine-feature-list">
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Pond Size & Stocking Density Presets</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Biomass-Based Feed Calculation</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Water Liming & Oxygen Reminders</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Bi-weekly Weight & Health Sampling</div>
+                        </div>
+
+                        <a href="pages/auth/register.html?role=farmer" class="btn btn-primary btn-sm">
+                            <i class="ph ph-user-plus"></i> Start as Farmer
+                        </a>
+                    </div>
+                    
+                    <div class="sector-card-preview">
+                        <div class="preview-header">
+                            <strong><i class="ph ph-drop"></i> Pond #P-01 (Monosex Tilapia)</strong>
+                            <span class="badge badge-success">Optimal Quality</span>
+                        </div>
+                        <div class="preview-row">
+                            <span>Stocking Count</span>
+                            <strong>5,000 Fingerlings</strong>
+                        </div>
+                        <div class="preview-row">
+                            <span>Current Average Weight</span>
+                            <strong class="text-primary">280g / fish</strong>
+                        </div>
+                        <div class="preview-row">
+                            <span>Daily Feed (3% Biomass)</span>
+                            <strong>42 kg / day (2 splits)</strong>
+                        </div>
+                        <div class="preview-row">
+                            <span>Water pH & Transparency</span>
+                            <span>7.6 pH • 32 cm Secchi disc</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Agriculture / Crops -->
+                <div class="sector-pane" id="pane-agri">
+                    <div class="sector-info">
+                        <span class="sector-tag sector-agri"><i class="ph-fill ph-plant"></i> Crop Agriculture</span>
+                        <h3>Seasonal Field Plot & Fertilizer Splits</h3>
+                        <p>Covering Paddy (Boro/Aman), Maize, Potato, and Vegetables. Follow field plot schedules from seedbed preparation, basal and top-dress fertilizer splits, pest scouting, to harvest.</p>
+                        
+                        <div class="routine-feature-list">
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Boro & Aman Rice Stage Templates</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Urea/DAP/MOP Split Dose Schedules</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Weather-Driven Irrigation Prompts</div>
+                            <div class="routine-feature-item"><i class="ph-fill ph-check-circle"></i> Plot Yield & Labor Expense Accounting</div>
+                        </div>
+
+                        <a href="pages/auth/register.html?role=farmer" class="btn btn-primary btn-sm">
+                            <i class="ph ph-user-plus"></i> Start as Farmer
+                        </a>
+                    </div>
+                    
+                    <div class="sector-card-preview">
+                        <div class="preview-header">
+                            <strong><i class="ph ph-grains"></i> Plot #F-02 (BRRI-28 Boro Rice)</strong>
+                            <span class="badge badge-warning">Tillering Phase</span>
+                        </div>
+                        <div class="preview-row">
+                            <span>Land Area</span>
+                            <strong>66 Decimals (2 Bigha)</strong>
+                        </div>
+                        <div class="preview-row">
+                            <span>Next Action Prompt</span>
+                            <strong class="text-danger">2nd Urea Split (25 kg)</strong>
+                        </div>
+                        <div class="preview-row">
+                            <span>Irrigation Status</span>
+                            <span>Soil Saturated • AWD Tube OK</span>
+                        </div>
+                        <div class="preview-row">
+                            <span>Pest Scouting</span>
+                            <span class="text-success font-semibold">Stem Borer Check: Clear</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features Grid -->
+    <section id="features" class="section" style="background: #F8FAFC;">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge badge-accent">Core Platform Engines</span>
+                <h2>Everything You Need to Run a Profitable Farm</h2>
+                <p>Designed around real field challenges: accurate bookkeeping, routine adherence, disease control, and micro-climate advisories.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph ph-calendar-check"></i></div>
+                    <h3>Automated Routine System</h3>
+                    <p>Scientific health routines for Broiler, Sonali, Dairy Cow, Tilapia, Rice & more with automated daily task schedules and cost prompts.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph ph-wallet"></i></div>
+                    <h3>Farm Financial Ledger</h3>
+                    <p>Track lot-level expenses (feed, chicks, medicine, labor) and revenues (milk, harvest, meat) with instant profitability metrics.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph ph-heartbeat"></i></div>
+                    <h3>Health Records & Alerts</h3>
+                    <p>Scheduled vaccination logs, deworming calendars, weight sampling milestones, and digital specialist prescriptions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph ph-cloud-sun"></i></div>
+                    <h3>Weather-Based Farm Advisory</h3>
+                    <p>Location-driven microclimate weather alerts and sector-specific management guidance without pseudo-science.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How KhamarBD Works (Interactive Steps) -->
+    <section id="how-it-works" class="section">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge badge-primary">Simple 4-Step Workflow</span>
+                <h2>How KhamarBD Powers Your Farm Operations</h2>
+                <p>From initial onboarding to marketplace trading, achieve full operational visibility in 4 simple steps.</p>
+            </div>
+
+            <div class="workflow-grid">
+                <div class="workflow-card">
+                    <div class="workflow-num">1</div>
+                    <h4>Register Units & Lots</h4>
+                    <p>Create your sheds, ponds, or crop plots and launch active batches with one-click routines.</p>
+                </div>
+
+                <div class="workflow-card">
+                    <div class="workflow-num">2</div>
+                    <h4>Follow Daily Routines</h4>
+                    <p>Get automated daily feed rations, vaccine alerts, and task prompts tailored to current batch age.</p>
+                </div>
+
+                <div class="workflow-card">
+                    <div class="workflow-num">3</div>
+                    <h4>Record Ledger & Health</h4>
+                    <p>Log all expenses, revenues, mortality, and vet prescriptions with instant profit/loss visibility.</p>
+                </div>
+
+                <div class="workflow-card">
+                    <div class="workflow-num">4</div>
+                    <h4>Direct Trade & Consult</h4>
+                    <p>Sell harvests to verified buyers, purchase regional supplies, and consult certified vets at 0% fee.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem Preview Section -->
+    <section id="ecosystem" class="section ecosystem-section" style="background: #F8FAFC;">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge badge-accent">Connected Ecosystem</span>
+                <h2>Supporting Agro Ecosystem</h2>
+                <p>Connecting verified farmers, certified agricultural input suppliers, and veterinary agronomists.</p>
+            </div>
+
+            <div class="ecosystem-grid">
+                <a href="pages/public/farm-supplies.html" class="eco-card" style="text-decoration: none; color: inherit;">
+                    <i class="ph ph-storefront"></i>
+                    <div>
+                        <h3>Farm Supplies</h3>
+                        <p>Feed, vaccines, equipment, and fingerlings from registered regional suppliers.</p>
+                    </div>
+                </a>
+                <a href="pages/public/specialists.html" class="eco-card" style="text-decoration: none; color: inherit;">
+                    <i class="ph ph-stethoscope"></i>
+                    <div>
+                        <h3>Specialist Consultation</h3>
+                        <p>Tele-consultation with registered veterinarians & agronomists with printable digital prescriptions.</p>
+                    </div>
+                </a>
+                <a href="pages/public/farm-products.html" class="eco-card" style="text-decoration: none; color: inherit;">
+                    <i class="ph ph-shopping-cart"></i>
+                    <div>
+                        <h3>Farm Products Marketplace</h3>
+                        <p>Direct buy-and-sell listings for fresh livestock, fish batches, dairy, and crop harvests.</p>
+                    </div>
+                </a>
+                <a href="pages/public/farm-news.html" class="eco-card" style="text-decoration: none; color: inherit;">
+                    <i class="ph ph-newspaper"></i>
+                    <div>
+                        <h3>Agronomy News & Tips</h3>
+                        <p>Practical guides, seasonal management advisories, and industry updates.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Trust Banner -->
+            <div class="trust-banner">
+                <i class="ph-fill ph-shield-check"></i>
+                <span><strong>Off-Platform Fair Commerce:</strong> Transactions take place directly between buyer and seller. KhamarBD never withholds funds or levies hidden escrow cuts.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Role Quick Start Cards (No "Portal" wording) -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge badge-primary">Get Started</span>
+                <h2>Tailored Solutions for Every Stakeholder</h2>
+                <p>Select your account type to register and begin managing your agricultural operations.</p>
+            </div>
+
+            <div class="role-grid">
+                <a href="pages/auth/register.html?role=farmer" class="role-card">
+                    <div>
+                        <div class="role-header">
+                            <div class="role-icon farmer"><i class="ph-fill ph-plant"></i></div>
+                            <span class="badge badge-success">Farmer</span>
+                        </div>
+                        <h3>Start as Farmer</h3>
+                        <p>Manage batches, daily routines, unit financial ledgers, and digital health records.</p>
+                    </div>
+                    <div class="role-action">Register as Farmer <i class="ph-bold ph-arrow-right"></i></div>
+                </a>
+
+                <a href="pages/auth/register.html?role=supplier" class="role-card">
+                    <div>
+                        <div class="role-header">
+                            <div class="role-icon supplier"><i class="ph-fill ph-storefront"></i></div>
+                            <span class="badge badge-warning">Supplier</span>
+                        </div>
+                        <h3>Start as Supplier</h3>
+                        <p>List feeds, vaccines, medicines, and farm equipment; receive and dispatch regional orders.</p>
+                    </div>
+                    <div class="role-action">Register as Supplier <i class="ph-bold ph-arrow-right"></i></div>
+                </a>
+
+                <a href="pages/auth/register.html?role=specialist" class="role-card">
+                    <div>
+                        <div class="role-header">
+                            <div class="role-icon specialist"><i class="ph-fill ph-stethoscope"></i></div>
+                            <span class="badge badge-primary">Specialist</span>
+                        </div>
+                        <h3>Start as Specialist</h3>
+                        <p>Provide veterinary and agronomy consultations, live chat, and digital prescriptions.</p>
+                    </div>
+                    <div class="role-action">Register as Specialist <i class="ph-bold ph-arrow-right"></i></div>
+                </a>
+
+                <a href="pages/auth/register.html?role=buyer" class="role-card">
+                    <div>
+                        <div class="role-header">
+                            <div class="role-icon buyer"><i class="ph-fill ph-shopping-bag"></i></div>
+                            <span class="badge badge-accent">Buyer</span>
+                        </div>
+                        <h3>Start as Buyer</h3>
+                        <p>Source live poultry, cattle, fresh fish, and agricultural crops directly from farm producers.</p>
+                    </div>
+                    <div class="role-action">Register as Buyer <i class="ph-bold ph-arrow-right"></i></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <i class="ph-fill ph-plant"></i> KhamarBD
+                    </div>
+                    <p>A specialized farm-management-first agritech platform built for modern farmers, suppliers, specialists, and buyers.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <a href="index.html">Home</a>
+                    <a href="#sectors">Agricultural Sectors</a>
+                    <a href="#features">Core Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="pages/public/marketplace.html">Marketplace</a>
+                    <a href="pages/auth/login.html">Sign In</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Account Types</h4>
+                    <a href="pages/auth/register.html?role=farmer">Farmer Registration</a>
+                    <a href="pages/auth/register.html?role=supplier">Supplier Registration</a>
+                    <a href="pages/auth/register.html?role=specialist">Specialist Registration</a>
+                    <a href="pages/auth/register.html?role=buyer">Buyer Registration</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Notice</h4>
+                    <p class="text-sm text-muted">All prescription and veterinary suggestions are strictly advisory and reference only. Consult certified veterinary officers before clinical use.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 KhamarBD | Modern Farm Management Platform
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JS -->
+    <script>
+        function switchSector(sectorKey, btnElement) {
+            // Remove active from all tabs
+            document.querySelectorAll('.sector-nav-btn').forEach(btn => btn.classList.remove('active'));
+            // Remove active from all panes
+            document.querySelectorAll('.sector-pane').forEach(pane => pane.classList.remove('active'));
+
+            // Activate chosen tab & pane
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
+            const targetPane = document.getElementById('pane-' + sectorKey);
+            if (targetPane) {
+                targetPane.classList.add('active');
+            }
+        }
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

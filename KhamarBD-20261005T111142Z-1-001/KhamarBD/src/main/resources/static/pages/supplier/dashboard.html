@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Portal - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Supplier Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="ph ph-squares-four"></i> Supplier Dashboard
+                </a>
+                <a href="listings.html" class="nav-item">
+                    <i class="ph ph-stack"></i> Product Listings
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-plus-circle"></i> Add New Product
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Dispatch
+                    <span class="badge badge-warning" style="margin-left: auto;">2 New</span>
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Customer Messages
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-storefront"></i> Business Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Topbar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h3 id="supplierHeaderName" style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+                        <i class="ph ph-storefront" style="color: var(--primary-color);"></i> Loading Supplier...
+                    </h3>
+                    <span class="badge badge-primary" id="supplierHeaderBadge">Supplier Merchant</span>
+                </div>
+                
+                <div class="topbar-actions">
+                    <a href="add-product.html" class="btn btn-primary btn-sm">
+                        <i class="ph ph-plus-circle"></i> List New Product
+                    </a>
+                </div>
+            </div>
+
+            <!-- Off-platform commerce notice -->
+            <div class="trust-banner" style="margin-bottom: 1.75rem;">
+                <i class="ph-fill ph-shield-check"></i>
+                <span><strong>Supplier Direct Commerce:</strong> All order transactions are settled directly between your shop and purchasing farmers via cash on delivery or counter pickup. KhamarBD holds zero transaction cut.</span>
+            </div>
+
+            <!-- Supplier KPIs -->
+            <div class="ledger-kpi-grid">
+                <div class="stat-box income">
+                    <span class="stat-label">Active Listed Catalog</span>
+                    <h3 class="stat-value text-primary" id="kpiActiveListings">...</h3>
+                    <span class="stat-sub">Visible on Farm Supplies tab</span>
+                </div>
+                <div class="stat-box expense">
+                    <span class="stat-label">New Orders Awaiting Action</span>
+                    <h3 class="stat-value text-danger" id="kpiPendingOrders">...</h3>
+                    <span class="stat-sub">Requires acceptance & dispatch</span>
+                </div>
+                <div class="stat-box profit">
+                    <span class="stat-label">Total Gross Order Value</span>
+                    <h3 class="stat-value text-secondary" id="kpiTotalGross">...</h3>
+                    <span class="stat-sub" id="kpiCompletedCount">... completed transactions</span>
+                </div>
+            </div>
+
+            <div class="dash-grid">
+                
+                <!-- Left Column: Pending Orders from Farmers -->
+                <div class="dash-col-main">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <div>
+                                <h3><i class="ph ph-package"></i> Incoming Farmer Orders</h3>
+                                <p class="text-sm text-muted">Review, accept, and dispatch orders for regional farm buyers</p>
+                            </div>
+                            <a href="orders.html" class="link-btn">View All Orders</a>
+                        </div>
+
+                        <div class="task-list" id="incomingOrdersList">
+                            <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
+                                <i class="ph ph-spinner ph-spin" style="font-size: 1.5rem;"></i> Loading supplier orders...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Catalog Snapshot -->
+                <div class="dash-col-side">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3><i class="ph ph-stack"></i> Top Listed Products</h3>
+                            <a href="listings.html" class="link-btn">Manage</a>
+                        </div>
+                        <div class="eco-shortcuts-list" id="topProductsList">
+                            <div style="padding: 1.5rem; text-align: center; color: var(--text-muted);">
+                                <i class="ph ph-spinner ph-spin" style="font-size: 1.5rem;"></i> Loading catalog...
+                            </div>
+                        </div>
+                        <a href="add-product.html" class="btn btn-outline btn-block btn-sm" style="margin-top: 1rem;">
+                            <i class="ph ph-plus"></i> Add Another Product
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            let user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+            
+            // Sync with latest data from DB if available
+            if (user && user.userId) {
+                try {
+                    const allUsers = await apiRequest('/user/search', 'GET');
+                    if (Array.isArray(allUsers)) {
+                        const found = allUsers.find(u => u.userId === user.userId);
+                        if (found) {
+                            user = { ...user, ...found };
+                            setCurrentUser(user);
+                        }
+                    }
+                } catch(e) {
+                    console.warn("Could not sync user from DB:", e);
+                }
+            } else {
+                user = { userId: 3, name: 'Riazul Agro Feeds', district: 'Dhaka' };
+            }
+            
+            // Populate Topbar dynamically
+            const topbarTitle = document.getElementById('supplierHeaderName');
+            const topbarBadge = document.getElementById('supplierHeaderBadge');
+            
+            const displayName = user.businessName || user.name || 'Agro Input Supplier';
+            const locationStr = [user.upazila, user.district].filter(Boolean).join(', ') || (user.district || 'Bangladesh');
+            
+            if (topbarTitle) {
+                topbarTitle.innerHTML = `<i class="ph-fill ph-storefront" style="color: var(--primary-color);"></i> ${displayName}`;
+            }
+            if (topbarBadge) {
+                const subTitle = user.businessName && user.name !== user.businessName ? `Proprietor: ${user.name} • ` : '';
+                topbarBadge.textContent = `Supplier: ${subTitle}${locationStr}`;
+            }
+
+            await loadSupplierDashboard(user.userId);
+        });
+
+        function getStatusBadge(status) {
+            const s = (status || 'ORDER_RECEIVED').toUpperCase();
+            if (s === 'DELIVERED' || s === 'COMPLETED') return '<span class="badge badge-success">DELIVERED</span>';
+            if (s === 'OUT_FOR_DELIVERY') return '<span class="badge badge-primary">OUT FOR DELIVERY</span>';
+            if (s === 'IN_TRANSPORT' || s === 'IN_TRANSIT') return '<span class="badge badge-info" style="background: rgba(14, 165, 233, 0.15); color: #0284c7; font-weight:700;">IN TRANSPORT</span>';
+            if (s === 'PROCESSING' || s === 'ACCEPTED') return '<span class="badge badge-accent" style="background: rgba(245, 158, 11, 0.15); color: #d97706; font-weight:700;">PROCESSING</span>';
+            if (s === 'PAYMENT_RECEIVED') return '<span class="badge badge-success" style="background: rgba(34, 197, 94, 0.15); color: #15803d; font-weight:700;">PAYMENT CONFIRMED</span>';
+            if (s === 'CANCELLED') return '<span class="badge badge-danger">CANCELLED</span>';
+            return '<span class="badge badge-warning">ORDER RECEIVED</span>';
+        }
+
+        async function loadSupplierDashboard(userId) {
+            let listings = [];
+            let orders = [];
+
+            // 1. Fetch Listings
+            try {
+                listings = await apiRequest(`/listing/search?sellerId=${userId}`, 'GET');
+                if (!listings || listings.length === 0) {
+                    listings = await apiRequest('/listing/search?listingTab=Farm Supplies', 'GET');
+                }
+            } catch (err) {
+                console.warn('Listing fetch error:', err);
+            }
+
+            // 2. Fetch Orders
+            try {
+                orders = await apiRequest(`/order/search?sellerId=${userId}`, 'GET');
+                if (!orders || orders.length === 0) {
+                    orders = await apiRequest('/order/search', 'GET');
+                }
+            } catch (err) {
+                console.warn('Order fetch error:', err);
+            }
+
+            // Render KPIs
+            const activeCount = (listings || []).filter(l => (l.listingStatus || 'ACTIVE') === 'ACTIVE').length;
+            document.getElementById('kpiActiveListings').textContent = `${activeCount || (listings ? listings.length : 0)} Products`;
+
+            const pendingOrders = (orders || []).filter(o => {
+                const st = (o.orderStatus || 'ORDER_RECEIVED').toUpperCase();
+                return st === 'PENDING' || st === 'ORDER_RECEIVED' || st === 'PROCESSING';
+            });
+            document.getElementById('kpiPendingOrders').textContent = `${pendingOrders.length} Orders`;
+
+            const totalGross = (orders || []).reduce((acc, o) => acc + (parseFloat(o.totalAgreedPrice) || 0), 0);
+            document.getElementById('kpiTotalGross').textContent = `BDT ${totalGross.toLocaleString()}`;
+            const completedCount = (orders || []).filter(o => (o.orderStatus || '').toUpperCase() === 'DELIVERED').length;
+            document.getElementById('kpiCompletedCount').textContent = `${completedCount} completed transactions`;
+
+            // Update badge on sidebar
+            const sidebarBadge = document.querySelector('.sidebar-nav .badge-warning');
+            if (sidebarBadge) sidebarBadge.textContent = `${pendingOrders.length} New`;
+
+            // Render Incoming Orders
+            const ordersContainer = document.getElementById('incomingOrdersList');
+            if (!orders || orders.length === 0) {
+                ordersContainer.innerHTML = `
+                    <div style="padding: 2.5rem; text-align: center; color: var(--text-muted);">
+                        <i class="ph ph-package" style="font-size: 2.5rem; opacity: 0.5; margin-bottom: 0.5rem; display: block;"></i>
+                        <p>No customer orders placed yet.</p>
+                        <p class="text-xs">When farmers purchase your items from the marketplace, they will show up here for live fulfillment updates.</p>
+                    </div>`;
+            } else {
+                ordersContainer.innerHTML = orders.slice(0, 5).map(order => {
+                    const status = (order.orderStatus || 'ORDER_RECEIVED').toUpperCase();
+                    const ref = order.orderReference || `ORD-${order.orderId}`;
+                    const buyer = order.buyerName || 'Farmer Buyer';
+                    const buyerPhone = order.buyerPhone ? ` • ${order.buyerPhone}` : '';
+                    const district = order.buyerDistrict ? ` (${order.buyerDistrict})` : '';
+                    const title = order.listingTitle || 'Agricultural Supplies';
+                    const unit = order.listingUnit || 'Unit';
+                    const qty = order.quantity || 1;
+                    const price = (order.totalAgreedPrice || 0).toLocaleString();
+                    const dateStr = order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'Recent';
+
+                    return `
+                        <div class="task-item" style="border-left-color: var(--primary-color);">
+                            <div class="task-info">
+                                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 4px; flex-wrap: wrap;">
+                                    <h4 style="margin: 0; font-weight: 700;">Order #${ref}</h4>
+                                    ${getStatusBadge(status)}
+                                    <span class="text-xs text-muted font-semibold"><i class="ph ph-clock"></i> ${dateStr}</span>
+                                </div>
+                                <span class="meta" style="color: var(--text-main); font-weight: 600;">
+                                    <i class="ph ph-user"></i> ${buyer}${district}${buyerPhone}
+                                </span>
+                                <p class="text-xs text-muted" style="margin-top: 4px;">
+                                    <strong>Item:</strong> ${title} &times; ${qty} ${unit} &bull; <strong style="color: var(--primary-color);">Total: BDT ${price}</strong>
+                                </p>
+                                ${order.paymentNote ? `<span class="text-xs text-info" style="display:block; margin-top:2px;"><i class="ph ph-note"></i> Note: ${order.paymentNote}</span>` : ''}
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end; justify-content: center;">
+                                <a href="orders.html?highlight=${order.orderId}" class="btn btn-primary btn-sm">
+                                    <i class="ph ph-arrows-clockwise"></i> Update Stage
+                                </a>
+                                <a href="chat.html?peerId=${order.buyerId}&name=${encodeURIComponent(buyer)}&topic=Order+%23${order.orderId}" class="btn btn-outline btn-sm">
+                                    <i class="ph ph-chat-circle-dots"></i> Message Buyer
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Render Top Products
+            const topProductsContainer = document.getElementById('topProductsList');
+            if (!listings || listings.length === 0) {
+                topProductsContainer.innerHTML = `
+                    <div style="padding: 1.5rem; text-align: center; color: var(--text-muted);">
+                        <p>No products listed yet.</p>
+                        <a href="add-product.html" class="btn btn-primary btn-sm" style="margin-top: 0.5rem;">List Your First Product</a>
+                    </div>`;
+            } else {
+                topProductsContainer.innerHTML = listings.slice(0, 4).map(item => {
+                    const price = (item.price || 0).toLocaleString();
+                    const unit = item.unit || 'Unit';
+                    const qty = item.quantityAvailable || 0;
+                    const title = item.title || 'Product Item';
+                    let icon = 'ph-bag';
+                    let iconColor = 'var(--primary-color)';
+                    const cat = (item.productCategory || '').toLowerCase();
+                    if (cat.includes('med') || cat.includes('vac')) { icon = 'ph-flask'; iconColor = 'var(--danger-color)'; }
+                    else if (cat.includes('equip') || cat.includes('tool')) { icon = 'ph-wrench'; iconColor = 'var(--accent-color)'; }
+                    else if (cat.includes('fert') || cat.includes('lime')) { icon = 'ph-drop'; iconColor = 'var(--fisheries-accent)'; }
+
+                    return `
+                        <div class="eco-shortcut">
+                            <i class="ph ${icon}" style="color: ${iconColor}; font-size: 1.25rem;"></i>
+                            <div style="flex: 1; min-width: 0;">
+                                <h4 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;">${title}</h4>
+                                <p class="text-muted" style="font-size: 0.8rem; margin: 0;">Stock: ${qty} ${unit} &bull; BDT ${price} / ${unit}</p>
+                            </div>
+                            <span class="badge ${qty > 10 ? 'badge-success' : (qty > 0 ? 'badge-warning' : 'badge-danger')} text-xs">
+                                ${qty > 10 ? 'Active' : (qty > 0 ? 'Low Stock' : 'Out of Stock')}
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+    </script>
+</body>
+</html>

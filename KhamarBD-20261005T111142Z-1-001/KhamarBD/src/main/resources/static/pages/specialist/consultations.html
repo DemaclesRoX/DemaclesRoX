@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active & Past Consultations - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Specialist Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Specialist Dashboard
+                </a>
+                <a href="consultation-requests.html" class="nav-item">
+                    <i class="ph ph-bell-ringing"></i> Requests
+                </a>
+                <a href="consultations.html" class="nav-item active">
+                    <i class="ph ph-stethoscope"></i> Consultations
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="create-prescription.html" class="nav-item">
+                    <i class="ph ph-file-plus"></i> Issue Prescription
+                </a>
+                <a href="prescription-templates.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Rx Templates (Presets)
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-user-gear"></i> Clinical Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-stethoscope"></i> Clinical Consultations History</h2>
+                    <p class="text-muted">Review linked patients, consultation outcomes, and issued digital prescriptions</p>
+                </div>
+                <div class="header-actions">
+                    <a href="create-prescription.html" class="btn btn-primary">
+                        <i class="ph ph-file-plus"></i> New Prescription
+                    </a>
+                </div>
+            </div>
+
+            <!-- Privacy Rule Notice -->
+            <div class="rx-banner-static" style="background-color: #EFF6FF; border-color: #BFDBFE; color: #1E40AF;">
+                <i class="ph-fill ph-shield-check" style="color: #2563EB;"></i>
+                <span><strong>Data Privacy Safeguard:</strong> Specialists are strictly granted view access to the specific tracking units associated with active consultations. General farm financial ledgers remain confidential to farmers.</span>
+            </div>
+
+            <!-- Table of Consultations -->
+            <div class="table-responsive">
+                <table class="ledger-table">
+                    <thead>
+                        <tr>
+                            <th>Consultation ID</th>
+                            <th>Farmer & Location</th>
+                            <th>Unit Linked</th>
+                            <th>Diagnosis & Complaint</th>
+                            <th>Status</th>
+                            <th>Prescription</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="consultationsTableBody">
+                        <tr><td colspan="7" class="text-center">Loading consultations...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        async function loadConsultations() {
+            try {
+                const list = await apiRequest('/consultation/search');
+                const tbody = document.getElementById('consultationsTableBody');
+                tbody.innerHTML = '';
+
+                if (list.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-muted text-center">No consultation records found.</td></tr>';
+                    return;
+                }
+
+                list.forEach(c => {
+                    const farmerName = c.farmerName || ('Farmer #' + (c.farmerId || ''));
+                    const farmerLoc = c.farmerLocation || 'N/A';
+                    const lotTag = c.lotTag || 'N/A';
+                    const isPrescribed = c.status === 'PRESCRIBED' || c.status === 'COMPLETED';
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>#CON-${c.consultationId}</strong></td>
+                            <td>
+                                <strong>${farmerName}</strong>
+                                <span class="text-xs text-muted" style="display: block;">${farmerLoc} ${c.farmerPhone ? '(' + c.farmerPhone + ')' : ''}</span>
+                            </td>
+                            <td><span class="badge-unit">${lotTag}</span></td>
+                            <td>${c.problemDescription || 'Consultation'}</td>
+                            <td><span class="badge ${isPrescribed ? 'badge-success' : (c.status === 'ACCEPTED' ? 'badge-primary' : 'badge-warning')}">${c.status}</span></td>
+                            <td>
+                                ${isPrescribed 
+                                    ? `<a href="../farmer/prescriptions.html" class="link-btn"><i class="ph ph-file-text"></i> View Rx</a>` 
+                                    : `<a href="create-prescription.html?consultationId=${c.consultationId}&farmerId=${c.farmerId || ''}&unitId=${c.lotId || ''}" class="btn btn-primary btn-sm"><i class="ph ph-file-plus"></i> Prescribe</a>`}
+                            </td>
+                            <td>
+                                <a href="chat.html?consultationId=${c.consultationId}" class="btn btn-outline btn-sm"><i class="ph ph-chat-circle-dots"></i> Chat</a>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (e) {
+                console.error(e);
+                document.getElementById('consultationsTableBody').innerHTML = '<tr><td colspan="7" class="text-danger text-center">Failed to load consultations.</td></tr>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadConsultations);
+    </script>
+</body>
+</html>

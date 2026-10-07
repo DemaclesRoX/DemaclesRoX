@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Management & Approvals - KhamarBD Admin</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Admin Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-shield-check" style="color: #60A5FA;"></i> KhamarBD Admin
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Overview
+                </a>
+                <a href="users.html" class="nav-item">
+                    <i class="ph ph-users"></i> User Verification
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> Farms Directory
+                </a>
+                <a href="marketplace.html" class="nav-item">
+                    <i class="ph ph-storefront"></i> Listing Moderation
+                </a>
+                <a href="subscriptions.html" class="nav-item active">
+                    <i class="ph ph-credit-card"></i> Subscriptions
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-credit-card"></i> Platform Subscriptions & Payments Audit</h2>
+                    <p class="text-muted">Approve subscription upgrades, verify transaction references (bKash/Nagad/Bank), and audit tier privileges</p>
+                </div>
+            </div>
+
+            <!-- Tier Summary -->
+            <div class="ledger-kpi-grid">
+                <div class="stat-box income">
+                    <span class="stat-label">Free Tier Accounts</span>
+                    <h3 class="stat-value">1,080 Farmers</h3>
+                    <span class="stat-sub">1 Farm, up to 2 Tracking Units</span>
+                </div>
+                <div class="stat-box profit">
+                    <span class="stat-label">Pro Farmer Upgrades</span>
+                    <h3 class="stat-value text-secondary">40 Active</h3>
+                    <span class="stat-sub">BDT 300 / mo (Unlimited units)</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Merchant Supplier Tiers</span>
+                    <h3 class="stat-value">68 Suppliers</h3>
+                    <span class="stat-sub">BDT 1,000 / mo (Marketplace listing rights)</span>
+                </div>
+            </div>
+
+            <!-- Subscription Approvals Table -->
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <h3><i class="ph ph-clock-countdown"></i> Pending Payment Approvals</h3>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="ledger-table">
+                        <thead>
+                            <tr>
+                                <th>Txn Ref ID</th>
+                                <th>Subscriber User</th>
+                                <th>Plan Tier</th>
+                                <th>Method & Reference</th>
+                                <th>Amount (BDT)</th>
+                                <th>Submitted</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>TXN-9021</code></td>
+                                <td>
+                                    <strong>Md. Shafiqul Islam</strong>
+                                    <span class="text-xs text-muted" style="display: block;">Farmer (Bogura)</span>
+                                </td>
+                                <td><span class="badge badge-accent">Pro Farmer (Annual)</span></td>
+                                <td>bKash TrxID: <code>9KL2901XA</code></td>
+                                <td class="font-semibold text-primary">BDT 3,000</td>
+                                <td>Today 11:30 AM</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" onclick="alert('Subscription approved and activated!')">
+                                        <i class="ph ph-check"></i> Approve & Activate
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>TXN-9022</code></td>
+                                <td>
+                                    <strong>Bismillah Feed Traders</strong>
+                                    <span class="text-xs text-muted" style="display: block;">Supplier (Natore)</span>
+                                </td>
+                                <td><span class="badge badge-success">Merchant Pro (Monthly)</span></td>
+                                <td>Nagad TrxID: <code>NGD44812Z</code></td>
+                                <td class="font-semibold text-primary">BDT 1,000</td>
+                                <td>Yesterday</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" onclick="alert('Subscription approved and activated!')">
+                                        <i class="ph ph-check"></i> Approve & Activate
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+</body>
+</html>

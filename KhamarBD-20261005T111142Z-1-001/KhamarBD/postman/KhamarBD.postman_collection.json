@@ -1,0 +1,657 @@
+﻿{
+    "info":  {
+                 "name":  "KhamarBD API",
+                 "_postman_id":  "7e28daf7-1a2a-4f71-8a83-07a590e0636c",
+                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+                 "description":  "KhamarBD backend API. Folder 1 theke numbered order e cholbe - id dependency ache (Farm banate user lage, Lot banate farm lage). Sob request body *RequestDto.java er sathe mile. NOTE: H2 in-memory, tai server restart korle data chole jay."
+             },
+    "item":  [
+                 {
+                     "name":  "1. User (start here)",
+                     "item":  [
+                                  {
+                                      "name":  "Register User - FARMER (becomes id 1)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/user/register",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Rahim Uddin\",\"phone\":\"01700000001\",\"email\":\"rahim@khamarbd.test\",\"password\":\"123456\",\"primaryRole\":\"FARMER\",\"division\":\"Dhaka\",\"district\":\"Dhaka\",\"upazila\":\"Savar\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Register User - SPECIALIST (becomes id 2)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/user/register",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Dr. Karim Ali\",\"phone\":\"01700000002\",\"email\":\"karim@khamarbd.test\",\"password\":\"123456\",\"primaryRole\":\"SPECIALIST\",\"division\":\"Dhaka\",\"district\":\"Dhaka\",\"upazila\":\"Savar\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Register User - SUPPLIER (becomes id 3)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/user/register",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Nabin Agro Store\",\"phone\":\"01700000003\",\"email\":\"nabin@khamarbd.test\",\"password\":\"123456\",\"primaryRole\":\"SUPPLIER\",\"division\":\"Dhaka\",\"district\":\"Dhaka\",\"upazila\":\"Savar\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Register User - BUYER (becomes id 4)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/user/register",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"name\":\"Salma Begum\",\"phone\":\"01700000004\",\"email\":\"salma@khamarbd.test\",\"password\":\"123456\",\"primaryRole\":\"BUYER\",\"division\":\"Dhaka\",\"district\":\"Dhaka\",\"upazila\":\"Savar\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Users by Role",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/user/search?primaryRole=FARMER"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get User Profile",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/user/filter/1/profile"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "2. Farm",
+                     "item":  [
+                                  {
+                                      "name":  "Create Farm (becomes id 1)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/farm/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"userId\":1,\"farmName\":\"Rahim Poultry Farm\",\"farmType\":\"Livestock\",\"locationDetails\":\"Baroipara, Savar\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Farms by Type",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/farm/search?farmType=Livestock"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Farm Details",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/farm/filter/1/details"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "3. Lot / Animal",
+                     "item":  [
+                                  {
+                                      "name":  "Create Lot (becomes id 1)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/lot/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"farmId\":1,\"identifierTag\":\"BROILER-A\",\"category\":\"Lot\",\"speciesOrBreed\":\"Broiler\",\"startDate\":\"2026-09-01\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Lots by Farm",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/lot/search?farmId=1"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Lot Details",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/lot/filter/1/details"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "4. Farm Ledger",
+                     "item":  [
+                                  {
+                                      "name":  "Create Ledger Entry (becomes id 1)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/ledger/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"lotId\":1,\"entryType\":\"Expense\",\"category\":\"Feed\",\"amount\":4500,\"eventDate\":\"2026-10-01\",\"notes\":\"Starter feed 50kg\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Ledger by Lot",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/ledger/search?lotId=1"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Ledger Entry Details",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/ledger/filter/1/details"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "5. Marketplace Listing",
+                     "item":  [
+                                  {
+                                      "name":  "Create Listing (seller=3, becomes id 1)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/listing/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"sellerId\":3,\"lotId\":1,\"title\":\"Broiler Chicken 500 pcs\",\"productCategory\":\"LIVE_BIRD\",\"price\":180,\"quantityAvailable\":500,\"unit\":\"KG\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Listings by Tab (Farm Products)",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/listing/search?listingTab=Farm%20Products"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Listing Details",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/listing/filter/1/details"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "6. Order Transaction",
+                     "item":  [
+                                  {
+                                      "name":  "Create Order (buyer=4, listing=1)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/order/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"buyerId\":4,\"listingId\":1,\"quantity\":50,\"totalAgreedPrice\":9000}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Orders by Buyer",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/order/search?buyerId=4"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Order Details",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/order/filter/1/details"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "7. Specialist Consultation",
+                     "item":  [
+                                  {
+                                      "name":  "Create Consultation (farmer=1, specialist=2, lot=1)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/consultation/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"farmerId\":1,\"specialistId\":2,\"lotId\":1,\"appointmentDate\":\"2026-10-05\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Consultations by Farmer",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/consultation/search?farmerId=1"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Consultation Details",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/consultation/filter/1/details"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "8. Prescription",
+                     "item":  [
+                                  {
+                                      "name":  "Create Prescription (consultation=1)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/prescription/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"consultationId\":1,\"issuedDate\":\"2026-10-05\",\"notes\":\"Suspected coccidiosis\",\"items\":[{\"medicineName\":\"Amprolium 20%\",\"dosage\":\"1g per 2L water\",\"duration\":\"5 days\"}]}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Prescriptions by Farmer",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/prescription/search?farmerId=1"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Prescription Details",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/prescription/filter/1/details"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "9. Subscription History",
+                     "item":  [
+                                  {
+                                      "name":  "Create Subscription Request",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/subscription/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"userId\":1,\"plan\":\"BASIC\",\"status\":\"PENDING\",\"expiresAt\":\"2026-12-31\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Subscriptions by User",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/subscription/search?userId=1"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Subscription Details",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/subscription/filter/1/details"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "10. Routine Task",
+                     "item":  [
+                                  {
+                                      "name":  "Create Routine Task (lot=1)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/routine-task/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"lotId\":1,\"taskTitle\":\"Morning Feeding\",\"actionType\":\"FEEDING\",\"dueDate\":\"2026-10-03\",\"costPrompt\":true}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Tasks by Lot + Status",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/routine-task/search?lotId=1\u0026status=PENDING"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Update Task Status -\u003e DONE",
+                                      "request":  {
+                                                      "method":  "PATCH",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/routine-task/1/status?status=DONE"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "11. System Template",
+                     "item":  [
+                                  {
+                                      "name":  "Create System Template",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/template/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"templateType\":\"ROUTINE\",\"sector\":\"POULTRY\",\"templateName\":\"Broiler 42-Day Schedule\",\"contentJson\":\"[]\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Templates by Type + Sector",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/template/search?templateType=ROUTINE\u0026sector=POULTRY"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "12. Taxonomy Item",
+                     "item":  [
+                                  {
+                                      "name":  "Create Taxonomy Item",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/taxonomy/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"domain\":\"UNIT\",\"sector\":\"POULTRY\",\"categoryCode\":\"WEIGHT\",\"nameBn\":\"Kilo\",\"nameEn\":\"KG\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Search Taxonomy by Domain",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/taxonomy/search?domain=UNIT\u0026sector=POULTRY"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "13. Weather Rule",
+                     "item":  [
+                                  {
+                                      "name":  "Create Weather Rule (stub endpoint)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  "http://localhost:8080/weather-rule/create",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\"sector\":\"POULTRY\",\"conditionParameter\":\"TEMPERATURE\",\"operator\":\"\u003e\",\"thresholdValue\":38.5,\"alertMessage\":\"High temperature - increase ventilation\"}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Active Rules by Sector (stub endpoint)",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  "http://localhost:8080/weather-rule/active?sector=POULTRY"
+                                                  }
+                                  }
+                              ]
+                 }
+             ]
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Farms Directory - KhamarBD Admin</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Admin Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-shield-check" style="color: #60A5FA;"></i> KhamarBD Admin
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Overview
+                </a>
+                <a href="users.html" class="nav-item">
+                    <i class="ph ph-users"></i> User Verification
+                </a>
+                <a href="farms.html" class="nav-item active">
+                    <i class="ph ph-farm"></i> Farms Directory
+                </a>
+                <a href="marketplace.html" class="nav-item">
+                    <i class="ph ph-storefront"></i> Listing Moderation
+                </a>
+                <a href="subscriptions.html" class="nav-item">
+                    <i class="ph ph-credit-card"></i> Subscriptions
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-farm"></i> Master Farms Directory</h2>
+                    <p class="text-muted">Audit registered agricultural enterprises, sector designations, and active production lots</p>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Filter by Sector:</label>
+                    <select class="form-control" id="farmSectorFilter">
+                        <option value="">All Sectors (4)</option>
+                        <option value="POULTRY">Poultry (Broiler, Sonali, Duck, Layer)</option>
+                        <option value="FISHERIES">Fisheries (Carp, Tilapia, Pangasius, Shrimp)</option>
+                        <option value="DAIRY_LIVESTOCK">Dairy & Livestock (Cattle, Goat, Sheep)</option>
+                        <option value="AGRICULTURE">Agriculture & Crops (Rice, Potato, Vegetables)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>District:</label>
+                    <select class="form-control">
+                        <option value="">All Districts</option>
+                        <option value="bogura">Bogura</option>
+                        <option value="natore">Natore</option>
+                        <option value="dhaka">Dhaka</option>
+                        <option value="rajshahi">Rajshahi</option>
+                    </select>
+                </div>
+                <input type="text" class="form-control" placeholder="Search farm name or owner..." style="max-width: 280px; margin-left: auto;">
+            </div>
+
+            <!-- Farms Table -->
+            <div class="table-responsive">
+                <table class="ledger-table">
+                    <thead>
+                        <tr>
+                            <th>Farm ID</th>
+                            <th>Farm Name & Owner</th>
+                            <th>Primary Sector</th>
+                            <th>Geographic Location</th>
+                            <th>Active Tracking Units</th>
+                            <th>Created Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>FRM-01</code></td>
+                            <td>
+                                <strong>Bogura Broiler Project</strong>
+                                <span class="text-xs text-muted" style="display: block;">Owner: Md. Shafiqul Islam (USR-1001)</span>
+                            </td>
+                            <td><span class="sector-tag sector-poultry"><i class="ph ph-egg"></i> Poultry</span></td>
+                            <td>Kahalu Upazila, Bogura District</td>
+                            <td><span class="badge-unit">2 Active Batches (1,500 Birds)</span></td>
+                            <td>12 Jan 2026</td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" onclick="alert('Viewing farm lifecycle audit.')">Audit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>FRM-02</code></td>
+                            <td>
+                                <strong>Gabtoli Modern Dairy Farm</strong>
+                                <span class="text-xs text-muted" style="display: block;">Owner: Rahim Uddin (USR-1002)</span>
+                            </td>
+                            <td><span class="sector-tag sector-dairy"><i class="ph ph-cow"></i> Dairy & Livestock</span></td>
+                            <td>Gabtoli Upazila, Bogura District</td>
+                            <td><span class="badge-unit">12 Cattle (4 Lactating)</span></td>
+                            <td>05 Feb 2026</td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" onclick="alert('Viewing farm lifecycle audit.')">Audit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>FRM-03</code></td>
+                            <td>
+                                <strong>Chalanbeel Carp Aquaculture</strong>
+                                <span class="text-xs text-muted" style="display: block;">Owner: Anwar Hossain (USR-1003)</span>
+                            </td>
+                            <td><span class="sector-tag sector-fisheries"><i class="ph ph-fish"></i> Fisheries</span></td>
+                            <td>Singra Upazila, Natore District</td>
+                            <td><span class="badge-unit">2 Ponds (75 Decimals)</span></td>
+                            <td>18 Mar 2026</td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" onclick="alert('Viewing farm lifecycle audit.')">Audit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>FRM-04</code></td>
+                            <td>
+                                <strong>Rangpur Boro & Potato Estate</strong>
+                                <span class="text-xs text-muted" style="display: block;">Owner: Mokhlesur Rahman (USR-1004)</span>
+                            </td>
+                            <td><span class="sector-tag sector-agri"><i class="ph ph-plant"></i> Agriculture</span></td>
+                            <td>Mithapukur Upazila, Rangpur</td>
+                            <td><span class="badge-unit">3 Plots (5 Bigha)</span></td>
+                            <td>22 Mar 2026</td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" onclick="alert('Viewing farm lifecycle audit.')">Audit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+</body>
+</html>

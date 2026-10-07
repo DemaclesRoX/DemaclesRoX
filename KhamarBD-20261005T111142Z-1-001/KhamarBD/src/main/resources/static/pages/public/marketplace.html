@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agro Marketplace - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <!-- Header / Navbar for Public Pages -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="../../index.html" class="logo">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            <nav class="nav-links" id="marketplaceNavLinks">
+                <a href="../../index.html#features">Features</a>
+                <a href="marketplace.html" class="active">Marketplace</a>
+                <a href="../auth/login.html" class="btn btn-outline" id="navLoginBtn">Login</a>
+                <a href="../auth/register.html?role=buyer" class="btn btn-primary" id="navRegisterBtn">
+                    <i class="ph ph-user-plus"></i> Buyer Register
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Marketplace Header & Search -->
+    <section class="marketplace-header">
+        <div class="container">
+            <h1>Agricultural Marketplace</h1>
+            <p>Source quality farm inputs from certified suppliers, buy direct farm produce, or connect with veterinary specialists across all 64 districts of Bangladesh.</p>
+            
+            <div class="search-bar" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div style="display: flex; gap: 6px; flex: 1; min-width: 260px;">
+                    <select id="districtFilter" class="form-control" onchange="applyMarketplaceFilters()" style="flex: 1;">
+                        <!-- Dynamically populated with all 64 districts -->
+                        <option value="">All 64 Districts (All Bangladesh)</option>
+                    </select>
+                    <button type="button" class="btn btn-outline" onclick="openMarketplaceDistrictModal()" title="Browse all 64 districts by division" style="padding: 0 12px; white-space: nowrap;">
+                        <i class="ph-bold ph-map-pin"></i> 64 Districts
+                    </button>
+                </div>
+                <input type="text" id="marketplaceSearch" class="form-control" placeholder="Search inputs, feeds, seeds, broilers, cattle, fish, or specialists..." style="flex: 2; min-width: 260px;" oninput="applyMarketplaceFilters()">
+                <button class="btn btn-primary" type="button" onclick="applyMarketplaceFilters()"><i class="ph ph-magnifying-glass"></i> Search</button>
+            </div>
+
+            <div id="activeFilterTags" style="display: none; align-items: center; gap: 8px; margin-top: 10px; font-size: 0.85rem; color: #fff;">
+                <span>Active Filter:</span>
+                <span id="activeDistrictBadge" class="badge badge-accent" style="cursor: pointer;" onclick="clearDistrictFilter()">
+                    District: All &times;
+                </span>
+                <button type="button" class="link-btn" style="color: #fff; text-decoration: underline;" onclick="resetAllMarketplaceFilters()">
+                    Reset All Filters
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs (Farm Supplies, Farm Products, Specialists) -->
+    <div class="container" style="margin-top: 2rem; margin-bottom: 1rem;">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('supplies', this)"><i class="ph ph-storefront"></i> Farm Supplies (Inputs) <span id="suppliesCountBadge" class="badge badge-primary" style="margin-left: 6px;">0</span></button>
+            <button class="tab" onclick="switchTab('products', this)"><i class="ph ph-shopping-cart"></i> Farm Produce (Direct from Farms) <span id="productsCountBadge" class="badge badge-success" style="margin-left: 6px;">0</span></button>
+            <button class="tab" onclick="switchTab('specialists', this)"><i class="ph ph-stethoscope"></i> Specialists <span id="specialistsCountBadge" class="badge badge-primary" style="margin-left: 6px;">0</span></button>
+        </div>
+    </div>
+
+    <!-- Marketplace Content -->
+    <section class="marketplace-content section">
+        <div class="container">
+            
+            <!-- Tab Content: Farm Supplies -->
+            <div id="tab-supplies" class="tab-content" style="display: block;">
+                <div class="listing-grid" id="suppliesGrid">
+                    <!-- Supply Card 1 -->
+                    <div class="listing-card">
+                        <div class="listing-badge-tag"><span class="badge badge-primary">S03: Feed Supplier</span></div>
+                        <div class="listing-body">
+                            <span class="listing-category">Poultry Feed & Nutrition</span>
+                            <h3 class="listing-title">Sonali Chick Starter Crumble (50kg Bag)</h3>
+                            <div class="listing-price">BDT 2,750 <span class="unit-text">/ 50kg Bag</span></div>
+                            <div class="listing-meta">
+                                <span><i class="ph ph-storefront"></i> Sonali Agro Feeds & Vet, Shibganj, Bogura</span>
+                                <span><i class="ph ph-truck"></i> Delivery: Farm gate delivery available within district</span>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="orderInput('Sonali Chick Starter Crumble (50kg Bag)', 2750)">
+                                <i class="ph ph-shopping-bag"></i> Place Order Request
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Supply Card 2 -->
+                    <div class="listing-card">
+                        <div class="listing-badge-tag"><span class="badge badge-primary">S09: Vet Supplier</span></div>
+                        <div class="listing-body">
+                            <span class="listing-category">Veterinary Medicine & Vaccine</span>
+                            <h3 class="listing-title">Renamycin LA 100ml Injectable Solution</h3>
+                            <div class="listing-price">BDT 180 <span class="unit-text">/ Vial</span></div>
+                            <div class="listing-meta">
+                                <span><i class="ph ph-storefront"></i> Bhai Bhai Vet Pharmacy, Gabtoli, Bogura</span>
+                                <span><i class="ph ph-info"></i> In-Store Counter Collection</span>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="orderInput('Renamycin LA 100ml', 180)">
+                                <i class="ph ph-shopping-bag"></i> Place Order Request
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Supply Card 3 -->
+                    <div class="listing-card">
+                        <div class="listing-badge-tag"><span class="badge badge-primary">S15: Hatchery</span></div>
+                        <div class="listing-body">
+                            <span class="listing-category">Fisheries Fingerlings Stock</span>
+                            <h3 class="listing-title">Selected Rui & Katla Healthy Fingerlings (3-4 inch)</h3>
+                            <div class="listing-price">BDT 350 <span class="unit-text">/ kg (Avg 40-50 pcs)</span></div>
+                            <div class="listing-meta">
+                                <span><i class="ph ph-storefront"></i> Adarsha Hatchery, Adamdighi, Bogura</span>
+                                <span><i class="ph ph-phone"></i> Min Order: 50 kg &bull; Oxygen bag packing</span>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="orderInput('Rui & Katla Fingerlings', 350)">
+                                <i class="ph ph-shopping-bag"></i> Place Order Request
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Supply Card 4 -->
+                    <div class="listing-card">
+                        <div class="listing-badge-tag"><span class="badge badge-primary">S07: Fertilizer</span></div>
+                        <div class="listing-body">
+                            <span class="listing-category">Soil & Pond Preparation</span>
+                            <h3 class="listing-title">High Grade Agricultural Slaked Lime (CaOH2)</h3>
+                            <div class="listing-price">BDT 450 <span class="unit-text">/ 25kg Sack</span></div>
+                            <div class="listing-meta">
+                                <span><i class="ph ph-storefront"></i> Chalanbeel Agro Center, Natore</span>
+                                <span><i class="ph ph-info"></i> Pond pH treatment & disinfectant</span>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="orderInput('Agricultural Slaked Lime 25kg', 450)">
+                                <i class="ph ph-shopping-bag"></i> Place Order Request
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tab Content: Farm Products (Direct from Farmers) -->
+            <div id="tab-products" class="tab-content" style="display: none;">
+                
+                <!-- Commercial Buyer Hero Banner (KhamarBD Green Theme) -->
+                <div style="background: linear-gradient(135deg, #0F5132 0%, #0A3622 100%); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-lg); padding: 1.5rem 1.75rem; margin-bottom: 1.75rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.25rem; box-shadow: 0 10px 25px -5px rgba(15, 81, 50, 0.35);">
+                    <div style="flex: 1; min-width: 280px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                            <span class="badge" style="background: rgba(255, 255, 255, 0.18); color: #E8F5E9; border: 1px solid rgba(255, 255, 255, 0.25); font-size: 0.75rem; font-weight: 700;">
+                                <i class="ph-fill ph-storefront"></i> Wholesale / Hotel / Hostel / Paikar Sourcing
+                            </span>
+                            <span style="font-size: 0.8rem; color: #A7F3D0;"><i class="ph ph-shield-check"></i> Direct Farm Batches</span>
+                        </div>
+                        <h3 style="margin: 0; font-size: 1.3rem; font-weight: 800; color: #FFFFFF;">Are you a Commercial Buyer, Hotel Owner, or Mess Manager?</h3>
+                        <p style="margin: 0.4rem 0 0; font-size: 0.875rem; color: #E2E8F0; line-height: 1.5;">
+                            Procure live broilers, fresh raw dairy, fish lots, and crop harvests directly from verified farms across 64 districts with transparent pricing and real-time dispatch tracking.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <a href="../auth/register.html?role=buyer" class="btn" style="background: #FFFFFF; color: #0F5132; border: 1px solid #FFFFFF; font-weight: 800; padding: 0.65rem 1.25rem; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                            <i class="ph ph-user-plus"></i> Register as Commercial Buyer
+                        </a>
+                        <a href="../auth/login.html" class="btn" style="background: rgba(255, 255, 255, 0.12); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.4); font-weight: 600; padding: 0.65rem 1.15rem; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; border-radius: var(--radius-md);">
+                            <i class="ph ph-sign-in"></i> Buyer Sign In
+                        </a>
+                    </div>
+                </div>
+
+                <div class="listing-grid">
+                    
+                    <!-- Product Card 1 -->
+                    <div class="listing-card">
+                        <div class="listing-badge-tag"><span class="badge badge-success">Farmer Direct</span></div>
+                        <div class="listing-body">
+                            <span class="listing-category">Poultry Meat Flock</span>
+                            <h3 class="listing-title">Live Broiler Flock (Target Avg 1.8 kg - 2.0 kg)</h3>
+                            <div class="listing-price">BDT 165 <span class="unit-text">/ kg Live Weight</span></div>
+                            <div class="listing-meta">
+                                <span><i class="ph ph-user"></i> Seller: Md. Shafiqul Islam (Verified Farmer)</span>
+                                <span><i class="ph ph-map-pin"></i> Farm Location: Kahalu, Bogura</span>
+                                <span><i class="ph ph-shield-check"></i> 100% Antibiotic Withdrawal Compliant</span>
+                            </div>
+                            <a href="../farmer/chat.html" class="btn btn-outline btn-block">
+                                <i class="ph ph-chat-circle-dots"></i> Message Farmer to Negotiate
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 2 -->
+                    <div class="listing-card">
+                        <div class="listing-badge-tag"><span class="badge badge-success">Farmer Direct</span></div>
+                        <div class="listing-body">
+                            <span class="listing-category">Fresh Raw Dairy</span>
+                            <h3 class="listing-title">Chilled Pure Cow Milk (Daily Supply Contract)</h3>
+                            <div class="listing-price">BDT 70 <span class="unit-text">/ Liter</span></div>
+                            <div class="listing-meta">
+                                <span><i class="ph ph-user"></i> Seller: Rahim Modern Dairy Farm</span>
+                                <span><i class="ph ph-map-pin"></i> Farm Location: Shajahanpur, Bogura</span>
+                                <span><i class="ph ph-drop"></i> Daily volume: 30-40 Liters available</span>
+                            </div>
+                            <a href="../farmer/chat.html" class="btn btn-outline btn-block">
+                                <i class="ph ph-chat-circle-dots"></i> Message Farmer to Negotiate
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 3 -->
+                    <div class="listing-card">
+                        <div class="listing-badge-tag"><span class="badge badge-success">Farmer Direct</span></div>
+                        <div class="listing-body">
+                            <span class="listing-category">Fisheries Harvest</span>
+                            <h3 class="listing-title">Live Fresh Pangasius & Tilapia Lot</h3>
+                            <div class="listing-price">BDT 150 <span class="unit-text">/ kg Live Weight</span></div>
+                            <div class="listing-meta">
+                                <span><i class="ph ph-user"></i> Seller: Chalanbeel Aqua Farm</span>
+                                <span><i class="ph ph-map-pin"></i> Pond Location: Singra, Natore</span>
+                                <span><i class="ph ph-package"></i> Batch harvest: 1,500 kg total</span>
+                            </div>
+                            <a href="../farmer/chat.html" class="btn btn-outline btn-block">
+                                <i class="ph ph-chat-circle-dots"></i> Message Farmer to Negotiate
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tab Content: Specialists -->
+            <div id="tab-specialists" class="tab-content" style="display: none;">
+                <div class="listing-grid" id="specialistsGrid">
+                    <!-- Specialist Card 1 -->
+                    <div class="listing-card specialist-card">
+                        <div class="specialist-header">
+                            <div class="specialist-avatar">
+                                <i class="ph-fill ph-user-circle"></i>
+                            </div>
+                            <div>
+                                <span class="badge badge-primary">Veterinary Surgeon (DVM)</span>
+                                <h3 class="listing-title" style="margin-top: 4px;">Dr. Md. Anisur Rahman</h3>
+                                <p class="text-sm text-muted">B.Sc. (Vet Science), BAU &bull; BMDC Reg: 12345</p>
+                            </div>
+                        </div>
+                        <div class="listing-body">
+                            <div class="listing-meta">
+                                <span><i class="ph ph-briefcase"></i> Experience: 6+ Years in Poultry & Dairy Medicine</span>
+                                <span><i class="ph ph-map-pin"></i> Practice Area: Bogura & Northern Division</span>
+                                <span><i class="ph ph-clock"></i> Available: Daily 6:00 PM - 9:00 PM</span>
+                            </div>
+                            <div class="listing-price">BDT 300 <span class="unit-text">/ Consultation</span></div>
+                            <button class="btn btn-primary btn-block" onclick="bookConsultation('Dr. Md. Anisur Rahman')">
+                                <i class="ph ph-calendar-plus"></i> Request Consultation
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Specialist Card 2 -->
+                    <div class="listing-card specialist-card">
+                        <div class="specialist-header">
+                            <div class="specialist-avatar" style="color: var(--secondary-color);">
+                                <i class="ph-fill ph-user-circle"></i>
+                            </div>
+                            <div>
+                                <span class="badge badge-success">Aqua Health Agronomist</span>
+                                <h3 class="listing-title" style="margin-top: 4px;">Khaled Hasan, MS (Fisheries)</h3>
+                                <p class="text-sm text-muted">M.Sc. Aquaculture, BAU</p>
+                            </div>
+                        </div>
+                        <div class="listing-body">
+                            <div class="listing-meta">
+                                <span><i class="ph ph-briefcase"></i> Expertise: Water Chemistry, Probiotics & Fish Pathology</span>
+                                <span><i class="ph ph-map-pin"></i> Practice Area: Rajshahi & Natore Aquaculture Belts</span>
+                            </div>
+                            <div class="listing-price">BDT 250 <span class="unit-text">/ Consultation</span></div>
+                            <button class="btn btn-primary btn-block" onclick="bookConsultation('Khaled Hasan, MS')">
+                                <i class="ph ph-calendar-plus"></i> Request Consultation
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 KhamarBD | Off-platform peer-to-peer commerce and certified advisory platform
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS for Tab Switching -->
+    <script>
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabName).style.display = 'block';
+            element.classList.add('active');
+        }
+
+        function orderInput(name, price) {
+            alert(`Order initiated for "${name}" (BDT ${price}). Redirecting to farmer order confirmation.`);
+            window.location.href = '../farmer/orders.html';
+        }
+
+        function bookConsultation(docName) {
+            alert(`Consultation request submitted for ${docName}. You can now message the specialist in your messages inbox.`);
+            window.location.href = '../farmer/chat.html';
+        }
+
+        async function bookSpecialistConsultation(specialistId, name) {
+            const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+            if (!user) {
+                alert('Please login as a farmer to request a consultation.');
+                window.location.href = '../auth/login.html';
+                return;
+            }
+            if ((user.primaryRole || user.role) !== 'FARMER') {
+                alert('Only farmers can request consultations!');
+                return;
+            }
+            
+            try {
+                // Create a basic consultation for tomorrow
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                await apiRequest('/consultation/create', 'POST', {
+                    farmerId: user.userId,
+                    specialistId: specialistId,
+                    appointmentDate: tomorrow.toISOString()
+                });
+                alert(`Consultation request successfully sent to Dr. ${name}!`);
+                window.location.href = '../farmer/consultations.html';
+            } catch(e) {
+                alert('Error booking consultation: ' + e.message);
+            }
+        }
+    </script>
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/districts.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        let allMarketplaceListings = [];
+        let allSpecialistsList = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Populate all 64 districts in dropdown
+            populateDistrictSelect('districtFilter', '', true, 'All 64 Districts (All Bangladesh)');
+
+            // Check URL param for active tab
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            if (tabParam) {
+                const tabBtn = document.querySelector(`.tabs button[onclick*="${tabParam}"]`);
+                if (tabBtn) {
+                    switchTab(tabParam, tabBtn);
+                }
+            }
+
+            const districtParam = urlParams.get('district');
+            if (districtParam) {
+                const selectEl = document.getElementById('districtFilter');
+                if (selectEl) selectEl.value = districtParam;
+            }
+
+            // Render dynamic user state in topbar
+            const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+            const navLinks = document.getElementById('marketplaceNavLinks');
+            if (user && navLinks) {
+                const role = (user.primaryRole || user.role || 'FARMER').toUpperCase();
+                let dashboardUrl = '../dashboard.html';
+                let roleLabel = 'Farmer Portal';
+
+                if (role === 'BUYER') {
+                    dashboardUrl = '../buyer/dashboard.html';
+                    roleLabel = '🛒 Buyer Portal';
+                } else if (role === 'SUPPLIER') {
+                    dashboardUrl = '../supplier/dashboard.html';
+                    roleLabel = '🏪 Supplier Portal';
+                } else if (role === 'SPECIALIST') {
+                    dashboardUrl = '../specialist/dashboard.html';
+                    roleLabel = '🩺 Specialist Portal';
+                }
+
+                navLinks.innerHTML = `
+                    <a href="../../index.html#features">Features</a>
+                    <a href="marketplace.html" class="active">Marketplace</a>
+                    <a href="${dashboardUrl}" class="btn btn-primary btn-sm" style="font-weight: 700;">
+                        ${roleLabel} (${user.name ? user.name.split(' ')[0] : 'My Account'})
+                    </a>
+                    <a href="#" onclick="logoutUser(); return false;" class="btn btn-outline btn-sm">
+                        <i class="ph ph-sign-out"></i> Logout
+                    </a>
+                `;
+            }
+
+            // Load initial data
+            await fetchMarketplaceData();
+        });
+
+        async function fetchMarketplaceData() {
+            try {
+                const [listingsData, specialistsData] = await Promise.all([
+                    apiRequest("/listing/search", "GET"),
+                    apiRequest("/user/search?primaryRole=SPECIALIST", "GET")
+                ]);
+
+                allMarketplaceListings = Array.isArray(listingsData) ? listingsData : [];
+                allSpecialistsList = Array.isArray(specialistsData) ? specialistsData : [];
+
+                applyMarketplaceFilters();
+            } catch (err) {
+                console.error("Error loading marketplace data:", err);
+            }
+        }
+
+        function openMarketplaceDistrictModal() {
+            const currentDist = document.getElementById('districtFilter').value;
+            openDistrictPickerModal(currentDist, (chosenDistrict, chosenDivision) => {
+                const selectEl = document.getElementById('districtFilter');
+                if (selectEl) selectEl.value = chosenDistrict;
+                applyMarketplaceFilters();
+            });
+        }
+
+        function clearDistrictFilter() {
+            const selectEl = document.getElementById('districtFilter');
+            if (selectEl) selectEl.value = '';
+            applyMarketplaceFilters();
+        }
+
+        function resetAllMarketplaceFilters() {
+            const selectEl = document.getElementById('districtFilter');
+            if (selectEl) selectEl.value = '';
+            const searchInput = document.getElementById('marketplaceSearch');
+            if (searchInput) searchInput.value = '';
+            applyMarketplaceFilters();
+        }
+
+        function applyMarketplaceFilters() {
+            const selectedDistrict = (document.getElementById('districtFilter').value || '').trim().toLowerCase();
+            const searchKeyword = (document.getElementById('marketplaceSearch').value || '').trim().toLowerCase();
+
+            // Update Active Filter Tags bar
+            const activeTagsBar = document.getElementById('activeFilterTags');
+            const activeDistrictBadge = document.getElementById('activeDistrictBadge');
+            if (selectedDistrict || searchKeyword) {
+                if (activeTagsBar) activeTagsBar.style.display = 'flex';
+                if (activeDistrictBadge) {
+                    activeDistrictBadge.textContent = selectedDistrict ? `District: ${document.getElementById('districtFilter').value} ✕` : (searchKeyword ? `Search: "${searchKeyword}" ✕` : '');
+                }
+            } else {
+                if (activeTagsBar) activeTagsBar.style.display = 'none';
+            }
+
+            // Filter Listings
+            const filteredListings = allMarketplaceListings.filter(item => {
+                const itemDist = (item.district || '').toLowerCase();
+                const itemDiv = (item.division || '').toLowerCase();
+                const itemUpazila = (item.upazila || '').toLowerCase();
+
+                // District match (or All)
+                const matchesDistrict = !selectedDistrict || 
+                                        itemDist === selectedDistrict || 
+                                        itemDist.includes(selectedDistrict) || 
+                                        itemDiv === selectedDistrict;
+
+                // Keyword match
+                const title = (item.title || '').toLowerCase();
+                const brand = (item.brandName || '').toLowerCase();
+                const seller = (item.sellerName || '').toLowerCase();
+                const category = (item.productCategory || item.farmSector || '').toLowerCase();
+                const desc = (item.description || '').toLowerCase();
+
+                const matchesSearch = !searchKeyword ||
+                                      title.includes(searchKeyword) ||
+                                      brand.includes(searchKeyword) ||
+                                      seller.includes(searchKeyword) ||
+                                      category.includes(searchKeyword) ||
+                                      desc.includes(searchKeyword) ||
+                                      itemDist.includes(searchKeyword);
+
+                return matchesDistrict && matchesSearch;
+            });
+
+            // Filter Specialists
+            const filteredSpecialists = allSpecialistsList.filter(s => {
+                const sDist = (s.district || '').toLowerCase();
+                const sDiv = (s.division || '').toLowerCase();
+
+                const matchesDistrict = !selectedDistrict || 
+                                        sDist === selectedDistrict || 
+                                        sDist.includes(selectedDistrict) || 
+                                        sDiv === selectedDistrict;
+
+                const name = (s.name || '').toLowerCase();
+                const phone = (s.phone || '').toLowerCase();
+                const bio = (s.bio || s.specializationSector || '').toLowerCase();
+
+                const matchesSearch = !searchKeyword ||
+                                      name.includes(searchKeyword) ||
+                                      phone.includes(searchKeyword) ||
+                                      bio.includes(searchKeyword) ||
+                                      sDist.includes(searchKeyword);
+
+                return matchesDistrict && matchesSearch;
+            });
+
+            // Split into Supplies & Produce
+            const suppliesList = filteredListings.filter(l => {
+                const tabStr = (l.listingTab || '').toLowerCase();
+                if (tabStr.includes('suppl') || tabStr.includes('input')) return true;
+                if (tabStr.includes('product') || tabStr.includes('produce')) return false;
+                return (l.sellerRole === 'SUPPLIER');
+            });
+
+            const productsList = filteredListings.filter(l => {
+                const tabStr = (l.listingTab || '').toLowerCase();
+                if (tabStr.includes('product') || tabStr.includes('produce')) return true;
+                if (tabStr.includes('suppl') || tabStr.includes('input')) return false;
+                return !(l.sellerRole === 'SUPPLIER');
+            });
+
+            // Update Badges
+            const suppliesBadge = document.getElementById('suppliesCountBadge');
+            if (suppliesBadge) suppliesBadge.textContent = suppliesList.length;
+            const productsBadge = document.getElementById('productsCountBadge');
+            if (productsBadge) productsBadge.textContent = productsList.length;
+            const specialistsBadge = document.getElementById('specialistsCountBadge');
+            if (specialistsBadge) specialistsBadge.textContent = filteredSpecialists.length;
+
+            renderSuppliesGrid(suppliesList);
+            renderProductsGrid(productsList);
+            renderSpecialistsGrid(filteredSpecialists);
+        }
+
+        function renderSuppliesGrid(items) {
+            const grid = document.getElementById('suppliesGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: var(--surface-subtle); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
+                        <i class="ph ph-storefront" style="font-size: 2.75rem; color: var(--text-muted); margin-bottom: 0.5rem; display: inline-block;"></i>
+                        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">No Farm Supplies Found in this District Filter</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0.25rem 0 1rem;">Try clearing the district filter to view nationwide feed, medicine, and fertilizer suppliers.</p>
+                        <button class="btn btn-outline btn-sm" onclick="clearDistrictFilter()"><i class="ph ph-globe"></i> View All 64 Districts</button>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach(listing => {
+                const card = document.createElement('div');
+                card.className = "listing-card";
+                
+                let photoUrl = '';
+                if (listing.imageUrls) {
+                    try {
+                        const parsed = JSON.parse(listing.imageUrls);
+                        if (Array.isArray(parsed) && parsed.length > 0) photoUrl = parsed[0];
+                        else if (typeof parsed === 'string') photoUrl = parsed;
+                        else if (parsed && parsed.url) photoUrl = parsed.url;
+                    } catch (e) {
+                        photoUrl = listing.imageUrls;
+                    }
+                }
+                const hasImage = photoUrl && photoUrl.length > 5;
+                const sellerDisplayName = listing.brandName || listing.sellerName || 'Agro Input Supplier';
+
+                card.innerHTML = `
+                    <div class="listing-badge-tag"><span class="badge badge-primary">${sellerDisplayName}</span></div>
+                    ${hasImage ? `
+                        <div style="height: 175px; overflow: hidden; border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: #f1f5f9;">
+                            <img src="${photoUrl}" alt="${listing.title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        </div>
+                    ` : ''}
+                    <div class="listing-body">
+                        <span class="listing-category">${listing.productCategory || listing.farmSector || 'Farm Supplies'}</span>
+                        <h3 class="listing-title" style="margin-top: 4px; margin-bottom: 6px;">${listing.title}</h3>
+                        <div class="listing-price">BDT ${(listing.price || 0).toLocaleString()} <span class="unit-text">/ ${listing.unit || 'Unit'}</span></div>
+                        <div class="listing-meta" style="margin-top: 8px; margin-bottom: 12px;">
+                            <span><i class="ph ph-map-pin"></i> <strong>${listing.district || 'All Bangladesh'}</strong>${listing.upazila ? ` (${listing.upazila})` : ''}</span>
+                            <span><i class="ph ph-box"></i> Stock: ${(listing.quantityAvailable || 0).toLocaleString()} ${listing.unit || 'Units'}</span>
+                            ${listing.sellerName ? `<span><i class="ph ph-storefront"></i> Shop: ${listing.sellerName}</span>` : ''}
+                            ${listing.description ? `<p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${listing.description}</p>` : ''}
+                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                            <button class="btn btn-primary btn-block" style="flex: 2;" onclick="openSupplyOrderModal(${listing.listingId || 54}, '${listing.title.replace(/'/g, "\\'")}', ${listing.price || 0}, '${listing.unit || 'Unit'}', ${listing.sellerId || 3}, '${(listing.sellerName || 'Agro Input Supplier').replace(/'/g, "\\'")}', ${listing.quantityAvailable || 100})">
+                                <i class="ph ph-shopping-bag"></i> Place Order Request
+                            </button>
+                            <a href="../farmer/chat.html?peerId=${listing.sellerId || 3}&name=${encodeURIComponent(listing.sellerName || 'Supplier')}&topic=${encodeURIComponent(listing.title || 'Input Inquiry')}" class="btn btn-outline" style="padding: 0.5rem 0.85rem; text-decoration: none; display: flex; align-items: center; justify-content: center;" title="Message Supplier Across Any District">
+                                <i class="ph ph-chats-circle" style="font-size: 1.2rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderProductsGrid(items) {
+            const grid = document.querySelector('#tab-products .listing-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: var(--surface-subtle); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
+                        <i class="ph ph-plant" style="font-size: 2.75rem; color: var(--text-muted); margin-bottom: 0.5rem; display: inline-block;"></i>
+                        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">No Farm Produce Listings in this District Filter</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0.25rem 0 1rem;">Direct farm batches from other districts can deliver to your location.</p>
+                        <button class="btn btn-outline btn-sm" onclick="clearDistrictFilter()"><i class="ph ph-globe"></i> View All 64 Districts</button>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach(listing => {
+                const card = document.createElement('div');
+                card.className = "listing-card";
+                
+                let photoUrl = '';
+                if (listing.imageUrls) {
+                    try {
+                        const parsed = JSON.parse(listing.imageUrls);
+                        if (Array.isArray(parsed) && parsed.length > 0) photoUrl = parsed[0];
+                        else if (typeof parsed === 'string') photoUrl = parsed;
+                        else if (parsed && parsed.url) photoUrl = parsed.url;
+                    } catch (e) {
+                        photoUrl = listing.imageUrls;
+                    }
+                }
+                const hasImage = photoUrl && photoUrl.length > 5;
+                const sellerDisplayName = listing.brandName || listing.sellerName || 'Verified Farm';
+
+                card.innerHTML = `
+                    <div class="listing-badge-tag"><span class="badge badge-success">${sellerDisplayName}</span></div>
+                    ${hasImage ? `
+                        <div style="height: 175px; overflow: hidden; border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: #f1f5f9;">
+                            <img src="${photoUrl}" alt="${listing.title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        </div>
+                    ` : ''}
+                    <div class="listing-body">
+                        <span class="listing-category">${listing.productCategory || listing.farmSector || 'Farm Produce'}</span>
+                        <h3 class="listing-title" style="margin-top: 4px; margin-bottom: 6px;">${listing.title}</h3>
+                        <div class="listing-price">BDT ${(listing.price || 0).toLocaleString()} <span class="unit-text">/ ${listing.unit || 'Unit'}</span></div>
+                        <div class="listing-meta" style="margin-top: 8px; margin-bottom: 12px;">
+                            <span><i class="ph ph-map-pin"></i> Farm Location: <strong>${listing.district || 'All Bangladesh'}</strong>${listing.upazila ? `, ${listing.upazila}` : ''}</span>
+                            <span><i class="ph ph-box"></i> Available Batch: ${(listing.quantityAvailable || 0).toLocaleString()} ${listing.unit || 'Units'}</span>
+                            ${listing.sellerName ? `<span><i class="ph ph-user"></i> Farmer: ${listing.sellerName}</span>` : ''}
+                            ${listing.description ? `<p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${listing.description}</p>` : ''}
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                            <button class="btn btn-primary btn-block" style="flex: 2;" onclick="openProduceOrderModal(${listing.listingId}, '${listing.title.replace(/'/g, "\\'")}', ${listing.price || 0}, '${listing.unit || 'Kg'}', ${listing.sellerId || 1}, '${(listing.sellerName || 'Farmer').replace(/'/g, "\\'")}', ${listing.quantityAvailable || 100})">
+                                <i class="ph ph-shopping-bag"></i> Bulk Procurement Order
+                            </button>
+                            <a href="../farmer/chat.html?peerId=${listing.sellerId || 1}&name=${encodeURIComponent(listing.sellerName || 'Farmer')}&topic=${encodeURIComponent(listing.title || 'Produce Inquiry')}" class="btn btn-outline" style="padding: 0.5rem 0.85rem; text-decoration: none; display: flex; align-items: center; justify-content: center;" title="Message Farmer Across Any District">
+                                <i class="ph ph-chats-circle" style="font-size: 1.2rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderSpecialistsGrid(items) {
+            const grid = document.getElementById('specialistsGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: var(--surface-subtle); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
+                        <i class="ph ph-stethoscope" style="font-size: 2.75rem; color: var(--text-muted); margin-bottom: 0.5rem; display: inline-block;"></i>
+                        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">No Specialists Registered in this District Filter</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0.25rem 0 1rem;">Veterinary doctors provide remote digital consultations to farmers in all 64 districts.</p>
+                        <button class="btn btn-outline btn-sm" onclick="clearDistrictFilter()"><i class="ph ph-globe"></i> View All Specialists (Nationwide)</button>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach(s => {
+                const card = document.createElement('div');
+                card.className = "listing-card";
+                card.style.borderTop = "4px solid var(--primary-color)";
+                card.innerHTML = `
+                    <div class="listing-body">
+                        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                            <div style="width: 60px; height: 60px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--primary-color);">
+                                <i class="ph-fill ph-user-md"></i>
+                            </div>
+                            <div>
+                                <h3 style="margin: 0;">${s.name}</h3>
+                                <span class="badge badge-success" style="margin-top: 0.25rem; display: inline-block;">${s.specializationSector || 'Veterinary Specialist'}</span>
+                            </div>
+                        </div>
+                        <div class="listing-meta">
+                            <span><i class="ph ph-map-pin"></i> Practice Base: <strong>${s.district || 'Dhaka'}</strong> (${s.division || 'Bangladesh'})</span>
+                            <span><i class="ph ph-phone"></i> Direct Contact: ${s.phone}</span>
+                            <span><i class="ph ph-globe"></i> Online Consultations available nationwide</span>
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-top: 1rem;">
+                            <button onclick="bookSpecialistConsultation(${s.userId}, '${s.name}')" class="btn btn-primary btn-block" style="flex: 2;">
+                                <i class="ph ph-calendar-plus"></i> Request Consultation
+                            </button>
+                            <a href="../farmer/chat.html?peerId=${s.userId}&name=${encodeURIComponent(s.name)}&topic=Veterinary+Consultation" class="btn btn-outline" style="padding: 0.5rem 0.85rem; text-decoration: none; display: flex; align-items: center; justify-content: center;" title="Chat Directly with Specialist">
+                                <i class="ph ph-chats-circle" style="font-size: 1.2rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Farm Supplies Order Logic
+        function orderInput(title, unitPrice) {
+            openSupplyOrderModal(54, title, unitPrice, 'Unit', 3, 'Agro Input Supplier', 100);
+        }
+
+        function openSupplyOrderModal(listingId, title, unitPrice, unit, sellerId, sellerName, maxQty) {
+            openProduceOrderModal(listingId, title, unitPrice, unit, sellerId, sellerName, maxQty);
+        }
+
+        // Farm Produce Order Modal Logic
+        let currentProduceOrderListing = null;
+
+        function openProduceOrderModal(listingId, title, unitPrice, unit, sellerId, sellerName, maxQty) {
+            const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+            if (!user) {
+                if (confirm('You must be signed in to place a bulk procurement order. Would you like to sign in now?')) {
+                    sessionStorage.setItem('khamarbd_redirect', window.location.href);
+                    window.location.href = '../auth/login.html';
+                }
+                return;
+            }
+
+            currentProduceOrderListing = {
+                listingId,
+                title,
+                unitPrice,
+                unit,
+                sellerId,
+                sellerName,
+                maxQty
+            };
+
+            document.getElementById('modalProduceTitle').textContent = title;
+            document.getElementById('modalProduceSeller').textContent = `Farm Seller: ${sellerName}`;
+            document.getElementById('modalProduceUnit').textContent = `/ ${unit}`;
+            document.getElementById('modalProduceUnitPrice').textContent = `BDT ${unitPrice.toLocaleString()}`;
+            
+            const qtyInput = document.getElementById('modalProduceQty');
+            qtyInput.value = 50; // Default sample wholesale qty
+            
+            // Prefill Destination
+            const destInput = document.getElementById('modalProduceDestination');
+            destInput.value = user.businessName ? `${user.businessName}, ${user.district || 'Dhaka'}` : (user.district || 'Dhaka');
+
+            recalcProduceTotal();
+            document.getElementById('produceOrderModal').classList.add('active');
+        }
+
+        function recalcProduceTotal() {
+            if (!currentProduceOrderListing) return;
+            const qty = parseFloat(document.getElementById('modalProduceQty').value) || 0;
+            const total = qty * currentProduceOrderListing.unitPrice;
+            document.getElementById('modalProduceTotal').textContent = `BDT ${total.toLocaleString()}`;
+        }
+
+        async function submitProduceOrder() {
+            const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+            if (!user || !currentProduceOrderListing) return;
+
+            const qty = parseFloat(document.getElementById('modalProduceQty').value);
+            if (!qty || qty <= 0) {
+                alert('Please enter a valid quantity.');
+                return;
+            }
+
+            const destination = document.getElementById('modalProduceDestination').value.trim();
+            const note = document.getElementById('modalProduceNote').value.trim();
+            const totalAgreedPrice = qty * currentProduceOrderListing.unitPrice;
+
+            const payload = {
+                listingId: currentProduceOrderListing.listingId,
+                buyerId: user.userId,
+                sellerId: currentProduceOrderListing.sellerId,
+                quantity: qty,
+                totalAgreedPrice: totalAgreedPrice,
+                paymentNote: `Destination: ${destination || 'Standard'} | Note: ${note || 'Bulk produce delivery'}`
+            };
+
+            try {
+                const res = await apiRequest('/order/create', 'POST', payload);
+                alert(`🎉 Bulk Procurement Order successfully placed!\n\nOrder Ref: #${res.orderReference || res.orderId}\nTotal: BDT ${totalAgreedPrice.toLocaleString()}\n\nThe farmer has received your order and will begin packaging.`);
+                document.getElementById('produceOrderModal').classList.remove('active');
+
+                const role = (user.primaryRole || user.role || 'BUYER').toUpperCase();
+                if (role === 'BUYER') {
+                    window.location.href = '../buyer/orders.html';
+                } else if (role === 'FARMER') {
+                    window.location.href = '../farmer/orders.html';
+                } else {
+                    window.location.href = 'marketplace.html?tab=products';
+                }
+            } catch (err) {
+                alert('Failed to place order: ' + err.message);
+            }
+        }
+    </script>
+
+    <!-- Farm Produce Bulk Order Modal -->
+    <div class="modal" id="produceOrderModal">
+        <div class="modal-content" style="max-width: 480px;">
+            <div class="modal-header">
+                <div>
+                    <span class="badge badge-success" style="margin-bottom: 4px;">Direct Farm Procurement</span>
+                    <h3 id="modalProduceTitle" style="margin: 0; font-size: 1.2rem;">Live Broiler Batch</h3>
+                </div>
+                <button class="close-btn" onclick="document.getElementById('produceOrderModal').classList.remove('active')">&times;</button>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <div style="background: var(--surface-subtle); border-radius: var(--radius-sm); padding: 0.85rem 1rem; margin-bottom: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span id="modalProduceSeller" style="color: var(--text-muted); font-weight: 600;">Farm Seller</span>
+                        <span style="font-weight: 700; color: var(--primary-color);">
+                            <span id="modalProduceUnitPrice">BDT 165</span> <span id="modalProduceUnit" style="font-size: 0.8rem; color: var(--text-muted);">/ Kg</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Order Quantity</label>
+                    <input type="number" id="modalProduceQty" class="form-control" min="1" step="1" oninput="recalcProduceTotal()" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Delivery Destination (Hotel, Mess, Store, or Warehouse)</label>
+                    <input type="text" id="modalProduceDestination" class="form-control" placeholder="e.g. Kasturi Hotel, Plot 12, Gulshan-2, Dhaka" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Delivery Instructions & Special Requests</label>
+                    <textarea class="form-control" id="modalProduceNote" rows="2" placeholder="e.g. Need morning delivery by 8:00 AM in oxygenated boxes"></textarea>
+                </div>
+
+                <div style="background: var(--primary-ultra-light); border: 1px solid var(--primary-light); border-radius: var(--radius-md); padding: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; color: var(--primary-color);">Total Estimated Price:</span>
+                    <span id="modalProduceTotal" style="font-size: 1.35rem; font-weight: 800; color: var(--primary-color);">BDT 0</span>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-outline" style="flex: 1;" onclick="document.getElementById('produceOrderModal').classList.remove('active')">
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" style="flex: 2;" onclick="submitProduceOrder()">
+                        <i class="ph ph-check-circle"></i> Confirm Bulk Order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unit Selection Modal -->
+    <div class="modal" id="unitSelectModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3>Select Tracking Unit</h3>
+                <button class="close-btn" onclick="document.getElementById('unitSelectModal').classList.remove('active')">&times;</button>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="form-group">
+                    <label class="form-label">Which unit is this consultation for?</label>
+                    <select class="form-control" id="consultationUnitSelect">
+                        <option value="">Loading...</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <label class="form-label">Briefly describe the problem</label>
+                    <textarea class="form-control" id="consultationProblem" rows="3" placeholder="E.g. birds are lethargic"></textarea>
+                </div>
+                <button class="btn btn-primary btn-block" style="margin-top: 15px;" onclick="confirmConsultationRequest()">Confirm Request</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Consultations & Appointments - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .consultation-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card-custom {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stat-card-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08);
+        }
+        .stat-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .stat-icon-total { background-color: #f1f5f9; color: #475569; }
+        .stat-icon-accepted { background-color: #dcfce7; color: #16a34a; }
+        .stat-icon-pending { background-color: #fef3c7; color: #d97706; }
+        .stat-icon-prescribed { background-color: #e0f2fe; color: #0284c7; }
+
+        .stat-info .stat-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text-main);
+        }
+        .stat-info .stat-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .filter-tabs-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.75rem 1rem;
+        }
+        .tab-btn-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tab-pill {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-main);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+        .tab-pill:hover { background: #e2e8f0; color: var(--text-main); }
+        .tab-pill.active { background: var(--primary-color); border-color: var(--primary-color); color: #ffffff; }
+        .tab-pill.active-accepted { background: #16a34a !important; border-color: #16a34a !important; color: #ffffff !important; }
+        .tab-pill-badge {
+            background: rgba(0,0,0,0.12);
+            color: inherit;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .tab-pill.active .tab-pill-badge, .tab-pill.active-accepted .tab-pill-badge {
+            background: rgba(255,255,255,0.25);
+            color: #ffffff;
+        }
+
+        .consultation-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.35rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s, transform 0.2s;
+            position: relative;
+        }
+        .consultation-card:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+        .consultation-card.status-accepted {
+            border-left: 6px solid #16a34a;
+            background: linear-gradient(to right, rgba(220, 252, 231, 0.25), var(--surface-color) 25%);
+        }
+        .consultation-card.status-requested {
+            border-left: 6px solid #d97706;
+            background: linear-gradient(to right, rgba(254, 243, 199, 0.25), var(--surface-color) 25%);
+        }
+        .consultation-card.status-prescribed {
+            border-left: 6px solid #0284c7;
+            background: linear-gradient(to right, rgba(224, 242, 254, 0.25), var(--surface-color) 25%);
+        }
+
+        .doctor-accepted-alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1rem;
+            margin-bottom: 1rem;
+            color: #14532d;
+        }
+        .doctor-accepted-alert .alert-icon {
+            font-size: 1.4rem;
+            color: #16a34a;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .doctor-accepted-alert .alert-content h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin: 0 0 2px 0;
+            color: #15803d;
+        }
+        .doctor-accepted-alert .alert-content p {
+            font-size: 0.85rem;
+            margin: 0;
+            color: #166534;
+        }
+
+        .doctor-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1.1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .doc-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #059669, #0f5132);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+        .doc-meta { flex: 1; min-width: 200px; }
+        .doc-meta .doc-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 3px 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .doc-meta .doc-spec {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .doc-contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.45rem 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            border: 1px solid #16a34a;
+            color: #16a34a;
+            background: #ffffff;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .doc-contact-btn:hover { background: #16a34a; color: #ffffff; }
+
+        .meta-badges-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            margin-bottom: 0.85rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        .meta-badges-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .problem-desc-box {
+            background: #ffffff;
+            border-left: 3px solid var(--primary-light);
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+        .card-actions-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="../dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> My Farms
+                </a>
+                <a href="tracking-unit.html" class="nav-item">
+                    <i class="ph ph-tag"></i> Tracking Units
+                </a>
+                <a href="routines.html" class="nav-item">
+                    <i class="ph ph-list-dashes"></i> Routines & Tasks
+                </a>
+                <a href="ledger.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Farm Ledger
+                </a>
+                <a href="prescriptions.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Prescriptions
+                </a>
+                <a href="consultations.html" class="nav-item active">
+                    <i class="ph ph-user-circle-gear"></i> Consultations
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Inquiries
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-shopping-bag"></i> Sell Produce
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="../public/marketplace.html" class="nav-item">
+                    <i class="ph ph-shopping-cart"></i> Marketplace
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-stethoscope" style="color: var(--secondary-color);"></i> Doctor Consultations & Tele-Advisory</h2>
+                    <p class="text-muted">Direct clinical advisory sessions with certified regional veterinarians and agronomists</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="loadConsultations()">
+                        <i class="ph ph-arrows-clockwise"></i> Refresh
+                    </button>
+                    <button class="btn btn-primary" onclick="openBookModal()">
+                        <i class="ph ph-plus-circle"></i> Request Consultation
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mandatory Clinical Advisory Banner -->
+            <div class="rx-banner-static">
+                <i class="ph-fill ph-warning"></i>
+                <span><strong>Clinical Advisory Notice:</strong> Tele-consultation recommendations and prescriptions are reference only. Always confirm clinical treatments with a registered local veterinary surgeon or upazila livestock officer.</span>
+            </div>
+
+            <!-- KPI Summary Cards -->
+            <div class="consultation-kpi-grid">
+                <div class="stat-card-custom">
+                    <div class="stat-icon-wrapper stat-icon-total">
+                        <i class="ph ph-calendar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="kpiTotal">0</div>
+                        <div class="stat-title">Total Consultations</div>
+                    </div>
+                </div>
+
+                <div class="stat-card-custom" style="border-top: 3px solid #16a34a;">
+                    <div class="stat-icon-wrapper stat-icon-accepted">
+                        <i class="ph-fill ph-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="kpiAccepted" style="color: #16a34a;">0</div>
+                        <div class="stat-title">Doctor Accepted</div>
+                    </div>
+                </div>
+
+                <div class="stat-card-custom">
+                    <div class="stat-icon-wrapper stat-icon-pending">
+                        <i class="ph ph-hourglass-high"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="kpiPending" style="color: #d97706;">0</div>
+                        <div class="stat-title">Pending Review</div>
+                    </div>
+                </div>
+
+                <div class="stat-card-custom">
+                    <div class="stat-icon-wrapper stat-icon-prescribed">
+                        <i class="ph ph-file-text"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="kpiPrescribed" style="color: #0284c7;">0</div>
+                        <div class="stat-title">Prescriptions Issued</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Tabs & Search Bar -->
+            <div class="filter-tabs-row">
+                <div class="tab-btn-group">
+                    <button class="tab-pill active" onclick="setTab('all', this)">
+                        All Consultations <span class="tab-pill-badge" id="tabCountAll">0</span>
+                    </button>
+                    <button class="tab-pill" id="btnTabAccepted" onclick="setTab('ACCEPTED', this)">
+                        <i class="ph-fill ph-check-circle" style="color: #16a34a;"></i> Doctor Accepted <span class="tab-pill-badge" id="tabCountAccepted">0</span>
+                    </button>
+                    <button class="tab-pill" onclick="setTab('REQUESTED', this)">
+                        <i class="ph ph-clock"></i> Pending <span class="tab-pill-badge" id="tabCountRequested">0</span>
+                    </button>
+                    <button class="tab-pill" onclick="setTab('PRESCRIBED', this)">
+                        <i class="ph ph-file-text"></i> Prescribed <span class="tab-pill-badge" id="tabCountPrescribed">0</span>
+                    </button>
+                </div>
+
+                <div style="min-width: 260px;">
+                    <input type="text" id="consultationSearch" class="form-control" placeholder="Search doctor, unit, notes..." oninput="handleSearch()">
+                </div>
+            </div>
+
+            <!-- Consultations List Container -->
+            <div id="consultationsList">
+                <div style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                    <i class="ph ph-spinner-gap ph-spin" style="font-size: 2rem;"></i>
+                    <p style="margin-top: 0.5rem;">Loading consultations...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Request Consultation Modal -->
+    <div class="modal" id="bookModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="ph ph-stethoscope"></i> Request Doctor Consultation</h3>
+                <button class="close-btn" onclick="closeBookModal()">&times;</button>
+            </div>
+            <p class="modal-desc">Book an advisory session with a certified veterinary specialist or agronomist.</p>
+
+            <form id="bookForm" onsubmit="handleBookSubmit(event)">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.35rem;">Select Specialist / Doctor *</label>
+                    <select class="form-control" id="modalSpecialistSelect" required>
+                        <option value="">Loading specialists...</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.35rem;">Target Animal / Tracking Unit (Optional)</label>
+                    <select class="form-control" id="modalLotSelect">
+                        <option value="">General Advisory (No specific unit)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.35rem;">Preferred Appointment Date & Time *</label>
+                    <input type="datetime-local" class="form-control" id="modalAppointmentDate" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.35rem;">Health Symptoms / Problem Description</label>
+                    <textarea class="form-control" id="modalProblemDesc" rows="3" placeholder="Describe symptoms, temperature, feed intake, or issue..."></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeBookModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btnBookSubmit">
+                        <i class="ph ph-paper-plane-tilt"></i> Send Request
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Consultation Details Modal -->
+    <div class="modal" id="detailsModal">
+        <div class="modal-content" style="max-width: 580px;">
+            <div class="modal-header">
+                <h3 id="detModalTitle"><i class="ph ph-info"></i> Consultation Details</h3>
+                <button class="close-btn" onclick="closeDetailsModal()">&times;</button>
+            </div>
+            <div id="detModalBody" style="font-size: 0.95rem; line-height: 1.6;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeDetailsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        let allConsultations = [];
+        let currentTab = 'all';
+        let searchQuery = '';
+        const userCache = {};
+        const lotCache = {};
+
+        function getActiveFarmer() {
+            const user = getCurrentUser();
+            if (user && user.userId) return user;
+            return { userId: 1, name: "Farmer", primaryRole: "FARMER" };
+        }
+
+        async function fetchUserDetails(userId) {
+            if (!userId) return null;
+            if (userCache[userId]) return userCache[userId];
+            try {
+                const res = await apiRequest("/user/filter/" + userId + "/profile");
+                if (res) {
+                    userCache[userId] = res;
+                    return res;
+                }
+            } catch (err) {
+                console.warn("Could not fetch user profile for ID:", userId, err);
+            }
+            return null;
+        }
+
+        async function fetchLotDetails(lotId) {
+            if (!lotId) return null;
+            if (lotCache[lotId]) return lotCache[lotId];
+            try {
+                const res = await apiRequest("/lot/" + lotId);
+                if (res) {
+                    lotCache[lotId] = res;
+                    return res;
+                }
+            } catch (err) {}
+            return null;
+        }
+
+        async function loadConsultations() {
+            const listEl = document.getElementById('consultationsList');
+            listEl.innerHTML = `
+                <div style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                    <i class="ph ph-spinner-gap ph-spin" style="font-size: 2rem;"></i>
+                    <p style="margin-top: 0.5rem;">Loading consultations from server...</p>
+                </div>
+            `;
+
+            const activeFarmer = getActiveFarmer();
+
+            try {
+                let rawList = await apiRequest("/consultation/search?farmerId=" + activeFarmer.userId);
+                if (!Array.isArray(rawList) || rawList.length === 0) {
+                    const allRaw = await apiRequest("/consultation/search");
+                    if (Array.isArray(allRaw)) {
+                        rawList = allRaw.filter(c => c.farmerId === activeFarmer.userId || activeFarmer.primaryRole === 'ADMIN' || !c.farmerId);
+                    }
+                }
+
+                allConsultations = Array.isArray(rawList) ? rawList : [];
+
+                const specIds = [...new Set(allConsultations.map(c => c.specialistId).filter(Boolean))];
+                await Promise.all(specIds.map(id => fetchUserDetails(id)));
+
+                updateKpiAndTabs();
+                renderConsultations();
+            } catch (error) {
+                console.error("Error loading consultations:", error);
+                listEl.innerHTML = `
+                    <div style="text-align: center; padding: 2.5rem; color: var(--danger-color);">
+                        <i class="ph ph-warning-circle" style="font-size: 2.5rem;"></i>
+                        <p style="margin-top: 0.5rem; font-weight: 600;">Failed to load consultations.</p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">${error.message || 'API connection error'}</p>
+                        <button class="btn btn-outline btn-sm" onclick="loadConsultations()" style="margin-top: 10px;">
+                            <i class="ph ph-arrow-counter-clockwise"></i> Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function updateKpiAndTabs() {
+            const total = allConsultations.length;
+            const accepted = allConsultations.filter(c => c.status === 'ACCEPTED').length;
+            const requested = allConsultations.filter(c => c.status === 'REQUESTED').length;
+            const prescribed = allConsultations.filter(c => c.status === 'PRESCRIBED').length;
+
+            document.getElementById('kpiTotal').textContent = total;
+            document.getElementById('kpiAccepted').textContent = accepted;
+            document.getElementById('kpiPending').textContent = requested;
+            document.getElementById('kpiPrescribed').textContent = prescribed;
+
+            document.getElementById('tabCountAll').textContent = total;
+            document.getElementById('tabCountAccepted').textContent = accepted;
+            document.getElementById('tabCountRequested').textContent = requested;
+            document.getElementById('tabCountPrescribed').textContent = prescribed;
+        }
+
+        function setTab(tab, btnEl) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-pill').forEach(b => {
+                b.classList.remove('active');
+                b.classList.remove('active-accepted');
+            });
+            if (btnEl) {
+                if (tab === 'ACCEPTED') {
+                    btnEl.classList.add('active-accepted');
+                } else {
+                    btnEl.classList.add('active');
+                }
+            }
+            renderConsultations();
+        }
+
+        function handleSearch() {
+            searchQuery = document.getElementById('consultationSearch').value.toLowerCase().trim();
+            renderConsultations();
+        }
+
+        function renderConsultations() {
+            const listEl = document.getElementById('consultationsList');
+            
+            let filtered = allConsultations;
+            if (currentTab !== 'all') {
+                filtered = filtered.filter(c => c.status === currentTab);
+            }
+
+            if (searchQuery) {
+                filtered = filtered.filter(c => {
+                    const spec = userCache[c.specialistId];
+                    const docName = spec ? (spec.name || '').toLowerCase() : '';
+                    const problem = (c.problemDescription || '').toLowerCase();
+                    const consId = '#' + c.consultationId;
+                    return docName.includes(searchQuery) || problem.includes(searchQuery) || consId.includes(searchQuery);
+                });
+            }
+
+            if (filtered.length === 0) {
+                let emptyMsg = "No consultations found in this category.";
+                if (currentTab === 'ACCEPTED') {
+                    emptyMsg = "No accepted consultations yet. Once a doctor accepts your consultation request, it will be highlighted right here!";
+                }
+                listEl.innerHTML = `
+                    <div style="text-align: center; padding: 3rem 1.5rem; background: var(--surface-color); border: 1px dashed var(--border-color); border-radius: var(--radius-lg);">
+                        <i class="ph ph-chat-teardrop-slash" style="font-size: 2.5rem; color: var(--text-light);"></i>
+                        <h4 style="margin: 0.75rem 0 0.35rem; color: var(--text-main);">${emptyMsg}</h4>
+                        <p style="color: var(--text-muted); font-size: 0.875rem;">Need advice from an expert veterinarian?</p>
+                        <button class="btn btn-primary btn-sm" onclick="openBookModal()" style="margin-top: 0.75rem;">
+                            <i class="ph ph-plus-circle"></i> Request Consultation Now
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            const sorted = [...filtered].sort((a, b) => {
+                if (a.status === 'ACCEPTED' && b.status !== 'ACCEPTED') return -1;
+                if (b.status === 'ACCEPTED' && a.status !== 'ACCEPTED') return 1;
+                const dateA = new Date(a.appointmentDate || a.createdAt || 0);
+                const dateB = new Date(b.appointmentDate || b.createdAt || 0);
+                return dateB - dateA;
+            });
+
+            let html = '';
+            for (let c of sorted) {
+                const spec = userCache[c.specialistId];
+                const docName = spec ? spec.name : ("Specialist Dr. #" + c.specialistId);
+                const docPhone = spec && spec.phone ? spec.phone : "01884768198";
+                const docLocation = spec ? `${spec.upazila || ''}, ${spec.district || 'Dhaka'}`.replace(/^,\s*/, '') : 'Dhaka';
+
+                const isAccepted = c.status === 'ACCEPTED';
+                const isRequested = c.status === 'REQUESTED';
+                const isPrescribed = c.status === 'PRESCRIBED';
+
+                let cardClass = 'consultation-card ';
+                let statusBadge = '';
+                if (isAccepted) {
+                    cardClass += 'status-accepted';
+                    statusBadge = '<span class="badge badge-success"><i class="ph-fill ph-check-circle"></i> Doctor Accepted</span>';
+                } else if (isRequested) {
+                    cardClass += 'status-requested';
+                    statusBadge = '<span class="badge badge-warning"><i class="ph ph-clock"></i> Pending Doctor Review</span>';
+                } else if (isPrescribed) {
+                    cardClass += 'status-prescribed';
+                    statusBadge = '<span class="badge badge-primary"><i class="ph ph-file-text"></i> Prescribed</span>';
+                } else {
+                    statusBadge = `<span class="badge">${c.status || 'ACTIVE'}</span>`;
+                }
+
+                let formattedAppDate = "Scheduled Session";
+                try {
+                    const d = new Date(c.appointmentDate || c.createdAt);
+                    formattedAppDate = d.toLocaleString('en-US', {
+                        weekday: 'short',
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                } catch(e){}
+
+                let unitText = "General Advisory";
+                if (c.lotId) {
+                    unitText = "Target Unit #" + c.lotId;
+                }
+
+                let acceptBannerHtml = '';
+                if (isAccepted) {
+                    acceptBannerHtml = `
+                        <div class="doctor-accepted-alert">
+                            <div class="alert-icon">
+                                <i class="ph-fill ph-check-circle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <h4>Consultation Request Accepted!</h4>
+                                <p>Your consultation request has been accepted by <strong>${docName}</strong>. The session is scheduled for <strong>${formattedAppDate}</strong>. You can message or call the specialist directly.</p>
+                            </div>
+                        </div>
+                    `;
+                } else if (isRequested) {
+                    acceptBannerHtml = `
+                        <div style="display:flex; align-items:center; gap:0.6rem; background:#fffbeb; border:1px solid #fef3c7; border-radius:var(--radius-md); padding:0.65rem 0.9rem; margin-bottom:0.85rem; color:#92400e; font-size:0.85rem;">
+                            <i class="ph ph-clock" style="font-size:1.2rem; color:#d97706;"></i>
+                            <span>Pending doctor review. You will see an update here once the specialist accepts your request.</span>
+                        </div>
+                    `;
+                }
+
+                let actionsHtml = `
+                    <button class="btn btn-outline btn-sm" onclick="showConsDetails(${c.consultationId})">
+                        <i class="ph ph-info"></i> Full Details
+                    </button>
+                `;
+
+                if (isAccepted) {
+                    actionsHtml += `
+                        <a href="tel:${docPhone}" class="btn btn-outline btn-sm" style="color: #16a34a; border-color: #16a34a;">
+                            <i class="ph ph-phone-call"></i> Call Doctor
+                        </a>
+                        <a href="chat.html?consultationId=${c.consultationId}" class="btn btn-primary btn-sm">
+                            <i class="ph ph-chat-circle-dots"></i> Message Doctor
+                        </a>
+                    `;
+                } else if (isPrescribed) {
+                    actionsHtml += `
+                        <a href="prescriptions.html" class="btn btn-primary btn-sm" style="background-color: var(--secondary-color);">
+                            <i class="ph ph-file-text"></i> View Prescription
+                        </a>
+                        <a href="chat.html?consultationId=${c.consultationId}" class="btn btn-outline btn-sm">
+                            <i class="ph ph-chat-circle-dots"></i> Message
+                        </a>
+                    `;
+                } else {
+                    actionsHtml += `
+                        <a href="chat.html" class="btn btn-outline btn-sm">
+                            <i class="ph ph-chats"></i> Inquire
+                        </a>
+                    `;
+                }
+
+                html += `
+                    <div class="${cardClass}">
+                        ${acceptBannerHtml}
+
+                        <div class="doctor-profile-box">
+                            <div class="doc-avatar">
+                                <i class="ph-bold ph-stethoscope"></i>
+                            </div>
+                            <div class="doc-meta">
+                                <h3 class="doc-name">
+                                    ${docName}
+                                    ${statusBadge}
+                                </h3>
+                                <p class="doc-spec">
+                                    <i class="ph ph-identification-badge"></i> Certified Specialist | 
+                                    <i class="ph ph-map-pin"></i> ${docLocation}
+                                </p>
+                            </div>
+                            <div>
+                                <a href="tel:${docPhone}" class="doc-contact-btn" title="Call Doctor Direct">
+                                    <i class="ph-bold ph-phone"></i> ${docPhone}
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="meta-badges-row">
+                            <span><i class="ph ph-calendar-check" style="color: var(--primary-color);"></i> <strong>Appointment:</strong> ${formattedAppDate}</span>
+                            <span><i class="ph ph-tag" style="color: #6366f1;"></i> <strong>Unit:</strong> ${unitText}</span>
+                            <span><i class="ph ph-hash" style="color: #64748b;"></i> <strong>Consultation ID:</strong> #${c.consultationId}</span>
+                            <span><i class="ph ph-currency-circle-dollar" style="color: #059669;"></i> <strong>Fee:</strong> ${c.feeAmount ? ('BDT ' + c.feeAmount) : 'Free Advisory'}</span>
+                        </div>
+
+                        <div class="problem-desc-box">
+                            <strong><i class="ph ph-first-aid"></i> Problem / Health Query:</strong>
+                            <span style="color: var(--text-main); margin-left: 4px;">
+                                ${c.problemDescription ? c.problemDescription : 'Regular clinical health assessment, vaccination review and livestock biosecurity guidance.'}
+                            </span>
+                        </div>
+
+                        <div class="card-actions-row">
+                            ${actionsHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            listEl.innerHTML = html;
+        }
+
+        function showConsDetails(consId) {
+            const c = allConsultations.find(item => item.consultationId === consId);
+            if (!c) return;
+            const spec = userCache[c.specialistId];
+            const docName = spec ? spec.name : ("Dr. #" + c.specialistId);
+            const docPhone = spec && spec.phone ? spec.phone : "01884768198";
+            const docEmail = spec && spec.email ? spec.email : "doctor@khamarbd.com";
+
+            const bodyEl = document.getElementById('detModalBody');
+            bodyEl.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-light);">
+                    <div>
+                        <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-main);">${docName}</h4>
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">Specialist ID: #${c.specialistId}</span>
+                    </div>
+                    <div>
+                        <span class="badge ${c.status === 'ACCEPTED' ? 'badge-success' : (c.status === 'REQUESTED' ? 'badge-warning' : 'badge-primary')}">
+                            ${c.status}
+                        </span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <p style="margin: 0.3rem 0;"><strong>Phone:</strong> <a href="tel:${docPhone}" style="color: #16a34a; font-weight:600;">${docPhone}</a></p>
+                    <p style="margin: 0.3rem 0;"><strong>Email:</strong> ${docEmail}</p>
+                    <p style="margin: 0.3rem 0;"><strong>Appointment Date:</strong> ${new Date(c.appointmentDate).toLocaleString()}</p>
+                    <p style="margin: 0.3rem 0;"><strong>Created Date:</strong> ${new Date(c.createdAt).toLocaleString()}</p>
+                    <p style="margin: 0.3rem 0;"><strong>Consultation Fee:</strong> ${c.feeAmount ? ('BDT ' + c.feeAmount) : 'Covered Under Advisory'}</p>
+                </div>
+
+                <div style="background: #f8fafc; padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                    <strong>Health Concern / Problem:</strong>
+                    <p style="margin: 0.4rem 0 0; color: var(--text-main); font-size: 0.9rem;">${c.problemDescription || 'General health evaluation request.'}</p>
+                </div>
+
+                ${c.prescriptionNotes ? `
+                    <div style="background: #f0fdf4; padding: 1rem; border-radius: var(--radius-md); border: 1px solid #bbf7d0;">
+                        <strong style="color: #166534;">Doctor's Notes / Advisory:</strong>
+                        <p style="margin: 0.4rem 0 0; color: #14532d; font-size: 0.9rem;">${c.prescriptionNotes}</p>
+                    </div>
+                ` : ''}
+            `;
+            document.getElementById('detailsModal').classList.add('active');
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+        }
+
+        async function openBookModal() {
+            const modal = document.getElementById('bookModal');
+            modal.classList.add('active');
+
+            const specSelect = document.getElementById('modalSpecialistSelect');
+            specSelect.innerHTML = '<option value="">Loading specialists...</option>';
+            try {
+                const specialists = await apiRequest("/user/search?primaryRole=SPECIALIST");
+                if (Array.isArray(specialists) && specialists.length > 0) {
+                    specSelect.innerHTML = specialists.map(s => `
+                        <option value="${s.userId}">${s.name} (${s.specializationSector || 'Veterinary Specialist'} - ${s.district || 'Dhaka'})</option>
+                    `).join('');
+                } else {
+                    specSelect.innerHTML = '<option value="2">dr.Karim (Certified Specialist)</option>';
+                }
+            } catch(e) {
+                specSelect.innerHTML = '<option value="2">dr.Karim (Veterinary Specialist)</option>';
+            }
+
+            const lotSelect = document.getElementById('modalLotSelect');
+            try {
+                const lots = await apiRequest("/lot/search");
+                if (Array.isArray(lots) && lots.length > 0) {
+                    lotSelect.innerHTML = '<option value="">General Advisory (No specific unit)</option>' + 
+                        lots.map(l => `<option value="${l.lotId}">${l.identifierTag} (${l.speciesOrBreed || l.category})</option>`).join('');
+                }
+            } catch(e) {}
+
+            const tmrw = new Date();
+            tmrw.setDate(tmrw.getDate() + 1);
+            tmrw.setHours(10, 0, 0, 0);
+            const iso = tmrw.toISOString().slice(0, 16);
+            document.getElementById('modalAppointmentDate').value = iso;
+        }
+
+        function closeBookModal() {
+            document.getElementById('bookModal').classList.remove('active');
+        }
+
+        async function handleBookSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnBookSubmit');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="ph ph-spinner-gap ph-spin"></i> Submitting...';
+
+            const activeFarmer = getActiveFarmer();
+            const specialistId = document.getElementById('modalSpecialistSelect').value;
+            const lotIdVal = document.getElementById('modalLotSelect').value;
+            const appointmentDate = document.getElementById('modalAppointmentDate').value;
+            const problemDescription = document.getElementById('modalProblemDesc').value;
+
+            const payload = {
+                farmerId: activeFarmer.userId,
+                specialistId: parseInt(specialistId),
+                appointmentDate: appointmentDate ? (appointmentDate + ":00Z") : new Date().toISOString()
+            };
+            if (lotIdVal) {
+                payload.lotId = parseInt(lotIdVal);
+            }
+
+            try {
+                await apiRequest("/consultation/create", "POST", payload);
+                alert("Consultation request submitted successfully! Your request has been sent to the doctor.");
+                closeBookModal();
+                document.getElementById('bookForm').reset();
+                await loadConsultations();
+            } catch(err) {
+                alert("Failed to create consultation: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="ph ph-paper-plane-tilt"></i> Send Request';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadConsultations();
+        });
+    </script>
+</body>
+</html>

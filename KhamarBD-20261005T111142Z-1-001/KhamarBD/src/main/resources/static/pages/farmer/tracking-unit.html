@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Units - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="../dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> My Farms
+                </a>
+                <a href="tracking-unit.html" class="nav-item active">
+                    <i class="ph ph-tag"></i> Tracking Units
+                </a>
+                <a href="routines.html" class="nav-item">
+                    <i class="ph ph-list-dashes"></i> Routines & Tasks
+                </a>
+                <a href="ledger.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Farm Ledger
+                </a>
+                <a href="prescriptions.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Prescriptions
+                </a>
+                                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-user-circle-gear"></i> Consultations
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Inquiries
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-shopping-bag"></i> Sell Produce
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="../public/marketplace.html" class="nav-item">
+                    <i class="ph ph-shopping-cart"></i> Marketplace
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-tag"></i> Tracking Units (Lots & Animals)</h2>
+                    <p class="text-muted">Manage active production units: Poultry Batches, Fish Ponds, Crop Plots, and Individual Animals</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openUnitModal()">
+                        <i class="ph ph-plus-circle"></i> Add New Unit
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Units Grid across 4 sectors -->
+            <div class="unit-grid">
+                <p class="text-muted" style="grid-column: 1 / -1; text-align: center;">Loading your units... If this message persists, please check your connection or reload the page.</p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Create Unit Modal -->
+    <div class="modal" id="unitModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Tracking Unit</h3>
+                <button class="close-btn" onclick="closeUnitModal()">&times;</button>
+            </div>
+            
+            <form id="createUnitForm" onsubmit="saveUnit(event)">
+                <div class="form-group">
+                    <label class="form-label">Select Parent Farm</label>
+                    <select class="form-control" id="parentFarm" required onchange="onFarmChanged()">
+                        <option value="">Select a farm...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Identifier Tag / Unit Name</label>
+                    <input type="text" id="unitName" class="form-control" placeholder="e.g. Lot-2 (Sonali) or Pond-1 or Cow-TAG-403" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Unit Type / Sector Category</label>
+                    <select class="form-control" id="unitSectorType" required>
+                        <option value="batch">Batch (Poultry / Broiler / Sonali)</option>
+                        <option value="pond">Pond (Carp / Tilapia / Pangasius)</option>
+                        <option value="animal">Individual Animal (Dairy Cow / Goat / Sheep)</option>
+                        <option value="plot">Plot (Rice / Potato / Tomato / Brinjal)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Quantity / Capacity Size</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" id="unitQty" class="form-control" style="flex: 2;" placeholder="e.g. 1000" min="1" required>
+                        <select class="form-control" id="unitMeasurement" style="flex: 1;">
+                            <option value="birds">Birds</option>
+                            <option value="heads">Heads</option>
+                            <option value="decimal">Decimal</option>
+                            <option value="bigha">Bigha</option>
+                            <option value="fingerlings">Fingerlings</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Start / Stocking / Birth Date (Day 1)</label>
+                    <input type="date" id="unitStartDate" class="form-control" required value="2026-10-16">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Attach Routine Preset (Optional)</label>
+                    <select class="form-control" id="routinePreset">
+                        <option value="">No automatic routine</option>
+                        <option value="broiler-35">Broiler 35-Day Lifecycle Preset</option>
+                        <option value="sonali-layer">Sonali / Layer 56-Day Growth Protocol</option>
+                        <option value="carp-poly">Carp Polyculture 8-Month Protocol</option>
+                        <option value="dairy-cow">Dairy Cow 90-Day Rolling Lactation Protocol</option>
+                        <option value="rice-boro">Rice Boro 120-Day Protocol</option>
+                    </select>
+                    <p class="text-xs text-muted" style="margin-top: 6px;">Selecting a preset automatically generates daily scheduled tasks and cost prompts in your routine board.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeUnitModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Unit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        let currentUser = null;
+        document.addEventListener('DOMContentLoaded', async () => {
+            currentUser = getCurrentUser();
+            if (!currentUser) {
+                window.location.href = "../auth/login.html";
+                return;
+            }
+            await loadFarmsDropdown();
+            await loadTrackingUnits();
+        });
+
+        async function loadFarmsDropdown() {
+            try {
+                const farms = await apiRequest(`/farm/search?userId=${currentUser.userId}`);
+                const select = document.getElementById('parentFarm');
+                select.innerHTML = '<option value="">Select a farm...</option>';
+                farms.forEach(f => {
+                    const opt = document.createElement('option');
+                    opt.value = f.farmId;
+                    const type = f.farmType || f.sector;
+                    const name = f.farmName || f.name;
+                    opt.dataset.sector = type;
+                    opt.textContent = `${name} (${type})`;
+                    select.appendChild(opt);
+                });
+
+                // Auto-select farm if passed in URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const farmParam = urlParams.get('farm');
+                if (farmParam) {
+                    select.value = farmParam;
+                    onFarmChanged(); // Trigger UI update
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        async function loadTrackingUnits() {
+            try {
+                const units = await apiRequest(`/lot/search?userId=${currentUser.userId}`);
+                const grid = document.querySelector('.unit-grid');
+                grid.innerHTML = '';
+                if (units.length === 0) {
+                    grid.innerHTML = '<p class="text-muted" style="grid-column: 1 / -1; text-align: center;">No active tracking units found.</p>';
+                    return;
+                }
+                units.forEach(unit => {
+                    const card = document.createElement('div');
+                    card.className = `unit-card border-top-poultry`;
+                    card.innerHTML = `
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="sector-tag sector-poultry"><i class="ph ph-tag"></i> ${unit.category}</span>
+                                <h3>${unit.identifierTag}</h3>
+                            </div>
+                            <span class="badge badge-success">Active</span>
+                        </div>
+                        <div class="unit-details">
+                            <p><i class="ph ph-calendar-blank"></i> <strong>Start Date:</strong> ${unit.startDate || 'N/A'}</p>
+                            <p><i class="ph ph-info"></i> <strong>Breed/Type:</strong> ${unit.speciesOrBreed || 'N/A'}</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="routines.html?unit=${unit.lotId}" class="btn btn-outline btn-sm"><i class="ph ph-list-dashes"></i> View Routines</a>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        function openUnitModal() {
+            document.getElementById('unitModal').classList.add('active');
+        }
+
+        function closeUnitModal() {
+            document.getElementById('unitModal').classList.remove('active');
+        }
+
+        function onFarmChanged() {
+            const select = document.getElementById('parentFarm');
+            const selectedOption = select.options[select.selectedIndex];
+            if (!selectedOption || !selectedOption.dataset.sector) return;
+            
+            const sector = selectedOption.dataset.sector;
+            const sectorSelect = document.getElementById('unitSectorType');
+            const measureSelect = document.getElementById('unitMeasurement');
+            const unitNameInput = document.getElementById('unitName');
+
+            sectorSelect.innerHTML = '';
+            measureSelect.innerHTML = '';
+
+            if (sector === 'POULTRY') {
+                unitNameInput.placeholder = "e.g. Lot-1 (Sonali) or Batch-3";
+                sectorSelect.innerHTML = `
+                    <option value="broiler_batch">Batch (Broiler)</option>
+                    <option value="sonali_batch">Batch (Sonali)</option>
+                    <option value="layer_batch">Batch (Layer)</option>
+                    <option value="other_batch">Batch (Duck / Other)</option>
+                `;
+                measureSelect.innerHTML = '<option value="birds">Birds</option>';
+            } else if (sector === 'FISHERIES') {
+                unitNameInput.placeholder = "e.g. Pond-2 (Carp)";
+                sectorSelect.innerHTML = `
+                    <option value="carp_pond">Pond (Carp Polyculture)</option>
+                    <option value="tilapia_pond">Pond (Tilapia)</option>
+                    <option value="pangasius_pond">Pond (Pangasius)</option>
+                    <option value="mixed_pond">Pond (Mixed / Other)</option>
+                `;
+                measureSelect.innerHTML = '<option value="decimal">Decimal</option><option value="fingerlings">Fingerlings</option>';
+            } else if (sector === 'DAIRY_LIVESTOCK') {
+                unitNameInput.placeholder = "e.g. Cow-TAG-403";
+                sectorSelect.innerHTML = `
+                    <option value="dairy_cow">Individual Animal (Dairy Cow)</option>
+                    <option value="beef_cattle">Individual Animal (Beef Cattle)</option>
+                    <option value="goat_sheep">Individual Animal (Goat / Sheep)</option>
+                    <option value="herd_flock">Herd / Flock (Multiple Goats/Sheep)</option>
+                `;
+                measureSelect.innerHTML = '<option value="heads">Heads</option>';
+            } else {
+                unitNameInput.placeholder = "e.g. Plot-A (Boro Rice) or Plot-B";
+                sectorSelect.innerHTML = `
+                    <option value="rice_plot">Plot (Rice / Paddy)</option>
+                    <option value="potato_plot">Plot (Potato)</option>
+                    <option value="vegetable_plot">Plot (Vegetables)</option>
+                    <option value="other_plot">Plot (Other Crops)</option>
+                `;
+                measureSelect.innerHTML = '<option value="bigha">Bigha</option><option value="decimal">Decimal</option>';
+            }
+        }
+
+        async function saveUnit(event) {
+            if(event) event.preventDefault();
+            const farmId = document.getElementById('parentFarm').value;
+            const unitName = document.getElementById('unitName').value;
+            const unitType = document.getElementById('unitSectorType').value;
+            const startDate = document.getElementById('unitStartDate').value;
+            const breed = document.getElementById('routinePreset').value || 'Custom';
+            
+            const payload = {
+                farmId: parseInt(farmId),
+                identifierTag: unitName,
+                category: unitType === 'animal' ? 'Individual' : 'Lot',
+                speciesOrBreed: breed,
+                startDate: startDate
+            };
+
+            try {
+                await apiRequest("/lot/create", "POST", payload);
+                alert(`Created tracking unit "${unitName}" successfully!`);
+                closeUnitModal();
+                loadTrackingUnits();
+            } catch(err) {
+                alert("Failed to create tracking unit: " + err.message);
+            }
+        }
+    </script>
+</body>
+</html>

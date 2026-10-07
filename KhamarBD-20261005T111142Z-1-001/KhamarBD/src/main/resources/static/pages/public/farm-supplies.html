@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Supplies - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="../../index.html" class="logo">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            <nav class="nav-links">
+                <a href="../../index.html#features">Features</a>
+                <a href="marketplace.html">Marketplace</a>
+                <a href="farm-supplies.html" class="active">Farm Supplies</a>
+                <a href="../dashboard.html">Farmer App</a>
+                <a href="../auth/login.html" class="btn btn-outline">Login</a>
+                <a href="../auth/register.html" class="btn btn-primary">Register</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Header & Search -->
+    <section class="marketplace-header">
+        <div class="container">
+            <h1>Farm Supplies & Inputs</h1>
+            <p>Source high-quality feeds, medicines, and equipment from verified regional suppliers.</p>
+            
+            <div class="search-bar">
+                <select id="districtFilter" class="form-control" style="width: 180px;">
+                    <option value="">All Districts</option>
+                    <option value="bogura">Bogura</option>
+                    <option value="dhaka">Dhaka</option>
+                    <option value="rajshahi">Rajshahi</option>
+                    <option value="mymensingh">Mymensingh</option>
+                </select>
+                <input type="text" id="suppliesSearch" class="form-control" placeholder="Search inputs, feeds, seeds, or medicines...">
+                <button class="btn btn-primary"><i class="ph ph-magnifying-glass"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="marketplace-content section" style="padding-top: 2rem;">
+        <div class="container">
+            <div class="listing-grid">
+                
+                <!-- Supply Card 1 -->
+                <div class="listing-card">
+                    <div class="listing-badge-tag"><span class="badge badge-primary">S03: Feed Supplier</span></div>
+                    <div class="listing-body">
+                        <span class="listing-category">Poultry Feed & Nutrition</span>
+                        <h3 class="listing-title">Sonali Chick Starter Crumble (50kg Bag)</h3>
+                        <div class="listing-price">BDT 2,750 <span class="unit-text">/ 50kg Bag</span></div>
+                        <div class="listing-meta">
+                            <span><i class="ph ph-storefront"></i> Sonali Agro Feeds & Vet, Shibganj, Bogura</span>
+                            <span><i class="ph ph-truck"></i> Delivery: Farm gate delivery available within district</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="orderInput('Sonali Chick Starter Crumble (50kg Bag)', 2750)">
+                            <i class="ph ph-shopping-bag"></i> Place Order Request
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Supply Card 2 -->
+                <div class="listing-card">
+                    <div class="listing-badge-tag"><span class="badge badge-primary">S09: Vet Supplier</span></div>
+                    <div class="listing-body">
+                        <span class="listing-category">Veterinary Medicine & Vaccine</span>
+                        <h3 class="listing-title">Renamycin LA 100ml Injectable Solution</h3>
+                        <div class="listing-price">BDT 180 <span class="unit-text">/ Vial</span></div>
+                        <div class="listing-meta">
+                            <span><i class="ph ph-storefront"></i> Bhai Bhai Vet Pharmacy, Gabtoli, Bogura</span>
+                            <span><i class="ph ph-info"></i> In-Store Counter Collection</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="orderInput('Renamycin LA 100ml', 180)">
+                            <i class="ph ph-shopping-bag"></i> Place Order Request
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Supply Card 3 -->
+                <div class="listing-card">
+                    <div class="listing-badge-tag"><span class="badge badge-primary">S15: Hatchery</span></div>
+                    <div class="listing-body">
+                        <span class="listing-category">Fisheries Fingerlings Stock</span>
+                        <h3 class="listing-title">Selected Rui & Katla Healthy Fingerlings (3-4 inch)</h3>
+                        <div class="listing-price">BDT 350 <span class="unit-text">/ kg (Avg 40-50 pcs)</span></div>
+                        <div class="listing-meta">
+                            <span><i class="ph ph-storefront"></i> Adarsha Hatchery, Adamdighi, Bogura</span>
+                            <span><i class="ph ph-phone"></i> Min Order: 50 kg &bull; Oxygen bag packing</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="orderInput('Rui & Katla Fingerlings', 350)">
+                            <i class="ph ph-shopping-bag"></i> Place Order Request
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Supply Card 4 -->
+                <div class="listing-card">
+                    <div class="listing-badge-tag"><span class="badge badge-primary">S07: Fertilizer</span></div>
+                    <div class="listing-body">
+                        <span class="listing-category">Soil & Pond Preparation</span>
+                        <h3 class="listing-title">High Grade Agricultural Slaked Lime (CaOH2)</h3>
+                        <div class="listing-price">BDT 450 <span class="unit-text">/ 25kg Sack</span></div>
+                        <div class="listing-meta">
+                            <span><i class="ph ph-storefront"></i> Chalanbeel Agro Center, Natore</span>
+                            <span><i class="ph ph-info"></i> Pond pH treatment & disinfectant</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="orderInput('Agricultural Slaked Lime 25kg', 450)">
+                            <i class="ph ph-shopping-bag"></i> Place Order Request
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 KhamarBD | Off-platform peer-to-peer commerce and certified advisory platform
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function orderInput(name, price) {
+            alert(`Order initiated for "${name}" (BDT ${price}). Redirecting to login.`);
+            window.location.href = '../auth/login.html';
+        }
+    </script>
+</body>
+</html>

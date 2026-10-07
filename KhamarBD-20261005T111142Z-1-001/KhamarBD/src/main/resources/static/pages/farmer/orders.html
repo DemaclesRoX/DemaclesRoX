@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders & Inquiries - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .farmer-stepper-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin: 1.25rem 0 0.75rem 0;
+            position: relative;
+            background: rgba(248, 250, 252, 0.85);
+            padding: 1rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .farmer-step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+            text-align: center;
+        }
+        .farmer-step-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            z-index: 2;
+            transition: all 0.25s ease;
+        }
+        .farmer-step-item.completed .farmer-step-circle {
+            background: #16a34a;
+            border-color: #16a34a;
+            color: #ffffff;
+        }
+        .farmer-step-item.active .farmer-step-circle {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.25);
+            animation: pulse-ring 2s infinite;
+        }
+        .farmer-step-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 6px;
+            color: #64748b;
+            line-height: 1.2;
+        }
+        .farmer-step-item.completed .farmer-step-label {
+            color: #16a34a;
+            font-weight: 700;
+        }
+        .farmer-step-item.active .farmer-step-label {
+            color: #0284c7;
+            font-weight: 800;
+        }
+        .farmer-step-line {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            width: 100%;
+            height: 3px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+        .farmer-step-item.completed .farmer-step-line {
+            background: #16a34a;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(0.95); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="../dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> My Farms
+                </a>
+                <a href="tracking-unit.html" class="nav-item">
+                    <i class="ph ph-tag"></i> Tracking Units
+                </a>
+                <a href="routines.html" class="nav-item">
+                    <i class="ph ph-list-dashes"></i> Routines & Tasks
+                </a>
+                <a href="ledger.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Farm Ledger
+                </a>
+                <a href="prescriptions.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Prescriptions
+                </a>
+                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-user-circle-gear"></i> Consultations
+                </a>
+                <a href="orders.html" class="nav-item active">
+                    <i class="ph ph-package"></i> Orders & Inquiries
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-shopping-bag"></i> Sell Produce
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="../public/marketplace.html" class="nav-item">
+                    <i class="ph ph-shopping-cart"></i> Marketplace
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-package"></i> Orders & Commercial Inquiries</h2>
+                    <p class="text-muted">Track farm input purchases and produce buyer sales negotiations</p>
+                </div>
+                <div class="header-actions">
+                    <a href="../public/marketplace.html" class="btn btn-primary">
+                        <i class="ph ph-storefront"></i> Browse Marketplace
+                    </a>
+                </div>
+            </div>
+
+            <!-- Off-platform payment disclaimer banner -->
+            <div class="trust-banner" style="margin-bottom: 1.5rem;">
+                <i class="ph-fill ph-shield-check"></i>
+                <span><strong>Direct Off-Platform Settlement:</strong> All payments and handovers occur directly between farmers, suppliers, and wholesale buyers. KhamarBD does not hold transaction funds.</span>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('purchases', this)">My Input Purchases (Bought from Suppliers)</button>
+                <button class="tab" onclick="switchTab('sales', this)">Sales Inquiries & Buyer Orders (Sold)</button>
+            </div>
+
+            <!-- Tab Content: Purchases -->
+            <div id="tab-purchases" class="tab-content" style="display: block;">
+                <div class="task-list" id="purchasesListContainer">
+                    <div style="padding: 2.5rem; text-align: center; color: var(--text-muted);">
+                        <i class="ph ph-spinner ph-spin" style="font-size: 2rem;"></i>
+                        <p style="margin-top: 0.5rem;">Loading your purchase orders...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Sales -->
+            <div id="tab-sales" class="tab-content" style="display: none;">
+                <div class="task-list" id="salesListContainer">
+                    <div style="padding: 2.5rem; text-align: center; color: var(--text-muted);">
+                        <i class="ph ph-spinner ph-spin" style="font-size: 2rem;"></i>
+                        <p style="margin-top: 0.5rem;">Loading your sales orders...</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        const STAGES = [
+            { key: 'ORDER_RECEIVED', label: 'Order Placed', icon: 'ph-receipt' },
+            { key: 'PAYMENT_RECEIVED', label: 'Payment Confirmed', icon: 'ph-credit-card' },
+            { key: 'PROCESSING', label: 'Packed & Ready', icon: 'ph-package' },
+            { key: 'IN_TRANSPORT', label: 'In Transport', icon: 'ph-truck' },
+            { key: 'OUT_FOR_DELIVERY', label: 'Out for Delivery', icon: 'ph-moped' },
+            { key: 'DELIVERED', label: 'Farm Delivered', icon: 'ph-house-line' }
+        ];
+
+        let userPurchases = [];
+        let userSales = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = getCurrentUser() || { userId: 1 };
+            await loadFarmerOrders(user.userId);
+        });
+
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabName).style.display = 'block';
+            element.classList.add('active');
+        }
+
+        function getStageIndex(status) {
+            const s = (status || 'ORDER_RECEIVED').toUpperCase();
+            if (s === 'ORDER_RECEIVED' || s === 'PENDING') return 0;
+            if (s === 'PAYMENT_RECEIVED') return 1;
+            if (s === 'PROCESSING' || s === 'ACCEPTED') return 2;
+            if (s === 'IN_TRANSPORT' || s === 'IN_TRANSIT') return 3;
+            if (s === 'OUT_FOR_DELIVERY') return 4;
+            if (s === 'DELIVERED' || s === 'COMPLETED') return 5;
+            return -1; // CANCELLED
+        }
+
+        async function loadFarmerOrders(userId) {
+            // 1. Fetch Purchases
+            try {
+                let pData = await apiRequest(`/order/search?buyerId=${userId}`, 'GET');
+                if (!pData || pData.length === 0) {
+                    pData = await apiRequest('/order/search', 'GET');
+                }
+                userPurchases = pData || [];
+                renderPurchases(userPurchases);
+            } catch (err) {
+                console.error('Error fetching purchases:', err);
+                document.getElementById('purchasesListContainer').innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: red;">
+                        Failed to load purchase orders: ${err.message}
+                    </div>`;
+            }
+
+            // 2. Fetch Sales
+            try {
+                let sData = await apiRequest(`/order/search?sellerId=${userId}`, 'GET');
+                userSales = sData || [];
+                renderSales(userSales);
+            } catch (err) {
+                console.error('Error fetching sales:', err);
+            }
+        }
+
+        function renderPurchases(orders) {
+            const container = document.getElementById('purchasesListContainer');
+            if (!orders || orders.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 3rem; text-align: center; color: var(--text-muted); background: var(--surface-card); border-radius: 8px; border: 1px dashed var(--border-color);">
+                        <i class="ph ph-shopping-bag" style="font-size: 3rem; opacity: 0.5; margin-bottom: 0.75rem; display: block;"></i>
+                        <h3 style="color: var(--text-main);">No Input Purchases Yet</h3>
+                        <p class="text-sm">Browse seeds, feed, veterinary medicine, and equipment in the Farm Supplies marketplace.</p>
+                        <a href="../public/marketplace.html?tab=supplies" class="btn btn-primary btn-sm" style="margin-top: 1rem;">
+                            <i class="ph ph-storefront"></i> Browse Farm Supplies
+                        </a>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = orders.map(order => {
+                const orderId = order.orderId;
+                const status = (order.orderStatus || 'ORDER_RECEIVED').toUpperCase();
+                const currentIndex = getStageIndex(status);
+                const isCancelled = status === 'CANCELLED';
+                const isDelivered = currentIndex === 5;
+
+                const ref = order.orderReference || `ORD-${orderId}`;
+                const seller = order.sellerName || 'Agricultural Supplier';
+                const sellerPhone = order.sellerPhone ? ` • ${order.sellerPhone}` : '';
+                const title = order.listingTitle || 'Farm Supplies Package';
+                const qty = order.quantity || 1;
+                const unit = order.listingUnit || 'Unit';
+                const total = (order.totalAgreedPrice || 0).toLocaleString();
+                const dateStr = order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'Recent';
+                const note = order.paymentNote || '';
+
+                // Generate Live Stepper
+                const stepperHtml = isCancelled ? `
+                    <div style="padding: 10px; background: rgba(239, 68, 68, 0.1); border-radius: 6px; color: #dc2626; font-weight: 700; margin: 12px 0; text-align: center;">
+                        <i class="ph ph-x-circle"></i> This order was cancelled / declined by the supplier.
+                    </div>` : `
+                    <div class="farmer-stepper-container">
+                        ${STAGES.map((st, idx) => {
+                            let itemClass = '';
+                            if (idx < currentIndex) itemClass = 'completed';
+                            else if (idx === currentIndex) itemClass = 'active';
+
+                            const showLine = idx < STAGES.length - 1;
+                            return `
+                                <div class="farmer-step-item ${itemClass}">
+                                    ${showLine ? `<div class="farmer-step-line"></div>` : ''}
+                                    <div class="farmer-step-circle">
+                                        <i class="ph ${idx < currentIndex ? 'ph-check' : st.icon}"></i>
+                                    </div>
+                                    <span class="farmer-step-label">${st.label}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+
+                return `
+                    <div class="order-card" style="border-left: 5px solid ${isCancelled ? 'var(--danger-color)' : (isDelivered ? 'var(--success-color)' : 'var(--primary-color)')}; margin-bottom: 1.5rem; background: var(--surface-card); padding: 1.25rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <div class="order-info" style="flex: 1;">
+                            
+                            <div class="order-title-row" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-main);">Order #${ref}</h3>
+                                    <span class="badge ${isCancelled ? 'badge-danger' : (isDelivered ? 'badge-success' : 'badge-primary')}" style="font-weight: 700;">
+                                        ${status.replace(/_/g, ' ')}
+                                    </span>
+                                </div>
+                                <span class="text-xs text-muted font-semibold"><i class="ph ph-calendar-blank"></i> ${dateStr}</span>
+                            </div>
+
+                            <div class="order-meta" style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.875rem; color: var(--text-muted);">
+                                <span><i class="ph ph-storefront" style="color: var(--primary-color);"></i> <strong>Supplier:</strong> ${seller}${sellerPhone}</span>
+                                <span><i class="ph ph-map-pin" style="color: var(--primary-color);"></i> Direct Handover / Farm Delivery</span>
+                            </div>
+
+                            <p class="order-item-desc" style="margin-top: 10px; font-size: 0.95rem; color: var(--text-main);">
+                                <strong>Item Purchased:</strong> ${title} &times; <strong style="color: var(--primary-color);">${qty} ${unit}</strong>
+                            </p>
+
+                            <div class="order-price" style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-top: 4px;">
+                                Total Amount: <span style="color: var(--primary-color);">BDT ${total}</span>
+                                <span class="text-xs text-muted font-normal" style="margin-left: 6px;">(Cash on Collection / Delivery)</span>
+                            </div>
+
+                            ${note ? `
+                                <div style="margin-top: 8px; padding: 6px 12px; background: rgba(2, 132, 199, 0.08); border-left: 3px solid #0284c7; border-radius: 4px; font-size: 0.85rem; color: #0369a1;">
+                                    <i class="ph ph-truck"></i> <strong>Supplier Dispatch Note:</strong> ${note}
+                                </div>
+                            ` : ''}
+
+                            <!-- Real-Time Progress Timeline -->
+                            ${stepperHtml}
+
+                        </div>
+
+                        <div class="order-actions" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-color);">
+                            ${!isDelivered && !isCancelled ? `
+                                <button class="btn btn-primary btn-sm" onclick="farmerConfirmDelivery(${orderId})">
+                                    <i class="ph ph-check-circle"></i> Mark as Farm Delivered (Received)
+                                </button>
+                            ` : ''}
+                            ${isDelivered ? `
+                                <a href="ledger.html" class="btn btn-outline btn-sm">
+                                    <i class="ph ph-notebook"></i> View in Farm Ledger
+                                </a>
+                            ` : ''}
+                            <a href="chat.html?peerId=${order.sellerId || 3}&name=${encodeURIComponent(order.sellerName || 'Supplier')}&topic=Order+%23${order.orderReference || order.orderId}" class="btn btn-outline btn-sm">
+                                <i class="ph ph-chat-circle-dots"></i> Message Supplier
+                            </a>
+                            ${!isDelivered && !isCancelled ? `
+                                <button class="btn btn-outline btn-sm text-danger" style="margin-left: auto;" onclick="farmerCancelOrder(${orderId})">
+                                    Cancel Order
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderSales(orders) {
+            const container = document.getElementById('salesListContainer');
+            if (!orders || orders.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 3rem; text-align: center; color: var(--text-muted); background: var(--surface-card); border-radius: 8px; border: 1px dashed var(--border-color);">
+                        <i class="ph ph-coins" style="font-size: 3rem; opacity: 0.5; margin-bottom: 0.75rem; display: block;"></i>
+                        <h3 style="color: var(--text-main);">No Buyer Sales Inquiries Yet</h3>
+                        <p class="text-sm">List your cattle, broilers, crops, or milk on the Farm Produce marketplace to receive orders from wholesale buyers, hotels, and restaurant kitchens.</p>
+                        <a href="add-product.html" class="btn btn-primary btn-sm" style="margin-top: 1rem;">
+                            <i class="ph ph-plus-circle"></i> List Farm Produce
+                        </a>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = orders.map(order => {
+                const orderId = order.orderId;
+                const status = (order.orderStatus || 'ORDER_RECEIVED').toUpperCase();
+                const currentIndex = getStageIndex(status);
+                const isCancelled = status === 'CANCELLED';
+
+                const ref = order.orderReference || `ORD-${orderId}`;
+                const buyer = order.buyerName || 'Commercial Buyer';
+                const phone = order.buyerPhone || '';
+                const location = [order.buyerUpazila, order.buyerDistrict].filter(Boolean).join(', ') || 'Wholesale Buyer';
+                const title = order.listingTitle || 'Farm Produce';
+                const qty = order.quantity || 1;
+                const unit = order.listingUnit || 'Unit';
+                const total = (order.totalAgreedPrice || 0).toLocaleString();
+                const dateStr = order.createdAt ? new Date(order.createdAt).toLocaleString() : 'Recent';
+                const note = order.paymentNote || '';
+
+                // Stepper HTML
+                const stepperHtml = isCancelled ? `
+                    <div style="padding: 10px; background: rgba(239, 68, 68, 0.1); border-radius: 6px; color: #dc2626; font-weight: 700; margin: 10px 0; text-align: center;">
+                        <i class="ph ph-x-circle"></i> This order has been CANCELLED.
+                    </div>` : `
+                    <div class="farmer-stepper-container" style="margin: 12px 0;">
+                        ${STAGES.map((st, idx) => {
+                            let itemClass = '';
+                            if (idx < currentIndex) itemClass = 'completed';
+                            else if (idx === currentIndex) itemClass = 'active';
+
+                            const showLine = idx < STAGES.length - 1;
+                            return `
+                                <div class="farmer-step-item ${itemClass}" onclick="farmerUpdateSaleStage(${orderId}, '${st.key}')" title="Click to set dispatch stage: ${st.label}" style="cursor: pointer;">
+                                    ${showLine ? `<div class="farmer-step-line"></div>` : ''}
+                                    <div class="farmer-step-circle">
+                                        <i class="ph ${idx < currentIndex ? 'ph-check' : st.icon}"></i>
+                                    </div>
+                                    <span class="farmer-step-label">${st.label}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+
+                return `
+                    <div class="order-card" style="border-left: 5px solid ${isCancelled ? 'var(--danger-color)' : (currentIndex === 5 ? 'var(--success-color)' : 'var(--secondary-color)')}; margin-bottom: 1.5rem; background: var(--surface-card); padding: 1.25rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <div class="order-info">
+                            <div class="order-title-row" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-main);">Order #${ref}</h3>
+                                    <span class="badge ${isCancelled ? 'badge-danger' : (currentIndex === 5 ? 'badge-success' : 'badge-primary')}" style="font-weight: 700;">
+                                        ${status.replace(/_/g, ' ')}
+                                    </span>
+                                </div>
+                                <span class="text-xs text-muted font-semibold"><i class="ph ph-clock"></i> Placed: ${dateStr}</span>
+                            </div>
+
+                            <div class="order-meta" style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.875rem; color: var(--text-muted);">
+                                <span><i class="ph ph-user" style="color: var(--secondary-color);"></i> <strong>Buyer:</strong> ${buyer}</span>
+                                ${phone ? `<span><i class="ph ph-phone" style="color: var(--secondary-color);"></i> <strong>Phone:</strong> ${phone}</span>` : ''}
+                                <span><i class="ph ph-map-pin" style="color: var(--secondary-color);"></i> <strong>Destination:</strong> ${location}</span>
+                            </div>
+
+                            <p class="order-item-desc" style="margin-top: 10px; font-size: 0.95rem; color: var(--text-main);">
+                                <strong>Ordered Item:</strong> ${title} &times; <strong style="color: var(--secondary-color);">${qty} ${unit}</strong>
+                            </p>
+
+                            <div class="order-price" style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-top: 4px;">
+                                Total Amount: <span style="color: var(--secondary-color);">BDT ${total}</span>
+                            </div>
+
+                            <!-- Real-Time Progress Timeline -->
+                            ${stepperHtml}
+
+                            <!-- Manual Step-by-Step Dispatch Control Bar -->
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; padding: 8px 10px; background: rgba(0,0,0,0.02); border-radius: 6px; border: 1px dashed var(--border-color);">
+                                <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-right: 4px;">
+                                    <i class="ph ph-hand-pointing"></i> Dispatch Stage:
+                                </span>
+                                ${STAGES.map(st => `
+                                    <button class="btn btn-xs ${status === st.key ? 'btn-primary' : 'btn-outline'}" onclick="farmerUpdateSaleStage(${orderId}, '${st.key}')" style="font-size: 0.75rem; padding: 3px 8px;">
+                                        <i class="ph ${st.icon}"></i> ${st.label}
+                                    </button>
+                                `).join('')}
+                            </div>
+
+                            <!-- Tracking & Dispatch Note -->
+                            <div style="display: flex; gap: 8px; align-items: center; margin-top: 10px;">
+                                <input type="text" id="salesNoteInput_${orderId}" class="form-control" style="font-size: 0.85rem; padding: 6px 10px;" placeholder="Add dispatch/vehicle note (e.g. Sent 50 broilers via pickup vehicle Dhaka-Metro-Ta-11-2345)" value="${note}">
+                                <button class="btn btn-outline btn-sm" onclick="farmerSaveSaleNote(${orderId})" style="white-space: nowrap;">
+                                    <i class="ph ph-floppy-disk"></i> Save Note
+                                </button>
+                                <a href="chat.html?peerId=${order.buyerId || 5}&name=${encodeURIComponent(buyer)}&topic=Produce+Sale+%23${orderId}" class="btn btn-outline btn-sm" style="white-space: nowrap;">
+                                    <i class="ph ph-chat-circle-dots"></i> Message Buyer
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function farmerUpdateSaleStage(orderId, newStatus) {
+            try {
+                const noteInput = document.getElementById(`salesNoteInput_${orderId}`);
+                const note = noteInput ? noteInput.value : '';
+                await apiRequest(`/order/${orderId}/status`, 'POST', {
+                    status: newStatus,
+                    paymentNote: note
+                });
+
+                const order = userSales.find(o => o.orderId === orderId);
+                if (order) {
+                    order.orderStatus = newStatus;
+                    if (note) order.paymentNote = note;
+                }
+                renderSales(userSales);
+                alert(`Dispatch stage updated to "${newStatus.replace(/_/g, ' ')}" successfully!`);
+            } catch (err) {
+                alert('Failed to update sale stage: ' + err.message);
+            }
+        }
+
+        async function farmerSaveSaleNote(orderId) {
+            const noteInput = document.getElementById(`salesNoteInput_${orderId}`);
+            const note = noteInput ? noteInput.value : '';
+            const order = userSales.find(o => o.orderId === orderId);
+            const status = order ? (order.orderStatus || 'ORDER_RECEIVED') : 'ORDER_RECEIVED';
+
+            try {
+                await apiRequest(`/order/${orderId}/status`, 'POST', {
+                    status: status,
+                    paymentNote: note
+                });
+                if (order) order.paymentNote = note;
+                alert('Dispatch note saved and shared with buyer!');
+            } catch (err) {
+                alert('Failed to save note: ' + err.message);
+            }
+        }
+
+        async function farmerConfirmDelivery(orderId) {
+            if (!confirm('Confirm that you have physically received this order at your farm?')) return;
+            try {
+                await apiRequest(`/order/${orderId}/status`, 'POST', {
+                    status: 'DELIVERED',
+                    paymentNote: 'Confirmed delivered to farmer shed'
+                });
+                const order = userPurchases.find(o => o.orderId === orderId);
+                if (order) order.orderStatus = 'DELIVERED';
+                renderPurchases(userPurchases);
+                alert('Order status marked as Farm Delivered! Thank you for confirming.');
+            } catch (err) {
+                alert('Failed to update order: ' + err.message);
+            }
+        }
+
+        async function farmerCancelOrder(orderId) {
+            if (!confirm('Are you sure you want to cancel this order?')) return;
+            try {
+                await apiRequest(`/order/${orderId}/status`, 'POST', {
+                    status: 'CANCELLED'
+                });
+                const order = userPurchases.find(o => o.orderId === orderId);
+                if (order) order.orderStatus = 'CANCELLED';
+                renderPurchases(userPurchases);
+                alert('Order has been cancelled.');
+            } catch (err) {
+                alert('Failed to cancel order: ' + err.message);
+            }
+        }
+    </script>
+</body>
+</html>

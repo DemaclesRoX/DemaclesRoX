@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Profile - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Specialist Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Specialist Dashboard
+                </a>
+                <a href="consultation-requests.html" class="nav-item">
+                    <i class="ph ph-bell-ringing"></i> Requests
+                </a>
+                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Consultations
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="create-prescription.html" class="nav-item">
+                    <i class="ph ph-file-plus"></i> Issue Prescription
+                </a>
+                <a href="prescription-templates.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Rx Templates (Presets)
+                </a>
+                <a href="profile.html" class="nav-item active">
+                    <i class="ph ph-user-gear"></i> Clinical Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-user-gear"></i> Clinical Specialist Profile</h2>
+                    <p class="text-muted">Manage your public directory listing, verified credentials, and advisory fees</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="alert('Profile details saved successfully!')">
+                        <i class="ph ph-floppy-disk"></i> Save Profile
+                    </button>
+                </div>
+            </div>
+
+            <div class="dash-grid">
+                
+                <!-- Left Column: Profile Details Form -->
+                <div class="dash-col-main">
+                    <div class="dash-card">
+                        <form id="profileForm">
+                            
+                            <div class="dash-card-header">
+                                <h3><i class="ph ph-identification-badge"></i> Practitioner Credentials</h3>
+                                <span class="badge badge-success"><i class="ph ph-seal-check"></i> Verified by Admin</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Full Name & Title</label>
+                                <input type="text" class="form-control" value="Dr. Md. Anisur Rahman" required>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Primary Designation</label>
+                                    <input type="text" class="form-control" value="Veterinary Surgeon & Poultry Consultant">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Statutory Registration # (BMDC / DLS)</label>
+                                    <input type="text" class="form-control" value="BMDC-VET-12345" readonly style="background-color: var(--bg-light);">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Degrees & Certifications</label>
+                                <input type="text" class="form-control" value="B.Sc. (Veterinary Science & Animal Husbandry), BAU | MS (Poultry Pathology)">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Years of Clinical Experience</label>
+                                    <input type="number" class="form-control" value="6" min="1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Consultation Advisory Fee (BDT)</label>
+                                    <input type="number" class="form-control" value="300" min="0">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Practicing District Coverage</label>
+                                <select class="form-control" multiple style="height: 100px;">
+                                    <option value="bogura" selected>Bogura</option>
+                                    <option value="rajshahi" selected>Rajshahi</option>
+                                    <option value="natore">Natore</option>
+                                    <option value="mymensingh">Mymensingh</option>
+                                    <option value="dhaka">Dhaka</option>
+                                </select>
+                                <span class="text-xs text-muted">Hold Ctrl to select multiple districts.</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Clinical Bio & Specialty Summary</label>
+                                <textarea class="form-control" rows="4">Over 6 years of hands-on diagnostic experience in broiler & layer viral/bacterial pathology, cattle mastitis prevention, and regional biosecurity protocols. Committed to rational antibiotic use and zero unapproved hormonal stimulators.</textarea>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right Column: Marketplace Directory Card Preview -->
+                <div class="dash-col-side">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3><i class="ph ph-storefront"></i> Directory Preview</h3>
+                        </div>
+                        <p class="text-xs text-muted" style="margin-bottom: 1rem;">
+                            How your profile appears to farmers in the public Marketplace Specialist Directory:
+                        </p>
+
+                        <div class="specialist-card" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                            <div class="specialist-header" style="background: var(--bg-light);">
+                                <div class="specialist-avatar">
+                                    <i class="ph-fill ph-user-circle"></i>
+                                </div>
+                                <div>
+                                    <span class="badge badge-primary">Veterinary Surgeon</span>
+                                    <h4 style="margin: 4px 0 2px 0;">Dr. Md. Anisur Rahman</h4>
+                                    <p class="text-xs text-muted">BAU | BMDC: 12345</p>
+                                </div>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <div class="listing-meta" style="margin-bottom: 0.85rem;">
+                                    <span><i class="ph ph-briefcase"></i> 6+ Years Poultry & Dairy</span>
+                                    <span><i class="ph ph-map-pin"></i> Bogura & Northern Region</span>
+                                    <span><i class="ph ph-star-fill" style="color: #F59E0B;"></i> 4.9 (32 Reviews)</span>
+                                </div>
+                                <div class="listing-price" style="font-size: 1.15rem; margin-bottom: 0.85rem;">
+                                    BDT 300 <span class="unit-text">/ Consultation</span>
+                                </div>
+                                <button class="btn btn-outline btn-block btn-sm" disabled>
+                                    View in Marketplace
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+</body>
+</html>

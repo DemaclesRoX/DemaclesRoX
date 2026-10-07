@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Routines & Tasks - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .task-list-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+        .task-list-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        .task-list-card.is-done { background: #f8fafc; opacity: 0.85; }
+        .task-date-col {
+            width: 120px;
+            flex-shrink: 0;
+            padding-right: 1.25rem;
+            border-right: 3px solid #e2e8f0;
+            text-align: center;
+        }
+        .task-date-col .due-date-text {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0;
+        }
+        .task-date-col .due-date-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+        .task-content-col { flex-grow: 1; }
+        .task-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 0.35rem 0;
+            transition: all 0.2s;
+        }
+        .task-list-card.is-done .task-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+        .task-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        .task-action-col {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-shrink: 0;
+        }
+        .task-checkbox {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="../dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> My Farms
+                </a>
+                <a href="tracking-unit.html" class="nav-item">
+                    <i class="ph ph-tag"></i> Tracking Units
+                </a>
+                <a href="routines.html" class="nav-item active">
+                    <i class="ph ph-list-dashes"></i> Routines & Tasks
+                </a>
+                <a href="ledger.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Farm Ledger
+                </a>
+                <a href="prescriptions.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Prescriptions
+                </a>
+                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-user-circle-gear"></i> Consultations
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Inquiries
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-shopping-bag"></i> Sell Produce
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="../public/marketplace.html" class="nav-item">
+                    <i class="ph ph-shopping-cart"></i> Marketplace
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-calendar-check" style="color: var(--secondary-color);"></i> Farm Routine Schedule</h2>
+                    <p class="text-muted">Lifecycle-based daily task execution with automatic cost prompt sync</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="openAllTemplatesModal()">
+                        <i class="ph ph-eye"></i> View All Templates
+                    </button>
+                    <button class="btn btn-primary" onclick="openCreateRoutineModal()">
+                        <i class="ph ph-plus-circle"></i> Create Custom Routine
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                <div class="filter-item" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <label style="font-weight: 700; white-space: nowrap;">Select Tracking Unit:</label>
+                    <select class="form-control" id="unitSelector" onchange="loadTasksForUnit()" style="min-width: 240px;">
+                        <option value="">Loading tracking units...</option>
+                    </select>
+                </div>
+                <div class="filter-badge-info" style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                    <span class="badge badge-primary" id="activeTemplateBadge" style="padding: 0.5rem 0.85rem; font-size: 0.85rem;">
+                        Active Template: Loading...
+                    </span>
+                    <button class="btn btn-outline btn-sm" onclick="viewCurrentTemplate()">
+                        <i class="ph ph-info"></i> Template Details
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="openAssignTemplateModal()">
+                        <i class="ph ph-link"></i> Assign Template
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="openAssignPrescriptionModal()" style="background-color: #6366f1; border-color: #6366f1; color: #fff;">
+                        <i class="ph ph-stethoscope"></i> Assign from Rx
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic Tasks Container -->
+            <div id="taskTimeline" style="margin-top: 1.5rem;">
+                <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="ph ph-spinner-gap ph-spin" style="font-size: 2rem;"></i>
+                    <p style="margin-top: 0.5rem;">Loading tasks...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Cost Prompt Modal -->
+    <div class="modal" id="costModal" style="z-index: 2200;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="costModalTitle">Task Completed</h3>
+                <button class="close-btn" onclick="closeCostModal()">&times;</button>
+            </div>
+            <p class="modal-desc">
+                Did this routine activity incur any financial expense (e.g. purchasing medicine, feed, or hiring labor)?
+            </p>
+            <div id="costFormArea" style="display: none;" class="cost-form-box">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label class="form-label">Expense Amount (BDT) *</label>
+                    <input type="number" id="costAmount" class="form-control" placeholder="e.g. 850" min="1">
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label class="form-label">Ledger Expense Category</label>
+                    <select id="costCategory" class="form-control">
+                        <option value="EXP-03">EXP-03: Medicine & Vaccine</option>
+                        <option value="EXP-01">EXP-01: Feed & Concentrates</option>
+                        <option value="EXP-05">EXP-05: Farm Labor</option>
+                        <option value="EXP-02">EXP-02: Seeds & Chicks Stock</option>
+                        <option value="EXP-10">EXP-10: Miscellaneous / Other</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label class="form-label">Invoice / Reference Note (Optional)</label>
+                    <input type="text" id="costNote" class="form-control" placeholder="e.g. Vaccine purchased from local vendor">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="btnNoCost" onclick="finishTaskWithoutCost()">No Expense Incurred</button>
+                <button class="btn btn-primary" id="btnYesCost" onclick="showCostForm()">Yes, Add to Ledger</button>
+                <button class="btn btn-primary" id="btnSaveCost" style="display: none;" onclick="saveCostAndFinish()">Save to Ledger & Complete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Task Preview Modal -->
+    <div class="modal" id="templateModal" style="z-index: 2200;">
+        <div class="modal-content" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 id="templateModalTitle">Routine Template</h3>
+                <button class="close-btn" onclick="closeTemplateModal()">&times;</button>
+            </div>
+            <div id="templateModalBody" style="max-height: 420px; overflow-y: auto; margin-top: 15px;">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeTemplateModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Available Templates Modal -->
+    <div class="modal" id="allTemplatesModal">
+        <div class="modal-content" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3><i class="ph ph-books"></i> Available Routine Protocols</h3>
+                <button class="close-btn" onclick="closeAllTemplatesModal()">&times;</button>
+            </div>
+            <p class="modal-desc">Browse pre-configured protocols and custom routines for all farm sectors.</p>
+            <div style="margin-top: 15px; max-height: 400px; overflow-y: auto;">
+                <table class="table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Protocol Name</th>
+                            <th>Sector</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allTemplatesTableBody">
+                        <tr><td colspan="3" style="text-align: center;">Loading templates...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeAllTemplatesModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Template Modal -->
+    <div class="modal" id="assignTemplateModal">
+        <div class="modal-content" style="max-width: 480px;">
+            <div class="modal-header">
+                <h3><i class="ph ph-link"></i> Assign Protocol to Unit</h3>
+                <button class="close-btn" onclick="closeAssignTemplateModal()">&times;</button>
+            </div>
+            <p class="modal-desc">Select a protocol template to automatically generate daily schedule tasks for this unit.</p>
+            <div style="margin-top: 15px;">
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                    <label style="font-weight: 600; display: block; margin-bottom: 0.35rem;">Select Template *</label>
+                    <select class="form-control" id="templateToAssign">
+                    </select>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-outline" onclick="previewTemplateToAssign()">Preview Details</button>
+                    <button class="btn btn-primary" id="btnAssignConfirm" onclick="generateTasksFromSelectedTemplate()">
+                        <i class="ph ph-check"></i> Assign Template
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Custom Routine Modal -->
+    <div class="modal" id="createRoutineModal">
+        <div class="modal-content" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3><i class="ph ph-plus-circle"></i> Create Custom Routine Protocol</h3>
+                <button class="close-btn" onclick="closeCreateRoutineModal()">&times;</button>
+            </div>
+            <p class="modal-desc">Define your own schedule of tasks with customized day offsets and categories.</p>
+            <div style="margin-top: 15px;">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 600; display: block; margin-bottom: 0.35rem;">Routine Name *</label>
+                    <input type="text" class="form-control" id="newRoutineName" placeholder="e.g. High Yield Dairy Management Protocol" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                    <label style="font-weight: 600; display: block; margin-bottom: 0.35rem;">Sector *</label>
+                    <select class="form-control" id="newRoutineSector">
+                        <option value="POULTRY">Poultry</option>
+                        <option value="LIVESTOCK">Livestock / Dairy</option>
+                        <option value="FISHERIES">Fisheries</option>
+                        <option value="AGRICULTURE">Agriculture</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <h4 style="margin: 0;">Routine Tasks</h4>
+                    <button class="btn btn-outline btn-sm" onclick="addCustomTaskRow()">+ Add Task</button>
+                </div>
+
+                <div style="max-height: 280px; overflow-y: auto; margin-bottom: 1rem;">
+                    <table class="table" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Day Offset</th>
+                                <th>Task Title</th>
+                                <th style="width: 130px;">Type</th>
+                                <th style="width: 50px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="customTaskTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-outline" onclick="closeCreateRoutineModal()">Cancel</button>
+                    <button class="btn btn-primary" id="btnSaveRoutine" onclick="saveCustomRoutine()">
+                        <i class="ph ph-floppy-disk"></i> Save Routine
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Datalist for Task Suggestions -->
+    <datalist id="taskSuggestions">
+        <option value="Shed cleaning & disinfection">
+        <option value="Chick receiving & initial weight">
+        <option value="Newcastle+IB (ND+IB) spray/eye-drop">
+        <option value="Gumboro (IBD) intermediate vaccine">
+        <option value="Weekly weight sampling">
+        <option value="Shift to Finisher feed">
+        <option value="Litter turning & dry patches">
+        <option value="Deworming & Health Assessment">
+        <option value="FMD Vaccination">
+        <option value="Pond liming & water check">
+    </datalist>
+    <!-- Scripts -->
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        let currentUser = null;
+        let pendingCostTaskId = null;
+        let pendingCostTaskTitle = '';
+
+        function getActiveFarmer() {
+            const user = getCurrentUser();
+            if (user && user.userId) return user;
+            return { userId: 1, name: "Farmer", primaryRole: "FARMER" };
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            currentUser = getActiveFarmer();
+            await loadUnits();
+            setupSectorSuggestionListener();
+        });
+
+        async function loadUnits() {
+            try {
+                let units = await apiRequest('/lot/search?farmerId=' + currentUser.userId);
+                if (!Array.isArray(units) || units.length === 0) {
+                    units = await apiRequest('/lot/search');
+                }
+
+                const select = document.getElementById('unitSelector');
+                select.innerHTML = '';
+
+                if (!Array.isArray(units) || units.length === 0) {
+                    select.innerHTML = '<option value="">No Tracking Units Found</option>';
+                    document.getElementById('taskTimeline').innerHTML = `
+                        <div style="text-align: center; padding: 2.5rem; background: var(--surface-color); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
+                            <i class="ph ph-tag" style="font-size: 2.5rem; color: var(--text-light);"></i>
+                            <h4 style="margin: 0.75rem 0 0.35rem;">No tracking units found</h4>
+                            <p class="text-muted">Create a tracking unit or animal lot first to assign routines.</p>
+                            <a href="tracking-unit.html" class="btn btn-primary btn-sm" style="margin-top: 0.75rem;">Create Tracking Unit</a>
+                        </div>
+                    `;
+                    document.getElementById('activeTemplateBadge').textContent = 'No Units';
+                    return;
+                }
+
+                units.forEach(u => {
+                    const opt = document.createElement('option');
+                    opt.value = u.lotId;
+                    opt.textContent = `${u.identifierTag} (${u.category || 'Batch'})`;
+                    opt.dataset.breed = u.speciesOrBreed || 'General';
+                    opt.dataset.templateCode = u.routineTemplateCode || '';
+                    select.appendChild(opt);
+                });
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const queryLotId = urlParams.get('unit') || urlParams.get('lotId');
+                if (queryLotId) {
+                    select.value = queryLotId;
+                }
+
+                await loadTasksForUnit();
+            } catch (err) {
+                console.error("Failed to load units:", err);
+                document.getElementById('taskTimeline').innerHTML = '<p class="text-danger" style="padding: 20px;">Failed to load tracking units.</p>';
+            }
+        }
+
+        async function loadTasksForUnit() {
+            const select = document.getElementById('unitSelector');
+            const lotId = select.value;
+            if (!lotId) return;
+
+            const selectedOpt = select.options[select.selectedIndex];
+            let currentTplCode = selectedOpt ? selectedOpt.dataset.templateCode : '';
+            const breed = selectedOpt ? selectedOpt.dataset.breed : 'General';
+
+            const badgeEl = document.getElementById('activeTemplateBadge');
+            if (currentTplCode && currentTplCode !== 'null' && currentTplCode !== 'undefined' && currentTplCode !== '') {
+                badgeEl.textContent = 'Active Template: ' + currentTplCode;
+                badgeEl.className = 'badge badge-primary';
+            } else {
+                badgeEl.textContent = 'Active Template: None (Custom)';
+                badgeEl.className = 'badge badge-warning';
+            }
+
+            const timeline = document.getElementById('taskTimeline');
+            timeline.innerHTML = `
+                <div style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                    <i class="ph ph-spinner-gap ph-spin" style="font-size: 2rem;"></i>
+                    <p style="margin-top: 0.5rem;">Loading tasks from server...</p>
+                </div>
+            `;
+
+            try {
+                let tasks = [];
+                try {
+                    const [pendingRes, doneRes] = await Promise.all([
+                        apiRequest('/routine-task/search?lotId=' + lotId + '&status=PENDING'),
+                        apiRequest('/routine-task/search?lotId=' + lotId + '&status=DONE')
+                    ]);
+                    tasks = [...(Array.isArray(pendingRes) ? pendingRes : []), ...(Array.isArray(doneRes) ? doneRes : [])];
+                } catch(e) {
+                    tasks = await apiRequest('/routine-task/search?lotId=' + lotId);
+                }
+
+                if (!Array.isArray(tasks) || tasks.length === 0) {
+                    timeline.innerHTML = `
+                        <div style="text-align: center; padding: 3rem 1.5rem; background: var(--surface-color); border: 1px dashed var(--border-color); border-radius: var(--radius-lg);">
+                            <i class="ph ph-calendar-x" style="font-size: 2.5rem; color: var(--text-light);"></i>
+                            <h4 style="margin: 0.75rem 0 0.35rem;">No tasks found for this unit</h4>
+                            <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.25rem;">Assign a protocol template to automatically generate routine schedule tasks.</p>
+                            <button class="btn btn-primary" onclick="openAssignTemplateModal()">
+                                <i class="ph ph-link"></i> Assign Protocol Template Now
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                renderTasks(tasks);
+            } catch (err) {
+                console.error("Failed to load tasks:", err);
+                timeline.innerHTML = '<p class="text-danger" style="padding: 20px;">Failed to load routine schedule from server.</p>';
+            }
+        }
+
+        function renderTasks(tasks) {
+            const timeline = document.getElementById('taskTimeline');
+
+            const sorted = [...tasks].sort((a, b) => {
+                if (a.status !== b.status) {
+                    return a.status === 'DONE' ? 1 : -1;
+                }
+                const dateA = a.dueDate ? new Date(a.dueDate) : new Date(0);
+                const dateB = b.dueDate ? new Date(b.dueDate) : new Date(0);
+                return dateA - dateB;
+            });
+
+            let html = '';
+            sorted.forEach(t => {
+                const isDone = t.status === 'DONE';
+                const dueDateStr = t.dueDate || ('Day ' + (t.dayOffset || 1));
+                const actionType = t.actionTypeCode || 'ROUTINE';
+                const taskTitle = t.titleEn || t.titleBn || 'Scheduled Activity';
+
+                html += `
+                    <div class="task-list-card ${isDone ? 'is-done' : ''}" id="task-card-${t.taskId}">
+                        <div class="task-date-col">
+                            <div class="due-date-text">${dueDateStr}</div>
+                            <div class="due-date-label">Due Date</div>
+                        </div>
+
+                        <div class="task-content-col">
+                            <h4 class="task-title">${taskTitle}</h4>
+                            <div class="task-meta-row">
+                                <span class="badge badge-secondary">${actionType}</span>
+                                ${t.dayOffset ? `<span><i class="ph ph-clock"></i> Day Offset: +${t.dayOffset}</span>` : ''}
+                                ${t.note ? `<span style="font-style: italic;">Note: ${t.note}</span>` : ''}
+                            </div>
+                        </div>
+
+                        <div class="task-action-col">
+                            <div class="status-badge-container">
+                                ${isDone 
+                                    ? '<span class="badge badge-success" style="background: #dcfce7; color: #16a34a;"><i class="ph-fill ph-check-circle"></i> Completed</span>'
+                                    : '<span class="badge badge-warning"><i class="ph ph-clock"></i> Pending</span>'
+                                }
+                            </div>
+                            <input type="checkbox" class="task-checkbox" 
+                                title="Mark as Completed"
+                                onchange="handleTaskCheckboxChange(${t.taskId}, this, '${encodeURIComponent(taskTitle)}')" 
+                                ${isDone ? 'checked' : ''}>
+                        </div>
+                    </div>
+                `;
+            });
+
+            timeline.innerHTML = html;
+        }
+
+        async function handleTaskCheckboxChange(taskId, checkbox, encodedTitle) {
+            const isChecked = checkbox.checked;
+            const newStatus = isChecked ? 'DONE' : 'PENDING';
+
+            try {
+                await apiRequest('/routine-task/' + taskId + '/status?status=' + newStatus, 'PATCH');
+                
+                const card = document.getElementById('task-card-' + taskId);
+                const statusContainer = card ? card.querySelector('.status-badge-container') : null;
+
+                if (isChecked) {
+                    if (card) card.classList.add('is-done');
+                    if (statusContainer) {
+                        statusContainer.innerHTML = '<span class="badge badge-success" style="background: #dcfce7; color: #16a34a;"><i class="ph-fill ph-check-circle"></i> Completed</span>';
+                    }
+                    promptCostOption(taskId, decodeURIComponent(encodedTitle));
+                } else {
+                    if (card) card.classList.remove('is-done');
+                    if (statusContainer) {
+                        statusContainer.innerHTML = '<span class="badge badge-warning"><i class="ph ph-clock"></i> Pending</span>';
+                    }
+                }
+            } catch (err) {
+                alert('Failed to update task status: ' + err.message);
+                checkbox.checked = !isChecked;
+            }
+        }
+
+        function promptCostOption(taskId, taskTitle) {
+            pendingCostTaskId = taskId;
+            pendingCostTaskTitle = taskTitle;
+            document.getElementById('costModalTitle').textContent = `Task Completed: ${taskTitle}`;
+            document.getElementById('costFormArea').style.display = 'none';
+            document.getElementById('btnNoCost').style.display = 'inline-block';
+            document.getElementById('btnYesCost').style.display = 'inline-block';
+            document.getElementById('btnSaveCost').style.display = 'none';
+            document.getElementById('costAmount').value = '';
+            document.getElementById('costNote').value = taskTitle;
+            document.getElementById('costModal').classList.add('active');
+        }
+
+        function showCostForm() {
+            document.getElementById('costFormArea').style.display = 'block';
+            document.getElementById('btnYesCost').style.display = 'none';
+            document.getElementById('btnSaveCost').style.display = 'inline-block';
+        }
+
+        function finishTaskWithoutCost() {
+            closeCostModal();
+        }
+
+        async function saveCostAndFinish() {
+            const amountVal = parseFloat(document.getElementById('costAmount').value);
+            if (isNaN(amountVal) || amountVal <= 0) {
+                alert('Please enter a valid expense amount greater than 0.');
+                return;
+            }
+
+            const select = document.getElementById('unitSelector');
+            const lotId = select ? parseInt(select.value) : null;
+            const category = document.getElementById('costCategory').value;
+            const note = document.getElementById('costNote').value || pendingCostTaskTitle;
+
+            const payload = {
+                entryType: 'EXPENSE',
+                category: category,
+                amount: amountVal,
+                eventDate: new Date().toISOString().slice(0, 10),
+                notes: `[Routine Task #${pendingCostTaskId}] ${note}`
+            };
+            if (lotId) {
+                payload.lotId = lotId;
+            }
+
+            try {
+                await apiRequest('/ledger/create', 'POST', payload);
+                alert('Expense logged to Farm Ledger successfully!');
+                closeCostModal();
+            } catch (err) {
+                alert('Failed to log expense to Ledger: ' + err.message);
+            }
+        }
+
+        function closeCostModal() {
+            document.getElementById('costModal').classList.remove('active');
+            pendingCostTaskId = null;
+        }
+
+        async function viewCurrentTemplate() {
+            const select = document.getElementById('unitSelector');
+            if (!select || !select.options[select.selectedIndex]) return alert('Select a tracking unit first');
+            
+            const currentTplCode = select.options[select.selectedIndex].dataset.templateCode;
+            if (!currentTplCode || currentTplCode === 'null' || currentTplCode === 'undefined' || currentTplCode === '') {
+                alert('No protocol template is currently assigned to this unit. Click "Assign Template" to choose one.');
+                return;
+            }
+
+            await previewAnyTemplate(currentTplCode);
+        }
+
+        async function previewAnyTemplate(code) {
+            document.getElementById('templateModal').classList.add('active');
+            document.getElementById('templateModalTitle').innerText = 'Loading protocol...';
+            const body = document.getElementById('templateModalBody');
+            body.innerHTML = '<div style="text-align: center; padding: 2rem;"><i class="ph ph-spinner-gap ph-spin" style="font-size: 1.5rem;"></i></div>';
+
+            try {
+                const t = await apiRequest('/template/' + code);
+                document.getElementById('templateModalTitle').innerText = (t.nameEn || t.templateName || code) + ' (' + (t.sector || 'General') + ')';
+                
+                let tasks = [];
+                if (t.contentJson) {
+                    try {
+                        const sanitized = t.contentJson.replace(/\}\s*\{/g, '},{');
+                        tasks = JSON.parse(sanitized);
+                    } catch(e) {
+                        console.warn("JSON parse warning:", e);
+                    }
+                }
+
+                if (!Array.isArray(tasks) || tasks.length === 0) {
+                    body.innerHTML = '<p class="text-muted">No scheduled task items defined in this template.</p>';
+                    return;
+                }
+
+                let html = `
+                    <div style="margin-bottom: 0.75rem; color: var(--text-muted); font-size: 0.9rem;">
+                        <strong>Protocol Code:</strong> ${t.templateCode} | <strong>Duration:</strong> ${t.durationDays || 'N/A'} days
+                    </div>
+                    <table class="table" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Day Offset</th>
+                                <th>Task Title</th>
+                                <th>Action Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                tasks.forEach(task => {
+                    html += `
+                        <tr>
+                            <td><strong>Day ${task.dayOffset !== undefined ? task.dayOffset : 1}</strong></td>
+                            <td>${task.taskTitle || task.titleEn || 'Activity'}</td>
+                            <td><span class="badge badge-secondary">${task.actionType || task.actionTypeCode || 'ROUTINE'}</span></td>
+                        </tr>
+                    `;
+                });
+                html += '</tbody></table>';
+                body.innerHTML = html;
+            } catch (err) {
+                body.innerHTML = '<p class="text-danger">Failed to load template details: ' + err.message + '</p>';
+            }
+        }
+
+        function closeTemplateModal() {
+            document.getElementById('templateModal').classList.remove('active');
+        }
+
+        async function openAllTemplatesModal() {
+            document.getElementById('allTemplatesModal').classList.add('active');
+            const tbody = document.getElementById('allTemplatesTableBody');
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:1.5rem;"><i class="ph ph-spinner-gap ph-spin"></i> Loading templates...</td></tr>';
+
+            try {
+                const templates = await apiRequest('/template/search?templateType=ROUTINE');
+                if (!Array.isArray(templates) || templates.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" class="text-muted" style="text-align:center;">No templates found.</td></tr>';
+                    return;
+                }
+
+                let html = '';
+                templates.forEach(t => {
+                    const title = t.nameEn || t.templateName || t.templateCode;
+                    html += `
+                        <tr>
+                            <td><strong>${title}</strong><div style="font-size:0.75rem; color:var(--text-muted);">${t.templateCode}</div></td>
+                            <td><span class="badge badge-secondary">${t.sector || 'GENERAL'}</span></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" onclick="previewAnyTemplate('${t.templateCode}')">
+                                    <i class="ph ph-eye"></i> Details
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html;
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="3" class="text-danger" style="text-align:center;">Failed to load templates.</td></tr>';
+            }
+        }
+
+        function closeAllTemplatesModal() {
+            document.getElementById('allTemplatesModal').classList.remove('active');
+        }
+
+        async function openAssignTemplateModal() {
+            const select = document.getElementById('unitSelector');
+            if (!select || !select.value) {
+                alert('Please select a tracking unit first.');
+                return;
+            }
+
+            document.getElementById('assignTemplateModal').classList.add('active');
+            const tplSelect = document.getElementById('templateToAssign');
+            tplSelect.innerHTML = '<option value="">Loading protocols...</option>';
+
+            try {
+                const templates = await apiRequest('/template/search?templateType=ROUTINE');
+                if (!Array.isArray(templates) || templates.length === 0) {
+                    tplSelect.innerHTML = '<option value="">No templates available</option>';
+                    return;
+                }
+                tplSelect.innerHTML = templates.map(t => `
+                    <option value="${t.templateCode}">
+                        ${t.nameEn || t.templateName || t.templateCode} (${t.sector || 'GENERAL'})
+                    </option>
+                `).join('');
+            } catch (err) {
+                tplSelect.innerHTML = '<option value="">Failed to load templates</option>';
+            }
+        }
+
+        function closeAssignTemplateModal() {
+            document.getElementById('assignTemplateModal').classList.remove('active');
+        }
+
+        async function previewTemplateToAssign() {
+            const code = document.getElementById('templateToAssign').value;
+            if (!code) return alert('Select a template first.');
+            await previewAnyTemplate(code);
+        }
+
+        async function generateTasksFromSelectedTemplate() {
+            const select = document.getElementById('unitSelector');
+            const lotId = select ? select.value : null;
+            const templateCode = document.getElementById('templateToAssign').value;
+
+            if (!lotId || !templateCode) {
+                alert('Please select both a tracking unit and a template.');
+                return;
+            }
+
+            const btn = document.getElementById('btnAssignConfirm');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="ph ph-spinner-gap ph-spin"></i> Assigning...';
+
+            try {
+                await apiRequest(`/routine-task/apply-template?lotId=${lotId}&templateCode=${templateCode}`, 'POST');
+                alert('Routine schedule assigned successfully!');
+                closeAssignTemplateModal();
+
+                if (select.options[select.selectedIndex]) {
+                    select.options[select.selectedIndex].dataset.templateCode = templateCode;
+                }
+
+                await loadTasksForUnit();
+            } catch (err) {
+                alert('Failed to assign template: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="ph ph-check"></i> Assign Template';
+            }
+        }
+
+        function openCreateRoutineModal() {
+            document.getElementById('createRoutineModal').classList.add('active');
+            const tbody = document.getElementById('customTaskTableBody');
+            tbody.innerHTML = '';
+            addCustomTaskRow(1, 'Initial Inspection & Setup', 'MONITORING');
+            addCustomTaskRow(7, 'Weekly Health & Weight Check', 'WEIGHING');
+        }
+
+        function closeCreateRoutineModal() {
+            document.getElementById('createRoutineModal').classList.remove('active');
+        }
+
+        function addCustomTaskRow(day = 1, title = '', type = 'MONITORING') {
+            const tbody = document.getElementById('customTaskTableBody');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <input type="number" class="form-control form-control-sm" value="${day}" min="1" required style="width: 75px;">
+                </td>
+                <td>
+                    <input type="text" class="form-control form-control-sm" list="taskSuggestions" value="${title}" placeholder="e.g. Vaccination / Feeding" required>
+                </td>
+                <td>
+                    <select class="form-control form-control-sm">
+                        <option value="MONITORING" ${type==='MONITORING'?'selected':''}>Monitoring</option>
+                        <option value="VACCINATION" ${type==='VACCINATION'?'selected':''}>Vaccination</option>
+                        <option value="FEEDING" ${type==='FEEDING'?'selected':''}>Feeding</option>
+                        <option value="MEDICATION" ${type==='MEDICATION'?'selected':''}>Medication</option>
+                        <option value="SANITIZATION" ${type==='SANITIZATION'?'selected':''}>Sanitization</option>
+                        <option value="WEIGHING" ${type==='WEIGHING'?'selected':''}>Weighing</option>
+                        <option value="MAINTENANCE" ${type==='MAINTENANCE'?'selected':''}>Maintenance</option>
+                    </select>
+                </td>
+                <td style="text-align: center;">
+                    <button type="button" class="btn btn-outline btn-sm text-danger" onclick="this.closest('tr').remove()" title="Remove task">&times;</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        async function saveCustomRoutine() {
+            const name = document.getElementById('newRoutineName').value.trim();
+            const sector = document.getElementById('newRoutineSector').value;
+
+            if (!name) {
+                alert('Please enter a routine name.');
+                return;
+            }
+
+            const rows = document.querySelectorAll('#customTaskTableBody tr');
+            const tasks = [];
+            rows.forEach(r => {
+                const dayInput = r.querySelector('input[type="number"]');
+                const titleInput = r.querySelector('input[type="text"]');
+                const typeSelect = r.querySelector('select');
+                if (dayInput && titleInput && titleInput.value.trim()) {
+                    tasks.push({
+                        dayOffset: parseInt(dayInput.value) || 1,
+                        taskTitle: titleInput.value.trim(),
+                        actionType: typeSelect ? typeSelect.value : 'ROUTINE'
+                    });
+                }
+            });
+
+            if (tasks.length === 0) {
+                alert('Please add at least one task to your routine.');
+                return;
+            }
+
+            const btn = document.getElementById('btnSaveRoutine');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="ph ph-spinner-gap ph-spin"></i> Saving...';
+
+            const payload = {
+                templateType: 'ROUTINE',
+                sector: sector,
+                templateName: name,
+                contentJson: JSON.stringify(tasks),
+                ownerUserId: currentUser.userId
+            };
+
+            try {
+                await apiRequest('/template/create', 'POST', payload);
+                alert('Custom routine created successfully!');
+                closeCreateRoutineModal();
+                document.getElementById('newRoutineName').value = '';
+            } catch (err) {
+                alert('Failed to save routine: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="ph ph-floppy-disk"></i> Save Routine';
+            }
+        }
+
+        function setupSectorSuggestionListener() {
+            const sectorSelect = document.getElementById('newRoutineSector');
+            if (sectorSelect) {
+                sectorSelect.addEventListener('change', function() {
+                    const sector = this.value;
+                    const datalist = document.getElementById('taskSuggestions');
+                    datalist.innerHTML = '';
+                    const list = {
+                        'POULTRY': [
+                            'Shed cleaning & disinfection', 'Brooder setup (32-34°C)', 'Chick receiving & initial weight',
+                            'Newcastle+IB spray/eye-drop', 'Gumboro intermediate vaccine', 'Weekly weight sampling',
+                            'Shift to Finisher feed', 'Litter turning & dry patches', 'Final weight sampling'
+                        ],
+                        'LIVESTOCK': [
+                            'Deworming & Health Assessment', 'FMD Vaccination', 'Hoof trimming', 'Milk yield recording',
+                            'Pregnancy / Heat diagnosis', 'Concentrate feed adjustment'
+                        ],
+                        'FISHERIES': [
+                            'Pond liming & water test', 'Fertilizer application (Urea/TSP)', 'Fingerlings stocking',
+                            'Water pH & Dissolved Oxygen check', 'Sampling netting & feed rate adjustment'
+                        ],
+                        'AGRICULTURE': [
+                            'Soil preparation & tillage', 'Basal fertilizer application', 'Seed sowing / transplanting',
+                            'Weeding & mulching', 'First top-dressing', 'Pest inspection & IPM spray', 'Irrigation cycle'
+                        ]
+                    }[sector] || [];
+
+                    list.forEach(item => {
+                        const opt = document.createElement('option');
+                        opt.value = item;
+                        datalist.appendChild(opt);
+                    });
+                });
+            }
+        }
+
+        async function openAssignPrescriptionModal() {
+            const select = document.getElementById('unitSelector');
+            const lotId = select.value;
+            if (!lotId) {
+                alert('Please select a tracking unit first.');
+                return;
+            }
+            document.getElementById('assignPrescriptionModal').classList.add('active');
+            const tbody = document.getElementById('assignPrescriptionsTableBody');
+            tbody.innerHTML = '<tr><td colspan="4">Loading prescriptions...</td></tr>';
+
+            try {
+                const prescriptions = await apiRequest('/prescription/search');
+                const user = currentUser || getActiveFarmer();
+                const list = prescriptions.filter(rx => rx.farmerId === user.userId || user.primaryRole === 'ADMIN');
+                if (list.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-muted">No prescriptions available for this farmer.</td></tr>';
+                    return;
+                }
+                let html = '';
+                list.forEach(rx => {
+                    const docName = rx.specialistName || `Specialist #${rx.specialistId || ''}`;
+                    const dateStr = rx.issuedDate ? new Date(rx.issuedDate).toLocaleDateString() : 'N/A';
+                    const diag = rx.diagnosis || rx.notes || 'Clinical Prescription';
+                    const itemsCount = rx.items ? rx.items.length : 0;
+                    html += `
+                        <tr>
+                            <td>
+                                <strong>Digital Rx #${rx.prescriptionId}</strong>
+                                <span class="text-xs text-muted" style="display:block;">${diag} (${itemsCount} Medicines)</span>
+                            </td>
+                            <td>${docName}</td>
+                            <td>${dateStr}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="applyPrescriptionToActiveLot(${rx.prescriptionId})">
+                                    <i class="ph ph-calendar-plus"></i> Schedule Tasks
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html;
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-danger">Failed to load prescriptions.</td></tr>';
+            }
+        }
+
+        function closeAssignPrescriptionModal() {
+            document.getElementById('assignPrescriptionModal').classList.remove('active');
+        }
+
+        async function applyPrescriptionToActiveLot(prescriptionId) {
+            const lotId = document.getElementById('unitSelector').value;
+            if (!lotId) {
+                alert('Please select a tracking unit first.');
+                return;
+            }
+            try {
+                const tasks = await apiRequest(`/routine-task/apply-prescription?prescriptionId=${prescriptionId}&lotId=${lotId}`, 'POST');
+                alert(`Prescription #${prescriptionId} successfully scheduled into daily routine tasks (${tasks.length} tasks added)!`);
+                closeAssignPrescriptionModal();
+                await loadTasksForUnit();
+            } catch(e) {
+                alert('Failed to schedule prescription tasks: ' + e.message);
+            }
+        }
+    </script>
+
+    <!-- Assign Digital Prescription Modal -->
+    <div class="modal" id="assignPrescriptionModal" style="z-index: 2200;">
+        <div class="modal-content" style="max-width: 680px;">
+            <div class="modal-header">
+                <h3><i class="ph ph-stethoscope"></i> Assign Digital Prescription to Routine</h3>
+                <button class="close-btn" onclick="closeAssignPrescriptionModal()">&times;</button>
+            </div>
+            <p class="modal-desc">
+                Select a certified prescription to automatically schedule daily medication administration and clinical advisory tasks for the active tracking unit.
+            </p>
+            <div style="margin-top: 15px; max-height: 400px; overflow-y: auto;">
+                <table class="table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Rx ID & Diagnosis</th>
+                            <th>Doctor / Specialist</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assignPrescriptionsTableBody">
+                        <tr><td colspan="4">Loading prescriptions...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeAssignPrescriptionModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

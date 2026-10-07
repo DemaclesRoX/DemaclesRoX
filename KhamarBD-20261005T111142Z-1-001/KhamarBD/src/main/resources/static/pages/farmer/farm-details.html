@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Details - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="../dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="farms.html" class="nav-item active">
+                    <i class="ph ph-farm"></i> My Farms
+                </a>
+                <a href="tracking-unit.html" class="nav-item">
+                    <i class="ph ph-tag"></i> Tracking Units
+                </a>
+                <a href="routines.html" class="nav-item">
+                    <i class="ph ph-list-dashes"></i> Routines & Tasks
+                </a>
+                <a href="ledger.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Farm Ledger
+                </a>
+                <a href="prescriptions.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Prescriptions
+                </a>
+                                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-user-circle-gear"></i> Consultations
+                </a>
+<a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Inquiries
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="../public/marketplace.html" class="nav-item">
+                    <i class="ph ph-shopping-cart"></i> Marketplace
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <a href="farms.html" class="link-btn" style="margin-bottom: 0.5rem;"><i class="ph ph-arrow-left"></i> All Farms</a>
+                    <h2>Bogura Broiler Project (Farm #FRM-01)</h2>
+                    <p class="text-muted">Kahalu Upazila, Bogura &bull; Established: 12 Jan 2026</p>
+                </div>
+                <div class="header-actions">
+                    <a href="tracking-unit.html?action=new" class="btn btn-primary">
+                        <i class="ph ph-plus-circle"></i> Add Production Unit
+                    </a>
+                </div>
+            </div>
+
+            <!-- Farm Metadata Row -->
+            <div class="ledger-kpi-grid">
+                <div class="stat-box income">
+                    <span class="stat-label">Farm Sector Designation</span>
+                    <h3 class="stat-value text-primary" style="display: flex; align-items: center; gap: 6px;">
+                        <i class="ph ph-egg"></i> Poultry
+                    </h3>
+                    <span class="stat-sub text-success"><i class="ph ph-lock"></i> Sector Locked & Verified</span>
+                </div>
+                <div class="stat-box profit">
+                    <span class="stat-label">Active Units Under Management</span>
+                    <h3 class="stat-value text-secondary">2 Batches</h3>
+                    <span class="stat-sub">1,500 Total Bird Population</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Cumulative Farm Revenue</span>
+                    <h3 class="stat-value">BDT 145,000</h3>
+                    <span class="stat-sub">Current Net Margin: +32.1%</span>
+                </div>
+            </div>
+
+            <!-- Units Attached to This Farm -->
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <div>
+                        <h3><i class="ph ph-tag"></i> Active Production Units on this Farm</h3>
+                        <p class="text-sm text-muted">Lifecycle tracking units assigned to this property</p>
+                    </div>
+                </div>
+
+                <div class="unit-grid">
+                    
+                    <!-- Unit 1 -->
+                    <div class="unit-card border-top-poultry">
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="badge badge-accent">Batch Unit</span>
+                                <h3 style="margin-top: 4px;">Lot-1 (Cobb 500 Broiler)</h3>
+                            </div>
+                            <span class="badge badge-success">Day 15</span>
+                        </div>
+                        <div class="unit-details">
+                            <p><i class="ph ph-hash"></i> <strong>Initial Chicks:</strong> 1,000 birds</p>
+                            <p><i class="ph ph-scales"></i> <strong>Current Weight:</strong> 410g avg</p>
+                            <p><i class="ph ph-calendar-blank"></i> <strong>Started:</strong> 01 Oct 2026</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="routines.html?unit=1" class="btn btn-outline btn-sm"><i class="ph ph-list-dashes"></i> Routines</a>
+                            <a href="ledger.html?unit=1" class="btn btn-outline btn-sm"><i class="ph ph-notebook"></i> Ledger</a>
+                        </div>
+                    </div>
+
+                    <!-- Unit 2 -->
+                    <div class="unit-card border-top-poultry">
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="badge badge-accent">Batch Unit</span>
+                                <h3 style="margin-top: 4px;">Lot-2 (Sonali Multi-Purpose)</h3>
+                            </div>
+                            <span class="badge badge-success">Day 45</span>
+                        </div>
+                        <div class="unit-details">
+                            <p><i class="ph ph-hash"></i> <strong>Initial Chicks:</strong> 500 birds</p>
+                            <p><i class="ph ph-scales"></i> <strong>Current Weight:</strong> 720g avg</p>
+                            <p><i class="ph ph-calendar-blank"></i> <strong>Started:</strong> 01 Sep 2026</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="routines.html?unit=2" class="btn btn-outline btn-sm"><i class="ph ph-list-dashes"></i> Routines</a>
+                            <a href="ledger.html?unit=2" class="btn btn-outline btn-sm"><i class="ph ph-notebook"></i> Ledger</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Farm Details & Location Form -->
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <h3><i class="ph ph-map-pin"></i> Farm Premises & Geographic Registry</h3>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">Division & District</label>
+                        <input type="text" class="form-control" value="Rajshahi Division &bull; Bogura District" readonly style="background-color: var(--bg-light);">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upazila / Administrative Unit</label>
+                        <input type="text" class="form-control" value="Kahalu Upazila" readonly style="background-color: var(--bg-light);">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Village / Mouza / Plot Description</label>
+                    <input type="text" class="form-control" value="Alampur Village, Mouza #42, North Shed Compound (Capacity 2,500 sq ft)">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Farm Biosecurity & Water Source</label>
+                    <textarea class="form-control" rows="2" readonly style="background-color: var(--bg-light);">Deep tubewell with mechanical overhead filtration tank. Wire mesh fencing with lime boundary footbath.</textarea>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+</body>
+</html>

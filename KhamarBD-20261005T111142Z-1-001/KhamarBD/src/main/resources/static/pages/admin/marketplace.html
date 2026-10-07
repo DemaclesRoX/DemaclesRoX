@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace Content Moderation - KhamarBD Admin</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Admin Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-shield-check" style="color: #60A5FA;"></i> KhamarBD Admin
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Overview
+                </a>
+                <a href="users.html" class="nav-item">
+                    <i class="ph ph-users"></i> User Verification
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> Farms Directory
+                </a>
+                <a href="marketplace.html" class="nav-item active">
+                    <i class="ph ph-storefront"></i> Listing Moderation
+                </a>
+                <a href="subscriptions.html" class="nav-item">
+                    <i class="ph ph-credit-card"></i> Subscriptions
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-storefront"></i> Marketplace Content & Listing Moderation</h2>
+                    <p class="text-muted">Enforce agricultural safety policies, prevent contraband feed additives, and review active listings</p>
+                </div>
+            </div>
+
+            <!-- Prohibited Substance Policy Banner -->
+            <div class="rx-banner-static" style="background-color: #FEF2F2; border-color: #FECACA; color: #991B1B;">
+                <i class="ph-fill ph-prohibit" style="color: #DC2626;"></i>
+                <span><strong>Safety Policy Enforcement:</strong> All listings promoting steroid fattening agents, hormonal growth stimulators, or human-grade reserve antibiotics are strictly blocked and flagged for immediate removal.</span>
+            </div>
+
+            <!-- Listings Moderation Table -->
+            <div class="table-responsive">
+                <table class="ledger-table">
+                    <thead>
+                        <tr>
+                            <th>Listing Title</th>
+                            <th>Seller Merchant</th>
+                            <th>Market Category</th>
+                            <th>Price & Unit</th>
+                            <th>Compliance Check</th>
+                            <th>Current Status</th>
+                            <th>Moderation Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>Sonali Chick Starter Crumble (50kg Bag)</strong>
+                                <span class="text-xs text-muted" style="display: block;">Nourish Poultry Feeds</span>
+                            </td>
+                            <td>Sonali Agro Feeds & Vet (Verified)</td>
+                            <td><span class="badge badge-primary">S03 Feed</span></td>
+                            <td class="font-semibold">BDT 2,750 / Bag</td>
+                            <td><span class="badge badge-success"><i class="ph ph-check"></i> Compliant</span></td>
+                            <td><span class="badge badge-success">Live (Published)</span></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm text-danger" onclick="alert('Listing suspended.')">Suspend</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Renamycin LA 100ml Injectable</strong>
+                                <span class="text-xs text-muted" style="display: block;">Renata Ltd &bull; Oxytetracycline 20%</span>
+                            </td>
+                            <td>Bhai Bhai Vet Pharmacy (Verified)</td>
+                            <td><span class="badge badge-primary">S09 Vet Medicine</span></td>
+                            <td class="font-semibold">BDT 180 / Vial</td>
+                            <td><span class="badge badge-success"><i class="ph ph-check"></i> Compliant</span></td>
+                            <td><span class="badge badge-success">Live (Published)</span></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm text-danger" onclick="alert('Listing suspended.')">Suspend</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Live Broiler Meat Flock (1.8kg - 2.0kg)</strong>
+                                <span class="text-xs text-muted" style="display: block;">1,000 birds ready for market</span>
+                            </td>
+                            <td>Md. Shafiqul Islam (Farmer)</td>
+                            <td><span class="badge badge-accent">Produce: Poultry</span></td>
+                            <td class="font-semibold">BDT 165 / kg</td>
+                            <td><span class="badge badge-success"><i class="ph ph-check"></i> Withdrawal Respected</span></td>
+                            <td><span class="badge badge-success">Live (Published)</span></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" onclick="alert('Details verified.')">Audit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+</body>
+</html>

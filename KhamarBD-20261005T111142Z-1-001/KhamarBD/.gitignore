@@ -1,0 +1,37 @@
+# ---- Build output -----------------------------------------------------------
+build/
+bin/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+
+# ---- Gradle -----------------------------------------------------------------
+.gradle/
+gradle-app.setting
+!gradle-wrapper.properties
+
+# ---- IDE --------------------------------------------------------------------
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.project
+.classpath
+.settings/
+
+# ---- JVM crash / heap dump junk (ei project e age 134 ta jomechilo!) --------
+hs_err_pid*.log
+replay_pid*.log
+*.hprof
+hs_err_pid*.log.*
+
+# ---- OS ---------------------------------------------------------------------
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# ---- Logs -------------------------------------------------------------------
+*.log

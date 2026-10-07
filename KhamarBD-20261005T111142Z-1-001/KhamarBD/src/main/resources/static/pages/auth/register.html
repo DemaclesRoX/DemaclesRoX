@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 1.5rem;
+            background: linear-gradient(135deg, #0F5132 0%, #0F2D1F 100%);
+        }
+        .auth-card {
+            background-color: var(--surface-color);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 520px;
+            padding: 2.5rem 2.25rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .auth-brand {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .auth-brand a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+        .auth-brand p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 0.35rem;
+        }
+        .role-selector-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .role-option input { display: none; }
+        .role-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 0.85rem 0.35rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.775rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .role-option label i { font-size: 1.35rem; }
+        .role-option input:checked + label {
+            border-color: var(--primary-color);
+            background-color: var(--primary-ultra-light);
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            
+            <div class="auth-brand">
+                <a href="../../index.html">
+                    <i class="ph-fill ph-plant" style="color: var(--secondary-color);"></i> KhamarBD
+                </a>
+                <p>Register a new account on the farm platform</p>
+            </div>
+
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                
+                <label class="form-label" style="margin-bottom: 0.5rem;">Select Your Account Type:</label>
+                <div class="role-selector-row">
+                    <div class="role-option">
+                        <input type="radio" name="userRole" id="roleFarmer" value="farmer" checked onchange="toggleRoleFields()">
+                        <label for="roleFarmer">
+                            <i class="ph ph-farm"></i> Farmer
+                        </label>
+                    </div>
+                    <div class="role-option">
+                        <input type="radio" name="userRole" id="roleBuyer" value="buyer" onchange="toggleRoleFields()">
+                        <label for="roleBuyer">
+                            <i class="ph ph-shopping-bag-open"></i> Buyer
+                        </label>
+                    </div>
+                    <div class="role-option">
+                        <input type="radio" name="userRole" id="roleSupplier" value="supplier" onchange="toggleRoleFields()">
+                        <label for="roleSupplier">
+                            <i class="ph ph-storefront"></i> Supplier
+                        </label>
+                    </div>
+                    <div class="role-option">
+                        <input type="radio" name="userRole" id="roleSpecialist" value="specialist" onchange="toggleRoleFields()">
+                        <label for="roleSpecialist">
+                            <i class="ph ph-stethoscope"></i> Specialist
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Full Name / Contact Person</label>
+                    <input type="text" id="regFullName" class="form-control" placeholder="e.g. Md. Kabir Hossain" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mobile Phone Number</label>
+                    <input type="tel" id="regPhone" class="form-control" placeholder="017XXXXXXXX" required>
+                </div>
+
+                <!-- Farmer Specific Fields -->
+                <div id="farmerFieldsArea">
+                    <div class="form-group">
+                        <label class="form-label">Primary Farm Name</label>
+                        <input type="text" id="regFarmName" class="form-control" placeholder="e.g. Bogura Green Poultry Farm">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Primary Agricultural Sector</label>
+                        <select class="form-control" id="regSector">
+                            <option value="POULTRY">Poultry (Broiler, Sonali, Duck)</option>
+                            <option value="FISHERIES">Fisheries (Carp, Tilapia, Pangasius, Shrimp)</option>
+                            <option value="DAIRY_LIVESTOCK">Dairy & Livestock (Cattle, Goat, Sheep)</option>
+                            <option value="AGRICULTURE">Agriculture & Field Crops (Rice, Potato, Vegetables)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Buyer Specific Fields -->
+                <div id="buyerFieldsArea" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Business / Enterprise Name</label>
+                        <input type="text" id="regBuyerBusiness" class="form-control" placeholder="e.g. Kasturi Hotel, DU Hall Mess, Karwan Wholesale Traders">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Procurement Category</label>
+                        <select class="form-control" id="regBuyerCategory">
+                            <option value="HOTEL_RESTAURANT">Hotel, Restaurant & Cafe (HoReCa)</option>
+                            <option value="HOSTEL_HALL">Hostel / University Hall Dining / Mess</option>
+                            <option value="WHOLESALE_PAIKAR">Wholesale Trader / Paikar (পাইকার)</option>
+                            <option value="SUPERSTORE_RETAIL">Supermarket & Grocery Retailer</option>
+                            <option value="CATERING_PROCESSOR">Food Processor & Catering Service</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Supplier Specific Fields -->
+                <div id="supplierFieldsArea" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Agro Business / Enterprise Name</label>
+                        <input type="text" id="regSupplierBusiness" class="form-control" placeholder="e.g. Sonali Agro Feeds & Vet Pharmacy">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>Select District (64 Districts Coverage)</span>
+                        <button type="button" class="link-btn font-semibold text-xs" onclick="triggerDistrictPopup()" style="display: flex; align-items: center; gap: 4px;">
+                            <i class="ph-bold ph-map-pin"></i> Open 64-District Pop-up
+                        </button>
+                    </label>
+                    
+                    <div style="display: flex; gap: 8px;">
+                        <select class="form-control" id="regDistrict" onchange="handleDistrictSelectChange()" required style="flex: 1;">
+                            <!-- Populated dynamically with all 64 districts -->
+                        </select>
+                        <button type="button" class="btn btn-outline" onclick="triggerDistrictPopup()" title="Browse all 64 districts by division" style="padding: 0 12px; white-space: nowrap;">
+                            <i class="ph ph-squares-four"></i> 64 Pop-up
+                        </button>
+                    </div>
+                    <div id="districtBadgeDisplay" style="margin-top: 6px; font-size: 0.8rem; color: var(--text-muted);">
+                        <i class="ph ph-check-circle" style="color: var(--secondary-color);"></i> Selected: <strong id="selectedDistrictName" style="color: var(--text-main);">Dhaka</strong> (<span id="selectedDivisionName">Dhaka Division</span>)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Create Password</label>
+                    <input type="password" id="regPassword" class="form-control" placeholder="At least 6 characters" minlength="6" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1.5rem;">
+                    Complete Registration
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                <span class="text-muted">Already registered?</span>
+                <a href="login.html" class="link-btn font-semibold">Sign In here</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/districts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if role is preselected via URL (e.g. register.html?role=buyer)
+            const params = new URLSearchParams(window.location.search);
+            const roleParam = params.get('role');
+            if (roleParam) {
+                const radio = document.querySelector(`input[name="userRole"][value="${roleParam.toLowerCase()}"]`);
+                if (radio) {
+                    radio.checked = true;
+                    toggleRoleFields();
+                }
+            }
+
+            // Populate standard select with all 64 districts
+            populateDistrictSelect('regDistrict', 'Dhaka');
+            updateDistrictBadge('Dhaka', 'Dhaka');
+        });
+
+        function triggerDistrictPopup() {
+            const currentDist = document.getElementById('regDistrict').value || 'Dhaka';
+            openDistrictPickerModal(currentDist, (chosenDistrict, chosenDivision) => {
+                document.getElementById('regDistrict').value = chosenDistrict;
+                updateDistrictBadge(chosenDistrict, chosenDivision);
+            });
+        }
+
+        function handleDistrictSelectChange() {
+            const dist = document.getElementById('regDistrict').value;
+            const div = getDivisionByDistrict(dist);
+            updateDistrictBadge(dist, div);
+        }
+
+        function updateDistrictBadge(dist, div) {
+            const distEl = document.getElementById('selectedDistrictName');
+            const divEl = document.getElementById('selectedDivisionName');
+            if (distEl) distEl.textContent = dist;
+            if (divEl) divEl.textContent = `${div} Division`;
+        }
+
+        function toggleRoleFields() {
+            const role = document.querySelector('input[name="userRole"]:checked').value;
+            document.getElementById('farmerFieldsArea').style.display = (role === 'farmer') ? 'block' : 'none';
+            document.getElementById('buyerFieldsArea').style.display = (role === 'buyer') ? 'block' : 'none';
+            document.getElementById('supplierFieldsArea').style.display = (role === 'supplier') ? 'block' : 'none';
+        }
+
+        async function handleRegister(event) {
+            if(event) event.preventDefault();
+            const roleInput = document.querySelector('input[name="userRole"]:checked').value;
+            const name = document.getElementById('regFullName').value;
+            const phone = document.getElementById('regPhone').value;
+            const district = document.getElementById('regDistrict').value || 'Dhaka';
+            const division = getDivisionByDistrict(district);
+            const password = document.getElementById('regPassword').value;
+            
+            let primaryRole = "FARMER";
+            let businessName = "";
+
+            if (roleInput === 'buyer') {
+                primaryRole = "BUYER";
+                businessName = document.getElementById('regBuyerBusiness').value || `${name} Commercial Procurement`;
+            } else if (roleInput === 'supplier') {
+                primaryRole = "SUPPLIER";
+                businessName = document.getElementById('regSupplierBusiness').value || `${name} Agro Supplies`;
+            } else if (roleInput === 'specialist') {
+                primaryRole = "SPECIALIST";
+            }
+
+            const payload = {
+                name,
+                phone,
+                email: phone + "@test.com",
+                password,
+                primaryRole,
+                district,
+                division: division,
+                upazila: district,
+                businessName: businessName || null
+            };
+
+            try {
+                const user = await apiRequest("/user/register", "POST", payload);
+                setCurrentUser(user);
+                
+                // If Farmer, auto-create Farm
+                if (primaryRole === 'FARMER') {
+                    const farmName = document.getElementById('regFarmName').value || `${user.name}'s Farm`;
+                    const sector = document.getElementById('regSector').value || 'POULTRY';
+                    const farmPayload = {
+                        userId: user.userId,
+                        farmName: farmName,
+                        farmType: sector,
+                        locationDetails: district
+                    };
+                    try {
+                        await apiRequest("/farm/create", "POST", farmPayload);
+                    } catch(farmErr) {
+                        console.error("Farm creation failed", farmErr);
+                    }
+                }
+
+                alert(`Account created successfully for ${user.name}! Redirecting to portal...`);
+                
+                if (primaryRole === 'BUYER') {
+                    window.location.href = '../buyer/dashboard.html';
+                } else if (primaryRole === 'SUPPLIER') {
+                    window.location.href = '../supplier/dashboard.html';
+                } else if (primaryRole === 'SPECIALIST') {
+                    window.location.href = '../specialist/dashboard.html';
+                } else {
+                    window.location.href = '../dashboard.html';
+                }
+            } catch (err) {
+                alert("Registration failed: " + err.message);
+            }
+        }
+    </script>
+</body>
+</html>

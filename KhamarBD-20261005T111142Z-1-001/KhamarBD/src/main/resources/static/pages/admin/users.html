@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Directory & Verification - KhamarBD Admin</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Admin Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-shield-check" style="color: #60A5FA;"></i> KhamarBD Admin
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Overview
+                </a>
+                <a href="users.html" class="nav-item active">
+                    <i class="ph ph-users"></i> User Verification
+                    <span class="badge badge-warning" style="margin-left: auto;">4 Pending</span>
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> Farms Directory
+                </a>
+                <a href="marketplace.html" class="nav-item">
+                    <i class="ph ph-storefront"></i> Listing Moderation
+                </a>
+                <a href="subscriptions.html" class="nav-item">
+                    <i class="ph ph-credit-card"></i> Subscriptions
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-users"></i> Platform User Directory & Verification</h2>
+                    <p class="text-muted">Manage user roles, verify trade licenses & medical degrees, and control access permissions</p>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Filter by Role:</label>
+                    <select class="form-control" id="roleFilter">
+                        <option value="">All Roles (5)</option>
+                        <option value="ROLE_FARMER">ROLE_FARMER</option>
+                        <option value="ROLE_SUPPLIER">ROLE_SUPPLIER</option>
+                        <option value="ROLE_SPECIALIST">ROLE_SPECIALIST</option>
+                        <option value="ROLE_BUYER">ROLE_BUYER</option>
+                        <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Verification:</label>
+                    <select class="form-control">
+                        <option value="">All Statuses</option>
+                        <option value="pending" selected>Pending Review</option>
+                        <option value="verified">Verified</option>
+                        <option value="unverified">Unverified</option>
+                    </select>
+                </div>
+                <input type="text" class="form-control" placeholder="Search name or mobile number..." style="max-width: 280px; margin-left: auto;">
+            </div>
+
+            <!-- Users Table -->
+            <div class="table-responsive">
+                <table class="ledger-table">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Full Name & Contact</th>
+                            <th>Assigned Role</th>
+                            <th>Location</th>
+                            <th>Verification Status</th>
+                            <th>Registered</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>USR-1001</code></td>
+                            <td>
+                                <strong>Md. Shafiqul Islam</strong>
+                                <span class="text-xs text-muted" style="display: block;">01711-000001 &bull; farmer@khamarbd.com</span>
+                            </td>
+                            <td><span class="badge badge-accent">ROLE_FARMER</span></td>
+                            <td>Kahalu, Bogura</td>
+                            <td><span class="badge badge-success"><i class="ph ph-check"></i> Phone Verified</span></td>
+                            <td>12 Jan 2026</td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" onclick="alert('Viewing farmer profile & units.')">View</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>USR-1088</code></td>
+                            <td>
+                                <strong>Dr. Md. Anisur Rahman</strong>
+                                <span class="text-xs text-muted" style="display: block;">BMDC Reg #12345 &bull; 01711-889900</span>
+                            </td>
+                            <td><span class="badge badge-primary">ROLE_SPECIALIST</span></td>
+                            <td>Bogura Sadar</td>
+                            <td><span class="badge badge-success"><i class="ph ph-check"></i> Verified Practitioner</span></td>
+                            <td>15 Jan 2026</td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" onclick="alert('Clinical credentials verified.')">Credentials</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>USR-1142</code></td>
+                            <td>
+                                <strong>Dr. Tariqul Islam</strong>
+                                <span class="text-xs text-muted" style="display: block;">BMDC Reg #14920 &bull; 01712-445566</span>
+                            </td>
+                            <td><span class="badge badge-primary">ROLE_SPECIALIST</span></td>
+                            <td>Shibganj, Bogura</td>
+                            <td><span class="badge badge-warning"><i class="ph ph-clock"></i> Verification Pending</span></td>
+                            <td>Today</td>
+                            <td>
+                                <div style="display: flex; gap: 4px;">
+                                    <button class="btn btn-primary btn-sm" onclick="alert('Approved!')">Approve</button>
+                                    <button class="btn btn-outline btn-sm text-danger" onclick="alert('Rejected.')">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>USR-1050</code></td>
+                            <td>
+                                <strong>Sonali Agro Feeds & Vet</strong>
+                                <span class="text-xs text-muted" style="display: block;">TL-BOG-2024-8891 &bull; 01711-223344</span>
+                            </td>
+                            <td><span class="badge badge-success">ROLE_SUPPLIER</span></td>
+                            <td>Shibganj, Bogura</td>
+                            <td><span class="badge badge-success"><i class="ph ph-check"></i> Trade Verified</span></td>
+                            <td>18 Jan 2026</td>
+                            <td>
+                                <button class="btn btn-outline btn-sm">Audit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>USR-1190</code></td>
+                            <td>
+                                <strong>Jasim Uddin</strong>
+                                <span class="text-xs text-muted" style="display: block;">01719-778899 &bull; Wholesale Poultry Trader</span>
+                            </td>
+                            <td><span class="badge badge-muted">ROLE_BUYER</span></td>
+                            <td>Dhaka North</td>
+                            <td><span class="badge badge-success"><i class="ph ph-check"></i> Phone Verified</span></td>
+                            <td>04 Feb 2026</td>
+                            <td>
+                                <button class="btn btn-outline btn-sm">Details</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List New Farm Supply - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Supplier Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Supplier Dashboard
+                </a>
+                <a href="listings.html" class="nav-item">
+                    <i class="ph ph-stack"></i> Product Listings
+                </a>
+                <a href="add-product.html" class="nav-item active">
+                    <i class="ph ph-plus-circle"></i> Add New Product
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Dispatch
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Customer Messages
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-storefront"></i> Business Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-plus-circle"></i> Create Marketplace Product Listing</h2>
+                    <p class="text-muted">Publish inputs, feeds, medicines, or equipment to the Farm Supplies directory</p>
+                </div>
+                <div class="header-actions">
+                    <a href="listings.html" class="btn btn-outline">Cancel</a>
+                    <button class="btn btn-primary" onclick="publishProduct()"><i class="ph ph-check"></i> Publish Listing</button>
+                </div>
+            </div>
+
+            <div class="dash-card" style="max-width: 900px;">
+                <form id="addProductForm" onsubmit="event.preventDefault(); publishProduct();">
+                    
+                    <div class="dash-card-header">
+                        <h3><i class="ph ph-tag"></i> Product Identification & Taxonomy</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Title (5 to 160 characters)</label>
+                        <input type="text" id="prodTitle" class="form-control" placeholder="e.g. Sonali Chick Starter Crumble (50kg Bag) - Nourish Feeds" minlength="5" maxlength="160" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Main Taxonomy Category</label>
+                            <select class="form-control" id="prodCategory" required>
+                                <option value="">Select Controlled Category...</option>
+                                <option value="poultry_feed">A. Poultry Feeds (Starter, Grower, Finisher, Layer)</option>
+                                <option value="livestock_feed">B. Dairy & Livestock Feeds (Concentrates, Mineral Mix)</option>
+                                <option value="fisheries_feed">C. Fisheries Feeds (Floating, Sinking Pellets)</option>
+                                <option value="crop_inputs">D. Agriculture Seeds & Fertilizers</option>
+                                <option value="vet_medicine">Veterinary Medicine & Vaccines (Antibiotics, Anthelmintic)</option>
+                                <option value="aqua_treatments">Aquaculture Treatments (Zeolite, Probiotics, Oxy-Drop)</option>
+                                <option value="equipment">Farm Equipment (Drinkers, Feeders, Aerators, Sprayers)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Brand Name (Optional)</label>
+                            <input type="text" id="prodBrand" class="form-control" placeholder="e.g. Nourish, Renata, Square, ACI, CP">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Applicable Farm Sector</label>
+                        <select class="form-control" id="prodSector" required>
+                            <option value="POULTRY">Poultry (Broiler, Sonali, Duck, Layer)</option>
+                            <option value="DAIRY_LIVESTOCK">Dairy & Livestock (Cattle, Goat, Sheep)</option>
+                            <option value="FISHERIES">Fisheries (Carp, Tilapia, Pangasius, Shrimp)</option>
+                            <option value="AGRICULTURE">Agriculture & Crops</option>
+                            <option value="MULTI">Cross-Sector / General Purpose</option>
+                        </select>
+                    </div>
+
+                    <div class="dash-card-header" style="margin-top: 2rem;">
+                        <h3><i class="ph ph-currency-circle-dollar"></i> Pricing, Unit & Stock Availability</h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Price per Unit (BDT)</label>
+                            <input type="number" id="prodPrice" class="form-control" placeholder="e.g. 2750" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sales Unit</label>
+                            <select class="form-control" id="prodUnit" required>
+                                <option value="50kg Bag">50kg Bag</option>
+                                <option value="25kg Sack">25kg Sack</option>
+                                <option value="10kg Sack">10kg Sack</option>
+                                <option value="Kg">Kg</option>
+                                <option value="Gram">Gram</option>
+                                <option value="Liter">Liter</option>
+                                <option value="100ml Bottle">100ml Bottle</option>
+                                <option value="Vial">Vial / Ampoule</option>
+                                <option value="Piece">Piece / Unit</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Initial In-Stock Quantity</label>
+                            <input type="number" id="prodStock" class="form-control" placeholder="e.g. 50" min="1" required>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Minimum Order Quantity (MOQ)</label>
+                            <input type="number" id="prodMoq" class="form-control" placeholder="1" min="1" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Fulfillment / Delivery Method</label>
+                            <select class="form-control" id="prodDelivery">
+                                <option value="both">Both Farm-Gate Delivery & In-Store Counter Pickup</option>
+                                <option value="pickup">In-Store Counter Pickup Only</option>
+                                <option value="delivery">Delivery to Farmer Shed / Pond</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Detailed Product Description & Specifications</label>
+                        <textarea id="prodDesc" class="form-control" rows="4" placeholder="Detail nutritional composition, crude protein percentage, manufacturing date, recommended storage instructions, and target age group..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Photographs (Saved to Local Storage)</label>
+                        <input type="file" id="supplierPhotoInput" class="form-control" accept="image/*" onchange="handleSupplierFileUpload(event)">
+                        <div id="supplierPhotoPreviewArea" style="display: none; margin-top: 10px; align-items: center; gap: 15px;">
+                            <img id="supplierPhotoPreview" style="width: 100px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-color);">
+                            <span id="supplierPhotoStatus" style="font-size: 0.85rem; color: var(--text-muted);"></span>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                        <a href="listings.html" class="btn btn-outline">Cancel</a>
+                        <button type="submit" class="btn btn-primary btn-lg">Publish Listing</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        let uploadedProductImage = '';
+
+        async function handleSupplierFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const previewArea = document.getElementById('supplierPhotoPreviewArea');
+            const previewImg = document.getElementById('supplierPhotoPreview');
+            const statusEl = document.getElementById('supplierPhotoStatus');
+            
+            previewArea.style.display = 'flex';
+            statusEl.textContent = `Uploading ${file.name} to local storage...`;
+
+            const reader = new FileReader();
+            reader.onload = (e) => { previewImg.src = e.target.result; };
+            reader.readAsDataURL(file);
+
+            try {
+                const url = await uploadImageFile(file);
+                uploadedProductImage = url;
+                statusEl.textContent = `Saved locally: ${file.name}`;
+                statusEl.style.color = 'var(--primary-color)';
+            } catch (err) {
+                statusEl.textContent = `Upload failed: ${err.message}`;
+                statusEl.style.color = 'red';
+            }
+        }
+
+        async function publishProduct() {
+            const title = document.getElementById('prodTitle').value;
+            const price = document.getElementById('prodPrice').value;
+            const cat = document.getElementById('prodCategory').value;
+            const unit = document.getElementById('prodUnit').value;
+            const qty = document.getElementById('prodStock').value;
+            const brand = document.getElementById('prodBrand').value;
+            const sector = document.getElementById('prodSector').value;
+            const desc = document.getElementById('prodDesc').value;
+
+            if (!title || !price) {
+                alert("Please fill in the required product title and price fields.");
+                return;
+            }
+
+            try {
+                const user = getCurrentUser();
+                const payload = {
+                    sellerId: user ? user.userId : 2,
+                    title: title,
+                    productCategory: cat,
+                    price: price,
+                    quantityAvailable: qty || 50,
+                    unit: unit,
+                    listingTab: 'FARM_SUPPLIES',
+                    farmSector: sector,
+                    brandName: brand || 'Generic',
+                    description: desc,
+                    imageUrls: uploadedProductImage,
+                    division: 'Rajshahi',
+                    district: 'Bogura',
+                    upazila: 'Sadar'
+                };
+
+                await apiRequest('/listing/create', 'POST', payload);
+                alert(`Product listing "${title}" has been published successfully to Farm Supplies!`);
+                window.location.href = '../public/marketplace.html?tab=supplies';
+            } catch (err) {
+                console.error(err);
+                alert('Error publishing product: ' + err.message);
+            }
+        }
+    </script>
+</body>
+</html>

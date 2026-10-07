@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Farm Supply Listing - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Supplier Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Supplier Dashboard
+                </a>
+                <a href="listings.html" class="nav-item active">
+                    <i class="ph ph-stack"></i> Product Listings
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-plus-circle"></i> Add New Product
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Dispatch
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Customer Messages
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-storefront"></i> Business Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-pencil-simple"></i> Edit Product Listing</h2>
+                    <p class="text-muted">Update pricing, in-stock quantity, or status for this listing</p>
+                </div>
+                <div class="header-actions">
+                    <a href="listings.html" class="btn btn-outline">Back to Listings</a>
+                    <button class="btn btn-primary" onclick="saveEdits()"><i class="ph ph-floppy-disk"></i> Save Changes</button>
+                </div>
+            </div>
+
+            <div class="dash-card" style="max-width: 900px;">
+                <form id="editProductForm" onsubmit="event.preventDefault(); saveEdits();">
+                    
+                    <div class="dash-card-header">
+                        <h3><i class="ph ph-tag"></i> Listing Information</h3>
+                        <span class="badge badge-success">Currently Active</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Title</label>
+                        <input type="text" id="editTitle" class="form-control" value="Sonali Chick Starter Crumble (50kg Bag) - Nourish Feeds" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <input type="text" class="form-control" value="A. Poultry Feeds (Starter Crumble)" readonly style="background-color: var(--bg-light);">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Brand</label>
+                            <input type="text" class="form-control" value="Nourish Poultry Feeds">
+                        </div>
+                    </div>
+
+                    <div class="dash-card-header" style="margin-top: 1.5rem;">
+                        <h3><i class="ph ph-currency-circle-dollar"></i> Price & Inventory Status</h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Price per Unit (BDT)</label>
+                            <input type="number" id="editPrice" class="form-control" value="2750" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Unit</label>
+                            <input type="text" class="form-control" value="50kg Bag" readonly style="background-color: var(--bg-light);">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Current Stock Quantity</label>
+                            <input type="number" id="editStock" class="form-control" value="48" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Listing Status</label>
+                        <select class="form-control" id="editStatus">
+                            <option value="ACTIVE" selected>Active (Publicly Visible)</option>
+                            <option value="INACTIVE">Inactive (Hidden from Marketplace)</option>
+                            <option value="OUT_OF_STOCK">Out of Stock</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Description</label>
+                        <textarea class="form-control" rows="4">Specially formulated starter crumble for Sonali day-old chicks up to 4 weeks of age. Crude Protein minimum 20.5%, enriched with essential amino acids, vitamin-mineral premix, and coccidiostats.</textarea>
+                    </div>
+
+                    <div class="modal-footer" style="padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                        <button type="button" class="btn btn-outline text-danger" onclick="deleteListing()">Delete Listing</button>
+                        <button type="submit" class="btn btn-primary">Update Listing</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        function saveEdits() {
+            alert("Product listing updated successfully!");
+            window.location.href = 'listings.html';
+        }
+
+        function deleteListing() {
+            if (confirm("Are you sure you want to permanently delete this listing?")) {
+                alert("Listing removed.");
+                window.location.href = 'listings.html';
+            }
+        }
+    </script>
+</body>
+</html>

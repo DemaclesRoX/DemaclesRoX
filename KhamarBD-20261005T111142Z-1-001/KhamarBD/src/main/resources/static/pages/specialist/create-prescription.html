@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Digital Prescription - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web">
+        </script>
+    <style>
+        .rx-creator-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+            align-items: start;
+        }
+        .medicine-builder-item {
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .remove-med-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+        .preset-badge-btn {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.15s;
+            display: block;
+            width: 100%;
+            margin-bottom: 6px;
+        }
+        .preset-badge-btn:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-ultra-light);
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Specialist Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Specialist Dashboard
+                </a>
+                <a href="consultation-requests.html" class="nav-item">
+                    <i class="ph ph-bell-ringing"></i> Requests
+                </a>
+                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Consultations
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="create-prescription.html" class="nav-item active">
+                    <i class="ph ph-file-plus"></i> Issue Prescription
+                </a>
+
+                <a href="prescription-templates.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Rx Templates
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-user-gear"></i> Clinical Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-file-plus"></i> Issue Digital Prescription</h2>
+                    <p class="text-muted">Generate certified clinical prescription with drug withdrawal periods and farm linkage</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="previewRx()"><i class="ph ph-eye"></i> Live Preview</button>
+                    <button class="btn btn-primary" onclick="submitPrescription()"><i class="ph ph-paper-plane-tilt"></i> Sign & Issue Rx</button>
+                </div>
+            </div>
+
+            <!-- Mandatory Reference Banner -->
+            <div class="rx-banner-static">
+                <i class="ph-fill ph-warning"></i>
+                <span><strong>Legal Compliance Notice:</strong> Digital prescriptions automatically display the required statutory reference disclaimer and withdrawal period warnings to prevent drug residues in food animals.</span>
+            </div>
+
+            <div class="rx-creator-layout">
+                
+                <!-- Left Column: Form Builder -->
+                <div class="dash-card">
+                    <form id="rxForm">
+                        
+                        <div class="dash-card-header">
+                            <h3><i class="ph ph-user"></i> Patient & Farm Linkage</h3>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label class="form-label">Target Farmer</label>
+                                <select class="form-control" id="targetFarmer" required onchange="onFarmerSelected(this.value)">
+                                    <option value="">Select Farmer...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Tracking Unit / Production Lot</label>
+                                <select class="form-control" id="targetUnit">
+                                    <option value="">Select Farm/Lot...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Clinical Diagnosis / Symptoms</label>
+                            <input type="text" id="rxDiagnosis" class="form-control" placeholder="e.g. Acute Coccidiosis & Dysbiosis with bloody droppings" required value="Acute Coccidiosis & Enteritis">
+                        </div>
+
+                        <!-- Dynamic Prescription Items List -->
+                        <div class="dash-card-header" style="margin-top: 2rem;">
+                            <h3><i class="ph ph-pill"></i> Prescribed Medicines & Inputs</h3>
+                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                <select id="templateSelect" class="form-control" onchange="applyTemplate(this.value)" style="width: 200px;">
+                                    <option value="">Custom Preset...</option>
+                                </select>
+                                <button type="button" class="btn btn-outline btn-sm" onclick="addMedicineItem()">
+                                    <i class="ph ph-plus"></i> Add Item
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="medicinesContainer">
+                            
+                            <!-- Item 1 -->
+                            <div class="medicine-builder-item" id="item-1">
+                                <button type="button" class="remove-med-btn" onclick="removeItem('item-1')">&times;</button>
+                                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-bottom: 0.75rem;">
+                                    <div>
+                                        <label class="form-label">Medicine / Active Drug Name</label>
+                                        <input type="text" class="form-control med-name" value="Toltrazuril 2.5% Liquid" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Drug Withdrawal (Days)</label>
+                                        <input type="number" class="form-control med-withdrawal" value="14" min="0" placeholder="0 if none" required>
+                                    </div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <label class="form-label">Dosage / Application Rate</label>
+                                        <input type="text" class="form-control med-dose" value="1 ml / Liter drinking water" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Duration</label>
+                                        <input type="text" class="form-control med-duration" value="2 consecutive days" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Route / Administration</label>
+                                        <select class="form-control med-route">
+                                            <option value="Drinking Water" selected>Drinking Water (Oral)</option>
+                                            <option value="Feed Mix">Feed Premix</option>
+                                            <option value="Intramuscular">Intramuscular Injection (IM)</option>
+                                            <option value="Subcutaneous">Subcutaneous (SC)</option>
+                                            <option value="Water Broadcast">Pond Water Broadcast</option>
+                                            <option value="Foliar Spray">Foliar Spray (Crops)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 2 -->
+                            <div class="medicine-builder-item" id="item-2">
+                                <button type="button" class="remove-med-btn" onclick="removeItem('item-2')">&times;</button>
+                                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-bottom: 0.75rem;">
+                                    <div>
+                                        <label class="form-label">Medicine / Active Drug Name</label>
+                                        <input type="text" class="form-control med-name" value="Vitamin K3 Water Soluble Powder" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Drug Withdrawal (Days)</label>
+                                        <input type="number" class="form-control med-withdrawal" value="0" min="0" placeholder="0 if none">
+                                    </div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <label class="form-label">Dosage / Application Rate</label>
+                                        <input type="text" class="form-control med-dose" value="1 gram / 2 Liters water" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Duration</label>
+                                        <input type="text" class="form-control med-duration" value="3 days in evening" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Route / Administration</label>
+                                        <select class="form-control med-route">
+                                            <option value="Drinking Water" selected>Drinking Water (Oral)</option>
+                                            <option value="Feed Mix">Feed Premix</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Clinical Advice & Prohibitions -->
+                        <div class="dash-card-header" style="margin-top: 2rem;">
+                            <h3><i class="ph ph-chat-text"></i> Clinical Advisory & Instructions</h3>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Special Management Advice</label>
+                            <textarea id="rxAdvice" class="form-control" rows="3">Scrape out all wet caked litter beneath bell drinkers and top up with fresh, dry wood shavings. Isolate lethargic birds. Ensure continuous freshwater access.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Ethical Practice Confirmation</label>
+                            <div style="background-color: #FEF3C7; padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid #FCD34D;">
+                                <label style="font-size: 0.85rem; color: #78350F; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="prohibitionCheck" checked required>
+                                    I certify that this prescription conforms to National Drug Administration regulations and strictly prohibits unauthorized anabolic hormones or non-therapeutic human reserve antibiotics.
+                                </label>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Right Column: 1-Click Template Loader -->
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h3><i class="ph ph-bookmark-simple"></i> Load 9 Built-in Presets</h3>
+                    </div>
+                    <p class="text-xs text-muted" style="margin-bottom: 1rem;">
+                        Pre-populate standard diagnostic protocols from the national agronomy seed catalogue:
+                    </p>
+
+                    <button class="btn btn-primary" onclick="openRxTemplateModal()" style="width: 100%;"><i class="ph ph-file-dashed"></i> Load Rx Template</button>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        let itemCount = 2;
+        let activeConsultationId = null;
+
+        function addMedicineItem() {
+            itemCount++;
+            const container = document.getElementById('medicinesContainer');
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'medicine-builder-item';
+            itemDiv.id = `item-${itemCount}`;
+            itemDiv.innerHTML = `
+                <button type="button" class="remove-med-btn" onclick="removeItem('item-${itemCount}')">&times;</button>
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-bottom: 0.75rem;">
+                    <div>
+                        <label class="form-label">Medicine / Active Drug Name</label>
+                        <input type="text" class="form-control med-name" placeholder="e.g. Oxytetracycline 20%" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Drug Withdrawal (Days)</label>
+                        <input type="number" class="form-control med-withdrawal" placeholder="e.g. 7" min="0" required>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label class="form-label">Dosage / Application Rate</label>
+                        <input type="text" class="form-control med-dose" placeholder="e.g. 1 ml / 10 kg body weight" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Duration</label>
+                        <input type="text" class="form-control med-duration" placeholder="e.g. 5 days" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Route / Administration</label>
+                        <select class="form-control med-route">
+                            <option value="Intramuscular">Intramuscular (IM)</option>
+                            <option value="Drinking Water">Drinking Water (Oral)</option>
+                            <option value="Feed Mix">Feed Premix</option>
+                            <option value="Water Broadcast">Water Broadcast</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            container.appendChild(itemDiv);
+        }
+
+        function removeItem(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        let templates = [];
+        
+        async function loadTemplates() {
+            try {
+                templates = await apiRequest('/template/search?templateType=PRESCRIPTION');
+                const select = document.getElementById('templateSelect');
+                if (select) {
+                    templates.forEach(t => {
+                        select.innerHTML += `<option value="${t.templateCode}">${t.nameEn} (${t.sector || 'General'})</option>`;
+                    });
+                }
+            } catch(e) {
+                console.error('Could not load templates', e);
+            }
+        }
+
+        async function loadFarmers() {
+            try {
+                const farmers = await apiRequest('/user/search?primaryRole=FARMER');
+                const select = document.getElementById('targetFarmer');
+                select.innerHTML = '<option value="">Select Target Farmer...</option>';
+                farmers.forEach(f => {
+                    const loc = f.district ? ` (${f.district})` : '';
+                    select.innerHTML += `<option value="${f.userId}">${f.name} - ${f.phone}${loc}</option>`;
+                });
+            } catch (e) {
+                console.error('Could not load farmers', e);
+            }
+        }
+
+        async function onFarmerSelected(farmerId, preselectLotId) {
+            const unitSelect = document.getElementById('targetUnit');
+            unitSelect.innerHTML = '<option value="">Loading tracking units...</option>';
+            if (!farmerId) {
+                unitSelect.innerHTML = '<option value="">Select Farm/Lot...</option>';
+                return;
+            }
+            try {
+                const lots = await apiRequest(`/lot/search?farmerId=${farmerId}`);
+                unitSelect.innerHTML = '<option value="">General Farm Consultation (No specific lot)</option>';
+                lots.forEach(lot => {
+                    const species = lot.speciesOrBreed ? ` - ${lot.speciesOrBreed}` : '';
+                    const tag = lot.lotCodeOrTag || `Lot #${lot.lotId}`;
+                    const selected = (preselectLotId && (lot.lotId == preselectLotId)) ? 'selected' : '';
+                    unitSelect.innerHTML += `<option value="${lot.lotId}" ${selected}>${tag}${species} (${lot.categoryCode || 'Lot'})</option>`;
+                });
+            } catch (e) {
+                unitSelect.innerHTML = '<option value="">General Farm Consultation</option>';
+            }
+        }
+
+        async function initPageFromParams() {
+            await loadFarmers();
+            await loadTemplates();
+            
+            const params = new URLSearchParams(window.location.search);
+            const consId = params.get('consultationId');
+            const pFarmerId = params.get('farmerId');
+            const pLotId = params.get('unitId') || params.get('lotId');
+            const tplCode = params.get('template');
+
+            if (consId) {
+                activeConsultationId = consId;
+                try {
+                    const cons = await apiRequest(`/consultation/${consId}`);
+                    if (cons) {
+                        if (cons.farmerId) {
+                            document.getElementById('targetFarmer').value = cons.farmerId;
+                            await onFarmerSelected(cons.farmerId, cons.lotId);
+                        }
+                        if (cons.problemDescription) {
+                            document.getElementById('rxDiagnosis').value = cons.problemDescription;
+                        }
+                    }
+                } catch(e) {
+                    console.error('Error loading consultation details', e);
+                }
+            } else if (pFarmerId) {
+                document.getElementById('targetFarmer').value = pFarmerId;
+                await onFarmerSelected(pFarmerId, pLotId);
+            }
+
+            if (tplCode) {
+                loadSelectedRxTemplate(tplCode);
+            }
+        }
+
+        function applyTemplate(code) {
+            if (!code) {
+                return;
+            }
+            loadSelectedRxTemplate(code);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initPageFromParams();
+        });
+
+        function previewRx() {
+            window.location.href = '../farmer/prescriptions.html';
+        }
+
+        async function submitPrescription() {
+            const user = getCurrentUser();
+            const farmerSelect = document.getElementById('targetFarmer');
+            const farmerId = farmerSelect.value;
+            if (!farmerId) {
+                alert('Please select a target farmer.');
+                return;
+            }
+
+            const lotSelect = document.getElementById('targetUnit');
+            const lotId = lotSelect.value ? parseInt(lotSelect.value) : null;
+            const diagnosis = document.getElementById('rxDiagnosis').value.trim();
+            if (!diagnosis) {
+                alert('Please provide a clinical diagnosis or symptom summary.');
+                return;
+            }
+
+            const advice = document.getElementById('rxAdvice').value.trim();
+            const prohibition = document.getElementById('prohibitionCheck');
+            if (prohibition && !prohibition.checked) {
+                alert('You must certify the ethical practice confirmation to issue a prescription.');
+                return;
+            }
+
+            // Build medicine items
+            const items = [];
+            const itemNodes = document.querySelectorAll('.medicine-builder-item');
+            itemNodes.forEach((node, idx) => {
+                const nameInput = node.querySelector('.med-name');
+                const withdrawalInput = node.querySelector('.med-withdrawal');
+                const doseInput = node.querySelector('.med-dose');
+                const durInput = node.querySelector('.med-duration');
+                const routeSelect = node.querySelector('.med-route');
+
+                if (nameInput && nameInput.value.trim()) {
+                    const durVal = durInput ? durInput.value.trim() : '';
+                    const durNum = parseInt(durVal.replace(/\D/g, '')) || 5;
+                    items.push({
+                        medicineName: nameInput.value.trim(),
+                        dosage: doseInput ? doseInput.value.trim() : 'As directed',
+                        durationDays: durNum,
+                        instructions: routeSelect ? routeSelect.value : (durVal || 'Oral'),
+                        categoryCode: withdrawalInput ? `Withdrawal: ${withdrawalInput.value || 0} Days` : 'General',
+                        sortOrder: idx + 1
+                    });
+                }
+            });
+
+            if (items.length === 0) {
+                alert('Please add at least one prescribed medicine or input.');
+                return;
+            }
+
+            const payload = {
+                consultationId: activeConsultationId ? parseInt(activeConsultationId) : null,
+                farmerId: parseInt(farmerId),
+                specialistId: user ? user.userId : null,
+                lotId: lotId,
+                diagnosis: diagnosis,
+                symptomsNote: diagnosis,
+                specialNotice: advice,
+                notes: `${diagnosis}. ${advice}`,
+                digitalSignature: user ? `CERTIFIED_DVM_${user.userId}_${Date.now()}` : `CERTIFIED_DVM_${Date.now()}`,
+                items: items
+            };
+
+            try {
+                const res = await apiRequest('/prescription/create', 'POST', payload);
+                alert(`Digital Prescription #${res.prescriptionId || ''} successfully certified & issued!`);
+                window.location.href = 'consultations.html';
+            } catch (e) {
+                alert('Failed to issue prescription: ' + e.message);
+            }
+        }
+    
+        
+        async function openRxTemplateModal() {
+            document.getElementById('rxTemplateModal').classList.add('active');
+            const tbody = document.getElementById('rxTemplatesTableBody');
+            tbody.innerHTML = '<tr><td colspan="3">Loading...</td></tr>';
+            try {
+                const templates = await apiRequest('/template/search?templateType=PRESCRIPTION');
+                if (templates.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" class="text-muted">No templates found.</td></tr>';
+                    return;
+                }
+                let html = '';
+                templates.forEach(t => {
+                    html += "<tr><td><strong>" + t.nameEn + "</strong></td><td><span class='badge badge-secondary'>" + t.sector + "</span></td><td><button class='btn btn-outline btn-sm' onclick=\"loadSelectedRxTemplate('" + t.templateCode + "')\">Load</button></td></tr>";
+                });
+                tbody.innerHTML = html;
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="3" class="text-danger">Failed to load templates.</td></tr>';
+            }
+        }
+
+        async function loadSelectedRxTemplate(code) {
+            try {
+                const t = await apiRequest("/template/" + code);
+                const items = JSON.parse(t.contentJson);
+                
+                const container = document.getElementById('medicinesContainer');
+                container.innerHTML = '';
+                itemCount = 0;
+                
+                items.forEach(item => {
+                    itemCount++;
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'medicine-builder-item';
+                    itemDiv.id = "item-" + itemCount;
+                    
+                    let inner = "<button type='button' class='remove-med-btn' onclick='removeItem(\"item-" + itemCount + "\")'>&times;</button>";
+                    inner += "<div style='display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-bottom: 0.75rem;'>";
+                    inner += "<div><label class='form-label'>Drug / Medicine Name</label>";
+                    inner += "<input type='text' class='form-control' value='" + (item.medicineName || item.drugName || '') + "'></div>";
+                    inner += "<div><label class='form-label'>Type/Route</label>";
+                    inner += "<input type='text' class='form-control' value='" + (item.instructions || item.route || '') + "'></div></div>";
+                    
+                    inner += "<div style='display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;'>";
+                    inner += "<div><label class='form-label'>Dosage & Frequency</label>";
+                    inner += "<input type='text' class='form-control' value='" + (item.dosage || '') + "'></div>";
+                    inner += "<div><label class='form-label'>Duration (Days)</label>";
+                    inner += "<input type='number' class='form-control' value='" + (item.durationDays || item.duration || '') + "'></div></div>";
+                    
+                    itemDiv.innerHTML = inner;
+                    container.appendChild(itemDiv);
+                });
+                
+                document.getElementById('rxTemplateModal').classList.remove('active');
+                
+                if (items[0] && items[0].advice) {
+                    document.getElementById('rxAdvice').value = items[0].advice;
+                }
+                
+                alert('Template loaded successfully!');
+            } catch (e) {
+                alert('Failed to load template: ' + e.message);
+            }
+        }
+</script>
+    <!-- Rx Template Modal -->
+    <div class="modal" id="rxTemplateModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>Select Prescription Template</h3>
+                <button class="close-btn" onclick="document.getElementById('rxTemplateModal').classList.remove('active')">&times;</button>
+            </div>
+            <div style="margin-top: 15px;">
+                <table class="table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Template Name</th>
+                            <th>Sector</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rxTemplatesTableBody">
+                        <tr><td colspan="3">Loading templates...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+

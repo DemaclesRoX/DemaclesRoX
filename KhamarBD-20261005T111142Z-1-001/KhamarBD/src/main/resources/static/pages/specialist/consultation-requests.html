@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultation Requests - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Specialist Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Specialist Dashboard
+                </a>
+                <a href="consultation-requests.html" class="nav-item active">
+                    <i class="ph ph-bell-ringing"></i> Requests
+                    <span class="badge badge-danger" style="margin-left: auto;">3 New</span>
+                </a>
+                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Consultations
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="create-prescription.html" class="nav-item">
+                    <i class="ph ph-file-plus"></i> Issue Prescription
+                </a>
+                <a href="prescription-templates.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Rx Templates (Presets)
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-user-gear"></i> Clinical Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-bell-ringing"></i> Patient Consultation Inquiries</h2>
+                    <p class="text-muted">Direct appointment requests submitted by verified farmers with unit health logs</p>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Filter by Sector:</label>
+                    <select class="form-control" id="sectorFilter">
+                        <option value="">All Sectors</option>
+                        <option value="poultry">Poultry</option>
+                        <option value="dairy">Dairy & Livestock</option>
+                        <option value="fisheries">Fisheries</option>
+                        <option value="agri">Agriculture</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Status:</label>
+                    <select class="form-control">
+                        <option value="pending">Pending Review (3)</option>
+                        <option value="accepted">Accepted (12)</option>
+                        <option value="all">All Inquiries</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Requests List -->
+            <div class="task-list" id="requestsList">
+                <!-- Rendered dynamically -->
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        const currentUser = getCurrentUser();
+        
+        async function loadRequests() {
+            if (!currentUser) return;
+            try {
+                // In real app, filter by this specialist's ID
+                const consultations = await apiRequest(`/consultation/search`);
+                const list = document.getElementById('requestsList');
+                list.innerHTML = '';
+                
+                if(consultations.length === 0) {
+                    list.innerHTML = '<p class="text-muted">No consultation requests at the moment.</p>';
+                    return;
+                }
+                
+                consultations.forEach(c => {
+                    // Using random accent based on consultation ID for demo
+                    const accents = ['var(--poultry-accent)', 'var(--dairy-accent)', 'var(--fisheries-accent)'];
+                    const color = accents[c.consultationId % accents.length];
+                    const dateStr = new Date(c.appointmentDate || c.createdAt).toLocaleString();
+                    const isRequested = c.status === 'REQUESTED';
+                    const isAccepted = c.status === 'ACCEPTED';
+                    
+                    let actionsHtml = '';
+                    if (isRequested) {
+                        actionsHtml = `
+                            <button onclick="acceptRequest(${c.consultationId})" class="btn btn-primary btn-sm">
+                                <i class="ph ph-check-circle"></i> Accept Request
+                            </button>
+                            <button class="btn btn-outline btn-sm text-danger" onclick="alert('Inquiry declined.')">Decline</button>
+                        `;
+                    } else if (isAccepted) {
+                        actionsHtml = `
+                            <a href="create-prescription.html?consultationId=${c.consultationId}" class="btn btn-primary btn-sm" style="background-color: var(--secondary-color); color: #fff;">
+                                <i class="ph ph-file-plus"></i> Issue Prescription
+                            </a>
+                            <a href="chat.html?consultationId=${c.consultationId}" class="btn btn-outline btn-sm">
+                                <i class="ph ph-chat-circle-dots"></i> Message Farmer
+                            </a>
+                        `;
+                    } else {
+                        actionsHtml = `<span class="badge badge-success">Prescribed</span>`;
+                    }
+                    
+                    const farmerName = c.farmerName || ('Farmer #' + (c.farmerId || ''));
+                    const farmerPhone = c.farmerPhone ? ` &bull; <i class="ph ph-phone"></i> ${c.farmerPhone}` : '';
+                    const farmerLoc = c.farmerLocation ? ` &bull; <i class="ph ph-map-pin"></i> ${c.farmerLocation}` : '';
+                    const lotInfo = c.lotTag ? `<span class="badge badge-accent"><i class="ph ph-tag"></i> ${c.lotTag}${c.lotSpeciesOrBreed ? ' (' + c.lotSpeciesOrBreed + ')' : ''}</span>` : '';
+
+                    list.innerHTML += `
+                        <div class="order-card" style="border-left: 5px solid ${color};">
+                            <div class="order-info" style="flex: 1;">
+                                <div class="order-title-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+                                    <div style="display:flex; align-items:center; gap: 10px;">
+                                        <h3 style="margin:0; font-size: 1.15rem; color: var(--text-main);"><i class="ph ph-user-circle"></i> ${farmerName}</h3>
+                                        ${lotInfo}
+                                    </div>
+                                    <span class="badge ${isRequested ? 'badge-warning' : 'badge-success'}">${c.status}</span>
+                                </div>
+                                <div class="order-meta" style="margin-bottom: 8px; color: var(--text-muted); font-size: 0.85rem;">
+                                    <span><i class="ph ph-hash"></i> Consultation #${c.consultationId}</span>
+                                    ${farmerPhone ? `<span>${farmerPhone}</span>` : ''}
+                                    ${farmerLoc ? `<span>${farmerLoc}</span>` : ''}
+                                    <span> &bull; <i class="ph ph-clock"></i> ${dateStr}</span>
+                                </div>
+                                <p class="order-item-desc" style="color: var(--text-main); line-height: 1.5; background: #f8fafc; padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--primary-color); margin: 6px 0;">
+                                    <strong>Problem / Symptoms:</strong> "${c.problemDescription || 'No description provided'}"
+                                </p>
+                            </div>
+                            <div class="order-actions" style="display:flex; flex-direction:column; gap:6px; align-items:flex-end;">
+                                ${actionsHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        async function acceptRequest(id) {
+            try {
+                await apiRequest(`/consultation/${id}/accept`, 'PUT');
+                loadRequests();
+            } catch(e) {
+                alert('Error accepting request: ' + e.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRequests();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="farmer/farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> My Farms
+                </a>
+                <a href="farmer/tracking-unit.html" class="nav-item">
+                    <i class="ph ph-tag"></i> Tracking Units
+                </a>
+                <a href="farmer/routines.html" class="nav-item">
+                    <i class="ph ph-list-dashes"></i> Routines & Tasks
+                </a>
+                <a href="farmer/ledger.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Farm Ledger
+                </a>
+                <a href="farmer/prescriptions.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Prescriptions
+                </a>
+                                <a href="farmer/consultations.html" class="nav-item">
+                    <i class="ph ph-user-circle-gear"></i> Consultations
+                </a>
+<a href="farmer/orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Inquiries
+                </a>
+                <a href="farmer/add-product.html" class="nav-item">
+                    <i class="ph ph-shopping-bag"></i> Sell Produce
+                </a>
+                <a href="farmer/chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="public/marketplace.html" class="nav-item">
+                    <i class="ph ph-shopping-cart"></i> Marketplace
+                </a>
+                <a href="../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Topbar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <label for="farmSelect" class="text-sm font-semibold text-muted">Active Farm:</label>
+                    <select id="farmSelect" class="farm-selector">
+                        <option value="1">Farm 1: Bogura Broiler Project (Poultry)</option>
+                        <option value="2">Farm 2: Gabtoli Dairy Farm (Livestock)</option>
+                        <option value="3">Farm 3: Chalanbeel Carp Pond (Fisheries)</option>
+                        <option value="all">All Farms Consolidated View</option>
+                    </select>
+                </div>
+                
+                <div class="topbar-actions">
+                    <span class="user-role-badge">Role: Farmer</span>
+                    <button class="profile-btn">
+                        <i class="ph-fill ph-user-circle"></i>
+                        <span>Md. Shafiqul Islam</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Weather-Based Farm Advisory Banner -->
+            <div class="alert-weather">
+                <i class="ph-fill ph-cloud-warning"></i>
+                <div class="alert-content">
+                    <div class="alert-title-row">
+                        <h4>Weather-Based Farm Advisory (Bogura District)</h4>
+                        <span class="badge badge-accent">Live Forecast Alert</span>
+                    </div>
+                    <p>Heavy rainfall expected tomorrow. Secure curtain vents on broiler shed, replenish dry litter bedding, and ensure drainage channels around poultry houses remain unblocked.</p>
+                    <span class="alert-warning-tag">Reference only – confirm with a registered DVM / Agricultural Officer before use.</span>
+                </div>
+            </div>
+
+            <div class="dash-grid">
+                <!-- Left Column: Tasks and Quick Actions -->
+                <div class="dash-col-main">
+                    
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <a href="farmer/ledger.html?action=add-expense" class="quick-action-btn">
+                            <i class="ph ph-minus-circle" style="color: var(--danger-color);"></i>
+                            <span>Record Expense</span>
+                        </a>
+                        <a href="farmer/ledger.html?action=add-income" class="quick-action-btn">
+                            <i class="ph ph-plus-circle" style="color: var(--secondary-color);"></i>
+                            <span>Record Income</span>
+                        </a>
+                        <a href="farmer/routines.html" class="quick-action-btn">
+                            <i class="ph ph-calendar-check" style="color: var(--primary-color);"></i>
+                            <span>Daily Routine</span>
+                        </a>
+                        <a href="farmer/prescriptions.html" class="quick-action-btn">
+                            <i class="ph ph-heartbeat" style="color: #6366f1;"></i>
+                            <span>Health Records</span>
+                        </a>
+                    </div>
+
+                    <!-- Today's Tasks -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <div>
+                                <h3><i class="ph ph-list-checks"></i> Today's Routine Tasks</h3>
+                                <p class="text-sm text-muted">Generated from Broiler 35-Day Lifecycle Preset</p>
+                            </div>
+                            <a href="farmer/routines.html" class="link-btn">View All Tasks</a>
+                        </div>
+                        
+                                                <div class="task-list" id="dashboardTaskList">
+                            <p style="padding: 1rem; color: #64748b;">Loading today's tasks...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Snapshots and Ecosystem -->
+                <div class="dash-col-side">
+                    
+                    <!-- Farm Financial Snapshot -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3><i class="ph ph-chart-bar"></i> Financial Snapshot</h3>
+                            <a href="farmer/ledger.html" class="link-btn">Ledger</a>
+                        </div>
+                        <div class="snapshot-grid">
+                            <div class="stat-box income">
+                                <p class="stat-label">Total Revenue</p>
+                                <h4 class="stat-value">BDT 145,000</h4>
+                                <span class="stat-sub">Live sale + eggs</span>
+                            </div>
+                            <div class="stat-box expense">
+                                <p class="stat-label">Total Expense</p>
+                                <h4 class="stat-value">BDT 98,500</h4>
+                                <span class="stat-sub">Feed + vaccines + labor</span>
+                            </div>
+                        </div>
+                        <div class="net-profit-box">
+                            <span class="text-muted text-sm">Net Margin (Active Batches)</span>
+                            <h3 class="profit-amount">+ BDT 46,500</h3>
+                        </div>
+                    </div>
+
+                    <!-- Ecosystem Shortcuts -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3><i class="ph ph-link"></i> Ecosystem Access</h3>
+                        </div>
+                        <div class="eco-shortcuts-list">
+                            <a href="public/marketplace.html" class="eco-shortcut">
+                                <i class="ph ph-storefront"></i>
+                                <div>
+                                    <h4>Buy Farm Supplies</h4>
+                                    <p class="text-muted">Feeds, vaccines, equipment</p>
+                                </div>
+                            </a>
+                            <a href="farmer/prescriptions.html" class="eco-shortcut">
+                                <i class="ph ph-stethoscope"></i>
+                                <div>
+                                    <h4>Specialist Consultations</h4>
+                                    <p class="text-muted">Veterinarians & Agronomists</p>
+                                </div>
+                            </a>
+                            <a href="farmer/orders.html" class="eco-shortcut">
+                                <i class="ph ph-shopping-bag"></i>
+                                <div>
+                                    <h4>Incoming Inquiries</h4>
+                                    <p class="text-muted">Track buyer orders</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- Common and Main JS -->
+    <script src="../js/common/api.js"></script>
+    <script src="../js/common/navbar.js"></script>
+    <script src="../js/common/auth-guard.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+            if (!user) {
+                window.location.href = "auth/login.html";
+                return;
+            }
+
+            // Update Topbar Farmer Name and Role
+            const nameEl = document.querySelector('.profile-btn span, #topbarUserName, .user-name');
+            if (nameEl && user.name) nameEl.textContent = user.name;
+            const roleEl = document.querySelector('.user-role-badge, .user-role');
+            if (roleEl) roleEl.textContent = `Role: ${user.primaryRole || 'Farmer'}`;
+
+            // Fetch and populate user's farms
+            let userFarms = [];
+            try {
+                userFarms = await apiRequest(`/farm/search?userId=${user.userId}`, 'GET');
+                const farmSelect = document.getElementById('farmSelect');
+                if (farmSelect) {
+                    farmSelect.innerHTML = '';
+                    if (!userFarms || userFarms.length === 0) {
+                        farmSelect.innerHTML = '<option value="">No farms registered yet</option>';
+                    } else {
+                        userFarms.forEach((farm, index) => {
+                            const option = document.createElement('option');
+                            option.value = farm.farmId;
+                            option.textContent = `Farm ${index + 1}: ${farm.farmName} (${farm.farmType || farm.sector || 'Agriculture'})`;
+                            farmSelect.appendChild(option);
+                        });
+                        if (userFarms.length > 1) {
+                            const allOpt = document.createElement('option');
+                            allOpt.value = 'all';
+                            allOpt.textContent = 'All Farms Consolidated View';
+                            farmSelect.appendChild(allOpt);
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Error loading farms:", err);
+            }
+
+            // Load Lots to get lotIds
+            let lotIds = [];
+            try {
+                const lots = await apiRequest(`/lot/search?userId=${user.userId}`, 'GET');
+                if (Array.isArray(lots)) {
+                    lotIds = lots.map(l => l.lotId);
+                }
+            } catch(e) {
+                console.error("Error loading lots:", e);
+            }
+
+            // Load Today's Routine Tasks
+            try {
+                const taskList = document.getElementById('dashboardTaskList');
+                if (taskList) {
+                    if (lotIds.length === 0) {
+                        taskList.innerHTML = '<p style="padding: 1rem; color: var(--text-muted);">No active tracking units found. Create a unit to track daily tasks.</p>';
+                    } else {
+                        let allTasks = [];
+                        for (let id of lotIds) {
+                            try {
+                                const tasks = await apiRequest(`/routine-task/search?lotId=${id}`, 'GET');
+                                if (Array.isArray(tasks)) {
+                                    allTasks = allTasks.concat(tasks);
+                                }
+                            } catch(te) {}
+                        }
+
+                        // Filter today's pending tasks
+                        const todayStr = new Date().toISOString().split('T')[0];
+                        const todaysTasks = allTasks.filter(t => (t.dueDate === todayStr || !t.dueDate) && (t.status === 'PENDING' || !t.status));
+                        
+                        if (todaysTasks.length === 0) {
+                            taskList.innerHTML = '<p style="padding: 1rem; color: var(--text-muted);"><i class="ph-fill ph-check-circle" style="color: var(--secondary-color);"></i> No pending tasks for today!</p>';
+                        } else {
+                            taskList.innerHTML = '';
+                            todaysTasks.slice(0, 5).forEach(t => {
+                                const title = t.titleEn || t.titleBn || t.title || 'Daily Routine Task';
+                                const due = t.dueDate || 'Today';
+                                const lotId = t.lotId || (lotIds[0] || 1);
+                                taskList.innerHTML += `
+                                    <div class="task-item pending">
+                                        <div class="task-info">
+                                            <h4>${title}</h4>
+                                            <span class="meta">Due: ${due} | <span class="task-badge badge-warning">Pending</span></span>
+                                        </div>
+                                        <a href="farmer/routines.html?unit=${lotId}" class="btn btn-outline btn-sm">Complete Task</a>
+                                    </div>
+                                `;
+                            });
+                        }
+                    }
+                }
+            } catch(e) { 
+                console.error("Error loading dashboard tasks:", e); 
+            }
+
+            // Load Financials / Farm Ledger Summary
+            try {
+                let totalIncome = 0;
+                let totalExpense = 0;
+                if (lotIds.length > 0) {
+                    for (let id of lotIds) {
+                        try {
+                            const ledger = await apiRequest(`/ledger/search?lotId=${id}`, 'GET');
+                            if (Array.isArray(ledger)) {
+                                ledger.forEach(l => {
+                                    const amount = Number(l.amount) || 0;
+                                    const type = (l.entryType || l.type || '').toUpperCase();
+                                    if (type === 'INCOME') totalIncome += amount;
+                                    if (type === 'EXPENSE') totalExpense += amount;
+                                });
+                            }
+                        } catch(le) {}
+                    }
+                }
+                const incomeEl = document.getElementById('dashTotalIncome');
+                const expenseEl = document.getElementById('dashTotalExpense');
+                const profitEl = document.getElementById('dashNetProfit');
+                
+                if (incomeEl) incomeEl.innerText = 'BDT ' + totalIncome.toLocaleString();
+                if (expenseEl) expenseEl.innerText = 'BDT ' + totalExpense.toLocaleString();
+                if (profitEl) profitEl.innerText = 'BDT ' + (totalIncome - totalExpense).toLocaleString();
+            } catch(e) { 
+                console.error("Error loading ledger financials:", e); 
+            }
+        });
+    </script>
+</body>
+</html>
+

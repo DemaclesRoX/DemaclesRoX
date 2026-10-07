@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Prescriptions - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="../dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> My Farms
+                </a>
+                <a href="tracking-unit.html" class="nav-item">
+                    <i class="ph ph-tag"></i> Tracking Units
+                </a>
+                <a href="routines.html" class="nav-item">
+                    <i class="ph ph-list-dashes"></i> Routines & Tasks
+                </a>
+                <a href="ledger.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Farm Ledger
+                </a>
+                <a href="prescriptions.html" class="nav-item active">
+                    <i class="ph ph-stethoscope"></i> Prescriptions
+                </a>
+                                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-user-circle-gear"></i> Consultations
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Inquiries
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-shopping-bag"></i> Sell Produce
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="../public/marketplace.html" class="nav-item">
+                    <i class="ph ph-shopping-cart"></i> Marketplace
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-stethoscope"></i> Digital Prescriptions & Health Advice</h2>
+                    <p class="text-muted">Issued by certified veterinarians and agronomists with drug withdrawal tracking</p>
+                </div>
+                <div class="header-actions">
+                    <a href="../public/marketplace.html?tab=specialists" class="btn btn-primary">
+                        <i class="ph ph-user-plus"></i> Consult a Specialist
+                    </a>
+                </div>
+            </div>
+
+            <!-- MANDATORY TOP REFERENCE BANNER -->
+            <div class="rx-banner-static">
+                <i class="ph-fill ph-warning"></i>
+                <span><strong>Notice:</strong> All prescription and advisory details are reference only. Confirm with a registered DVM / Agricultural Officer before clinical use.</span>
+            </div>
+
+            <!-- Prescription Cards Grid -->
+            <div class="task-list" id="prescriptionList" style="display:flex; flex-direction:column; gap:15px; margin-top:20px;">
+                <p>Loading prescriptions...</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Digital Prescription Modal (M8 Requirement) -->
+    <!-- Digital Prescription Modal (M8 Requirement) -->
+    <div class="modal" id="rxModal">
+        <div class="modal-content rx-modal-box">
+            
+            <!-- MANDATORY BANNER -->
+            <div class="rx-banner">
+                <i class="ph-fill ph-warning"></i> Reference only – confirm with a registered DVM / Officer before use.
+            </div>
+
+            <!-- Header -->
+            <div class="rx-header">
+                <div class="rx-header-top">
+                    <div>
+                        <h2 id="modalDocName">Dr. Specialist, DVM</h2>
+                        <p class="text-sm text-muted" id="modalDocCred">Registered Clinical Specialist & Consultant</p>
+                        <p class="text-xs text-muted">Veterinary Clinical Specialist & Agro Health Advisory</p>
+                    </div>
+                    <div class="rx-watermark-tag">Digital Rx</div>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="rx-body">
+                <div class="rx-patient-info">
+                    <div>
+                        <p id="modalFarmerName"><strong>Farmer:</strong> Md. Shafiqul Islam</p>
+                        <p class="text-muted text-sm" id="modalDate"><strong>Date:</strong> 15 Oct 2026</p>
+                    </div>
+                    <div class="text-right">
+                        <p id="modalLotUnit"><strong>Unit:</strong> Lot-1 (Broiler)</p>
+                        <p class="text-muted text-sm" id="modalDiagnosis"><strong>Diagnosis:</strong> Acute Coccidiosis & Dysbiosis</p>
+                    </div>
+                </div>
+
+                <div class="rx-symbol">Rx.</div>
+
+                <div class="rx-items-list" id="modalItemsList">
+                    <!-- Dynamic items rendered here -->
+                </div>
+                
+                <div class="rx-advice-section" id="modalAdviceSection">
+                    <h4>Clinical Advisory:</h4>
+                    <p id="modalAdviceText">Strictly follow prescribed dosages and withdrawal periods.</p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="rx-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <button class="btn btn-outline" onclick="closeRxModal()">Close</button>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-secondary" onclick="assignCurrentRxToRoutine()"><i class="ph ph-calendar-plus"></i> Add to Routine Tasks</button>
+                    <button class="btn btn-primary" onclick="window.print()"><i class="ph ph-printer"></i> Print / Save PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal to Select Tracking Unit if not pre-linked -->
+    <div class="modal" id="selectLotModal" style="z-index: 2300;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class="ph ph-tag"></i> Select Tracking Unit</h3>
+                <button class="close-btn" onclick="closeSelectLotModal()">&times;</button>
+            </div>
+            <p class="text-sm text-muted" style="margin-bottom: 1rem;">
+                Select which animal batch or tracking unit will receive this daily prescription schedule:
+            </p>
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label font-bold">Target Tracking Unit</label>
+                <select class="form-control" id="modalLotSelect">
+                    <option value="">Loading tracking units...</option>
+                </select>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 8px;">
+                <button class="btn btn-outline" onclick="closeSelectLotModal()">Cancel</button>
+                <button class="btn btn-primary" id="btnConfirmAssignLot" onclick="confirmLotAssignment()">Schedule Routine Tasks</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        let currentViewingRx = null;
+        let pendingAssignPrescriptionId = null;
+
+        function openRxModal(prescriptionStr) {
+            const rx = JSON.parse(decodeURIComponent(prescriptionStr));
+            currentViewingRx = rx;
+            const user = getCurrentUser();
+
+            document.getElementById('modalDocName').innerText = rx.specialistName || 'Dr. Specialist, DVM';
+            document.getElementById('modalDocCred').innerText = rx.specialistDegrees || (rx.specialistRegNo ? `Reg: ${rx.specialistRegNo}` : 'Registered Clinical Practitioner');
+            
+            document.getElementById('modalFarmerName').innerHTML = `<strong>Farmer:</strong> ${rx.farmerName || (user ? user.name : 'Farmer')}`;
+            document.getElementById('modalDate').innerHTML = `<strong>Date:</strong> ${rx.issuedDate ? new Date(rx.issuedDate).toLocaleDateString() : new Date().toLocaleDateString()}`;
+            document.getElementById('modalLotUnit').innerHTML = `<strong>Unit / Lot:</strong> ${rx.lotTag || 'Farm Production Unit'} ${rx.lotSpeciesOrBreed ? `(${rx.lotSpeciesOrBreed})` : ''}`;
+            document.getElementById('modalDiagnosis').innerHTML = `<strong>Diagnosis:</strong> ${rx.diagnosis || rx.notes || 'Clinical Advice'}`;
+
+            const itemsContainer = document.getElementById('modalItemsList');
+            itemsContainer.innerHTML = '';
+
+            const items = rx.items || [];
+            if (items.length === 0) {
+                itemsContainer.innerHTML = '<p class="text-muted">No specific medicine items recorded.</p>';
+            } else {
+                items.forEach((item, idx) => {
+                    let withdrawalBadge = '';
+                    if (item.categoryCode && item.categoryCode.includes('Withdrawal')) {
+                        withdrawalBadge = `<span class="withdrawal-warning"><i class="ph-fill ph-warning"></i> Mandatory Withdrawal: ${item.categoryCode.replace('Withdrawal:', '').trim()}</span>`;
+                    }
+                    itemsContainer.innerHTML += `
+                        <div class="medicine-item">
+                            <div class="medicine-name">${idx + 1}. ${item.medicineName}</div>
+                            <p class="medicine-dose"><i class="ph ph-drop"></i> <strong>Dosage:</strong> ${item.dosage || 'As directed'}</p>
+                            <p class="medicine-dose"><i class="ph ph-clock"></i> <strong>Duration:</strong> ${item.durationDays ? item.durationDays + ' days' : 'As needed'} ${item.instructions ? `(${item.instructions})` : ''}</p>
+                            ${withdrawalBadge}
+                        </div>
+                    `;
+                });
+            }
+
+            const adviceText = rx.specialNotice || rx.notes || 'Adhere strictly to drug withdrawal times to avoid residue in food products.';
+            document.getElementById('modalAdviceText').innerText = adviceText;
+
+            document.getElementById('rxModal').classList.add('active');
+        }
+
+        function closeRxModal() {
+            document.getElementById('rxModal').classList.remove('active');
+        }
+
+        function assignCurrentRxToRoutine() {
+            if (!currentViewingRx) return;
+            promptAssignRxToRoutine(currentViewingRx.prescriptionId, currentViewingRx.lotId);
+        }
+
+        async function promptAssignRxToRoutine(prescriptionId, lotId) {
+            if (lotId) {
+                if (confirm(`Do you want to generate daily routine medication tasks for Tracking Unit #${lotId} from Prescription #${prescriptionId}?`)) {
+                    await executeAssignPrescription(prescriptionId, lotId);
+                }
+            } else {
+                // Open unit selection modal
+                pendingAssignPrescriptionId = prescriptionId;
+                await openSelectLotModal();
+            }
+        }
+
+        async function openSelectLotModal() {
+            const user = getCurrentUser();
+            const select = document.getElementById('modalLotSelect');
+            select.innerHTML = '<option value="">Loading tracking units...</option>';
+            document.getElementById('selectLotModal').classList.add('active');
+
+            try {
+                const lots = await apiRequest(`/lot/search?farmerId=${user ? user.userId : ''}`);
+                select.innerHTML = '';
+                if (lots.length === 0) {
+                    select.innerHTML = '<option value="">No tracking units found. Please register a unit first.</option>';
+                    return;
+                }
+                lots.forEach(l => {
+                    const tag = l.lotCodeOrTag || `Unit #${l.lotId}`;
+                    select.innerHTML += `<option value="${l.lotId}">${tag} - ${l.speciesOrBreed || l.categoryCode || 'Lot'}</option>`;
+                });
+            } catch(e) {
+                select.innerHTML = '<option value="">Failed to load tracking units</option>';
+            }
+        }
+
+        function closeSelectLotModal() {
+            document.getElementById('selectLotModal').classList.remove('active');
+            pendingAssignPrescriptionId = null;
+        }
+
+        async function confirmLotAssignment() {
+            const lotId = document.getElementById('modalLotSelect').value;
+            if (!lotId) {
+                alert('Please select a tracking unit.');
+                return;
+            }
+            if (!pendingAssignPrescriptionId) return;
+
+            await executeAssignPrescription(pendingAssignPrescriptionId, lotId);
+            closeSelectLotModal();
+        }
+
+        async function executeAssignPrescription(prescriptionId, lotId) {
+            try {
+                const tasks = await apiRequest(`/routine-task/apply-prescription?prescriptionId=${prescriptionId}&lotId=${lotId}`, 'POST');
+                alert(`Success! Generated ${tasks.length} daily medication & clinical advisory tasks for this tracking unit in your Routine Schedule.`);
+                window.location.href = `routines.html?lotId=${lotId}`;
+            } catch(e) {
+                alert('Failed to assign prescription to routine: ' + e.message);
+            }
+        }
+
+        async function loadPrescriptions() {
+            const user = getCurrentUser();
+            if (!user) return;
+            const list = document.getElementById('prescriptionList');
+            list.innerHTML = '<p>Loading prescriptions...</p>';
+
+            try {
+                const prescriptions = await apiRequest("/prescription/search");
+                list.innerHTML = '';
+                
+                // Filter prescriptions for this farmer (or all if admin/specialist viewing)
+                const userPrescriptions = prescriptions.filter(rx => {
+                    if (user.primaryRole === 'ADMIN') return true;
+                    if (rx.farmerId && rx.farmerId === user.userId) return true;
+                    return false;
+                });
+
+                if (userPrescriptions.length === 0) {
+                    list.innerHTML = '<p class="text-muted">No digital prescriptions issued yet. Consult a specialist from the marketplace to receive clinical prescriptions.</p>';
+                    return;
+                }
+
+                userPrescriptions.forEach(rx => {
+                    const specName = rx.specialistName || `Specialist #${rx.specialistId || ''}`;
+                    const lotTag = rx.lotTag ? ` &bull; <span class="badge badge-accent"><i class="ph ph-tag"></i> ${rx.lotTag}</span>` : '';
+                    const dateStr = rx.issuedDate ? new Date(rx.issuedDate).toLocaleDateString() : 'Recent';
+                    const rxData = encodeURIComponent(JSON.stringify(rx));
+                    const itemCount = rx.items ? rx.items.length : 0;
+
+                    list.innerHTML += `
+                        <div class="order-card" style="border-left: 5px solid var(--secondary-color);">
+                            <div class="order-info" style="flex: 1;">
+                                <div class="order-title-row" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h3 style="margin: 0;">Digital Prescription #${rx.prescriptionId} ${lotTag}</h3>
+                                    <span class="badge badge-success">CERTIFIED VALID</span>
+                                </div>
+                                <div class="order-meta" style="margin: 6px 0; color: var(--text-muted); font-size: 0.85rem;">
+                                    <span><i class="ph ph-user-circle"></i> Issued by: <strong>${specName}</strong></span>
+                                    <span> &bull; <i class="ph ph-calendar"></i> Date: ${dateStr}</span>
+                                    <span> &bull; <i class="ph ph-pill"></i> ${itemCount} Medicines Prescribed</span>
+                                </div>
+                                <p class="order-item-desc" style="color: var(--text-main); background: #f8fafc; padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--secondary-color);">
+                                    <strong>Diagnosis / Clinical Summary:</strong> ${rx.diagnosis || rx.notes || 'N/A'}
+                                </p>
+                            </div>
+                            <div class="order-actions" style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+                                <button class="btn btn-outline btn-sm" onclick="openRxModal('${rxData}')">
+                                    <i class="ph ph-eye"></i> View Full Rx
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="promptAssignRxToRoutine(${rx.prescriptionId}, ${rx.lotId || 'null'})">
+                                    <i class="ph ph-calendar-plus"></i> Add to Routine Tasks
+                                </button>
+                                <a href="../public/marketplace.html?category=Medicine" class="btn btn-primary btn-sm">
+                                    <i class="ph ph-shopping-cart"></i> Buy Medicines
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (e) {
+                console.error(e);
+                list.innerHTML = '<p class="text-danger">Failed to load prescriptions.</p>';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadPrescriptions);
+    </script>
+</body>
+</html>

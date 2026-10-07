@@ -1,0 +1,12 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    // NOTE: ei machine-e RAM matro 7GB (i5-6300U, 4 cores).
+    // Age ekhane -Xmx16G chilo, tai JVM native memory malloc fail kore crash korchilo
+    // (root-e 67 ta hs_err_pid*.log jomechilo - sob gulo "insufficient memory").
+    // 7GB RAM er jonno -Xmx1G safe. Indexing slow lagle 1536m porjonto barate paren,
+    // 2G er beshi korben na.
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -XX:MaxMetaspaceSize=512m -Xlog:disable",
+    // Gradle wrapper version (9.7.1) use korbe - VS Code nijer Gradle down kore na
+    "java.import.gradle.wrapper.enabled": true,
+    "java.configuration.updateBuildConfiguration": "interactive"
+}

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription Templates - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Specialist Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Specialist Dashboard
+                </a>
+                <a href="consultation-requests.html" class="nav-item">
+                    <i class="ph ph-bell-ringing"></i> Requests
+                </a>
+                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Consultations
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="create-prescription.html" class="nav-item">
+                    <i class="ph ph-file-plus"></i> Issue Prescription
+                </a>
+                <a href="prescription-templates.html" class="nav-item active">
+                    <i class="ph ph-notebook"></i> Rx Templates (Presets)
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-user-gear"></i> Clinical Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-notebook"></i> 9 Built-in Clinical Prescription Presets</h2>
+                    <p class="text-muted">Standardized treatment guidelines based on national veterinary & agronomy seed data</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="document.getElementById('createPresetModal').classList.add('active')">
+                        <i class="ph ph-plus"></i> Create New Preset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sector 1: Veterinary (DVM) -->
+            <div style="margin-bottom: 2.5rem;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+                    <span class="sector-tag sector-dairy"><i class="ph ph-cow"></i> Veterinary Sector</span>
+                    <h3 style="font-size: 1.25rem; font-weight: 700;">Livestock & Poultry Clinical Presets</h3>
+                </div>
+
+                <div class="unit-grid">
+                    
+                    <!-- Preset 1 -->
+                    <div class="unit-card" style="border-top-color: var(--poultry-accent);">
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="badge badge-accent">Poultry</span>
+                                <h3 style="margin-top: 4px;">Coccidiosis & Enteritis</h3>
+                            </div>
+                        </div>
+                        <div class="unit-details">
+                            <p><strong>Primary Drug:</strong> Toltrazuril 2.5% Liquid</p>
+                            <p><strong>Supportive:</strong> Vitamin K3 + Electrolyte Powder</p>
+                            <p><strong>Dosage:</strong> 1 ml / Liter drinking water (2 days)</p>
+                            <p class="text-danger"><strong>Withdrawal:</strong> 14 Days required</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="create-prescription.html?template=coccidiosis" class="btn btn-primary btn-sm btn-block">
+                                <i class="ph ph-check"></i> Load into Prescription
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Preset 2 -->
+                    <div class="unit-card" style="border-top-color: var(--poultry-accent);">
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="badge badge-accent">Poultry</span>
+                                <h3 style="margin-top: 4px;">Gumboro (IBD) Supportive Care</h3>
+                            </div>
+                        </div>
+                        <div class="unit-details">
+                            <p><strong>Supportive:</strong> Electrolyte + Glucose + Vit C/E/K</p>
+                            <p><strong>Duration:</strong> 5 to 7 days continuously</p>
+                            <p><strong>Advisory:</strong> Strict prohibition on nephrotoxic antibiotics</p>
+                            <p class="text-success"><strong>Withdrawal:</strong> 0 Days (Nutritional)</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="create-prescription.html?template=gumboro" class="btn btn-primary btn-sm btn-block">
+                                <i class="ph ph-check"></i> Load into Prescription
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Preset 3 -->
+                    <div class="unit-card" style="border-top-color: var(--dairy-accent);">
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="badge badge-success">Dairy Cattle</span>
+                                <h3 style="margin-top: 4px;">Clinical Bovine Mastitis</h3>
+                            </div>
+                        </div>
+                        <div class="unit-details">
+                            <p><strong>Primary:</strong> Intramammary Infusion Tube</p>
+                            <p><strong>Systemic:</strong> Oxytetracycline + Meloxicam (NSAID)</p>
+                            <p><strong>Duration:</strong> 3 - 5 days post milking strip</p>
+                            <p class="text-danger"><strong>Withdrawal:</strong> Milk discard 72 hours</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="create-prescription.html?template=mastitis" class="btn btn-primary btn-sm btn-block">
+                                <i class="ph ph-check"></i> Load into Prescription
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Preset 4 -->
+                    <div class="unit-card" style="border-top-color: var(--dairy-accent);">
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="badge badge-success">Dairy / Beef</span>
+                                <h3 style="margin-top: 4px;">Foot & Mouth Disease (FMD) Care</h3>
+                            </div>
+                        </div>
+                        <div class="unit-details">
+                            <p><strong>Wound Antiseptic:</strong> Alum water + KMnO4 wash</p>
+                            <p><strong>Secondary Prevention:</strong> Oxytetracycline LA</p>
+                            <p><strong>Pain Relief:</strong> Paracetamol / Ketoprofen</p>
+                            <p class="text-danger"><strong>Withdrawal:</strong> Meat 28 days, Milk 7 days</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="create-prescription.html?template=fmd" class="btn btn-primary btn-sm btn-block">
+                                <i class="ph ph-check"></i> Load into Prescription
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Sector 2: Fisheries -->
+            <div style="margin-bottom: 2.5rem;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+                    <span class="sector-tag sector-fisheries"><i class="ph ph-fish"></i> Fisheries Sector</span>
+                    <h3 style="font-size: 1.25rem; font-weight: 700;">Aquaculture Health & Water Quality Presets</h3>
+                </div>
+
+                <div class="unit-grid">
+                    
+                    <!-- Preset 5 -->
+                    <div class="unit-card" style="border-top-color: var(--fisheries-accent);">
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="badge badge-primary">Aquaculture</span>
+                                <h3 style="margin-top: 4px;">High Ammonia & Gas Crisis</h3>
+                            </div>
+                        </div>
+                        <div class="unit-details">
+                            <p><strong>Condition:</strong> NH3 > 0.05 mg/L, low DO</p>
+                            <p><strong>Treatment:</strong> Oxy-drop + Zeolite + Yucca extract</p>
+                            <p><strong>Aeration:</strong> 24-hr continuous mechanical aeration</p>
+                            <p class="text-success"><strong>Food Safe:</strong> Non-antimicrobial</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="create-prescription.html?template=ammonia" class="btn btn-primary btn-sm btn-block">
+                                <i class="ph ph-check"></i> Load into Prescription
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Preset 6 -->
+                    <div class="unit-card" style="border-top-color: var(--fisheries-accent);">
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="badge badge-primary">Aquaculture</span>
+                                <h3 style="margin-top: 4px;">EUS (Epizootic Ulcerative Syndrome)</h3>
+                            </div>
+                        </div>
+                        <div class="unit-details">
+                            <p><strong>Pathology:</strong> Aphanomyces fungal ulcers</p>
+                            <p><strong>Pond Treatment:</strong> Slaked Lime 1 kg/dec + KMnO4</p>
+                            <p><strong>Feed Additive:</strong> Vitamin C 2g/kg feed</p>
+                            <p class="text-muted"><strong>Duration:</strong> 3 - 4 weeks recovery</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="create-prescription.html?template=eus" class="btn btn-primary btn-sm btn-block">
+                                <i class="ph ph-check"></i> Load into Prescription
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Sector 3: Agronomy -->
+            <div style="margin-bottom: 2.5rem;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+                    <span class="sector-tag sector-agri"><i class="ph ph-plant"></i> Agronomy Sector</span>
+                    <h3 style="font-size: 1.25rem; font-weight: 700;">Field Crop Pathology Presets</h3>
+                </div>
+
+                <div class="unit-grid">
+                    
+                    <!-- Preset 7 -->
+                    <div class="unit-card" style="border-top-color: var(--agri-accent);">
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="badge badge-success">Crops: Rice</span>
+                                <h3 style="margin-top: 4px;">Rice Blast & Bacterial Blight</h3>
+                            </div>
+                        </div>
+                        <div class="unit-details">
+                            <p><strong>Fungicide:</strong> Tricyclazole (Trooper / Nativo)</p>
+                            <p><strong>Bactericide:</strong> Copper Oxychloride 50 WP</p>
+                            <p><strong>Dosage:</strong> 1 g / Liter foliar spray (2 sprays)</p>
+                            <p class="text-danger"><strong>Harvest Interval:</strong> 15 Days</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="create-prescription.html?template=rice_blast" class="btn btn-primary btn-sm btn-block">
+                                <i class="ph ph-check"></i> Load into Prescription
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Preset 8 -->
+                    <div class="unit-card" style="border-top-color: var(--agri-accent);">
+                        <div class="unit-card-header">
+                            <div>
+                                <span class="badge badge-success">Crops: Potato</span>
+                                <h3 style="margin-top: 4px;">Potato Late Blight (Phytophthora)</h3>
+                            </div>
+                        </div>
+                        <div class="unit-details">
+                            <p><strong>Preventive:</strong> Mancozeb 80 WP (every 7 days)</p>
+                            <p><strong>Curative:</strong> Ridomil Gold / Cymoxanil 2g/L</p>
+                            <p><strong>Advisory:</strong> Synchronized with fog/dew weather alerts</p>
+                            <p class="text-danger"><strong>Harvest Interval:</strong> 10 Days</p>
+                        </div>
+                        <div class="unit-actions">
+                            <a href="create-prescription.html?template=late_blight" class="btn btn-primary btn-sm btn-block">
+                                <i class="ph ph-check"></i> Load into Prescription
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+
+    <!-- Create Preset Modal -->
+    <div class="modal" id="createPresetModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Create Prescription Preset</h3>
+                <button class="close-btn" onclick="document.getElementById('createPresetModal').classList.remove('active')">&times;</button>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="form-group">
+                    <label class="form-label">Preset Name (e.g. FMD Protocol)</label>
+                    <input type="text" class="form-control" id="presetName">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Sector</label>
+                    <select class="form-control" id="presetSector">
+                        <option value="POULTRY">Poultry</option>
+                        <option value="DAIRY">Dairy</option>
+                        <option value="FISHERIES">Fisheries</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Medicine Name</label>
+                    <input type="text" class="form-control" id="presetMedName">
+                </div>
+                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label class="form-label">Dosage</label>
+                        <input type="text" class="form-control" id="presetDosage">
+                    </div>
+                    <div>
+                        <label class="form-label">Duration (Days)</label>
+                        <input type="number" class="form-control" id="presetDuration">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <label class="form-label">Advice / Instructions</label>
+                    <textarea class="form-control" id="presetAdvice" rows="2"></textarea>
+                </div>
+                <button class="btn btn-primary btn-block" style="margin-top: 15px;" onclick="saveNewPreset()">Save Preset</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function saveNewPreset() {
+            const name = document.getElementById('presetName').value;
+            const sector = document.getElementById('presetSector').value;
+            const medName = document.getElementById('presetMedName').value;
+            const dosage = document.getElementById('presetDosage').value;
+            const duration = document.getElementById('presetDuration').value;
+            const advice = document.getElementById('presetAdvice').value;
+            
+            const user = getCurrentUser();
+            
+            const contentJson = JSON.stringify([{
+                medicineName: medName,
+                dosage: dosage,
+                durationDays: parseInt(duration) || 0,
+                instructions: advice,
+                advice: advice
+            }]);
+            
+            const code = name.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Math.floor(Math.random()*1000);
+            
+            try {
+                await apiRequest('/template/create', 'POST', {
+                    templateCode: code,
+                    templateType: 'PRESCRIPTION',
+                    sector: sector,
+                    nameEn: name,
+                    durationDays: parseInt(duration) || 0,
+                    contentJson: contentJson,
+                    ownerUserId: user.userId
+                });
+                alert('Preset successfully saved!');
+                window.location.reload();
+            } catch(e) {
+                alert('Failed to save preset: ' + e.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

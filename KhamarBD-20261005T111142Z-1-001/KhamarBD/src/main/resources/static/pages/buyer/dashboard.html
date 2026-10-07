@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial Buyer Portal - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .buyer-hero-card {
+            background: linear-gradient(135deg, #0f4c3a 0%, #1e7e34 100%);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            color: #ffffff;
+            margin-bottom: 1.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(15, 76, 58, 0.25);
+        }
+        .buyer-hero-card h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.35rem;
+            color: #ffffff;
+        }
+        .buyer-hero-card p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.925rem;
+            max-width: 600px;
+        }
+        .category-quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 1.75rem;
+        }
+        .category-chip {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        .category-chip:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+            color: var(--primary-color);
+        }
+        .category-chip i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        .stepper-mini {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 6px;
+        }
+        .stepper-mini-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+        }
+        .stepper-mini-dot.active {
+            background-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(15, 76, 58, 0.2);
+        }
+        .stepper-mini-dot.completed {
+            background-color: var(--secondary-color);
+        }
+        .stepper-mini-line {
+            width: 12px;
+            height: 2px;
+            background-color: #e2e8f0;
+        }
+        .stepper-mini-line.completed {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Buyer Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="ph ph-squares-four"></i> Buyer Dashboard
+                </a>
+                <a href="../public/marketplace.html?tab=products" class="nav-item">
+                    <i class="ph ph-storefront"></i> Farm Produce Market
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-truck"></i> My Bulk Orders & Tracking
+                    <span class="badge badge-warning" id="sidebarOrderBadge" style="margin-left: auto; display: none;">0 Active</span>
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Direct Farmer Chat
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Topbar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);" id="buyerBusinessTitle">
+                        Commercial Buyer Portal
+                    </h3>
+                    <span class="badge badge-primary" id="buyerRoleTag">HoReCa & Wholesale Direct Procurement</span>
+                </div>
+                
+                <div class="topbar-actions">
+                    <a href="../public/marketplace.html?tab=products" class="btn btn-primary btn-sm">
+                        <i class="ph ph-shopping-bag"></i> Browse Fresh Farm Produce
+                    </a>
+                </div>
+            </div>
+
+            <!-- Buyer Welcome Hero -->
+            <div class="buyer-hero-card">
+                <div>
+                    <h2>Direct Farm-to-Kitchen & Wholesale Sourcing</h2>
+                    <p>Connect directly with registered poultry, dairy, fish, and crop farmers across Bangladesh with 0% middleman markups and live farm-gate dispatch tracking.</p>
+                </div>
+                <div>
+                    <a href="../public/marketplace.html?tab=products" class="btn btn-outline" style="background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.4);">
+                        <i class="ph ph-plus-circle"></i> New Procurement Order
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Category Sourcing Chips -->
+            <div class="category-quick-grid">
+                <a href="../public/marketplace.html?tab=products" class="category-chip">
+                    <i class="ph-fill ph-egg"></i>
+                    <div>
+                        <div>Poultry & Broiler</div>
+                        <span class="text-xs text-muted">Live batch lots</span>
+                    </div>
+                </a>
+                <a href="../public/marketplace.html?tab=products" class="category-chip">
+                    <i class="ph-fill ph-drop"></i>
+                    <div>
+                        <div>Fresh Raw Milk</div>
+                        <span class="text-xs text-muted">Daily dairy contracts</span>
+                    </div>
+                </a>
+                <a href="../public/marketplace.html?tab=products" class="category-chip">
+                    <i class="ph-fill ph-fish"></i>
+                    <div>
+                        <div>Fisheries Harvest</div>
+                        <span class="text-xs text-muted">Carp, Tilapia, Pangas</span>
+                    </div>
+                </a>
+                <a href="../public/marketplace.html?tab=products" class="category-chip">
+                    <i class="ph-fill ph-grains"></i>
+                    <div>
+                        <div>Grains & Crops</div>
+                        <span class="text-xs text-muted">Rice, Maize, Potato</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Buyer KPIs -->
+            <div class="ledger-kpi-grid">
+                <div class="stat-box income">
+                    <span class="stat-label">Active Dispatches In-Flight</span>
+                    <h3 class="stat-value text-primary" id="kpiActiveOrders">0</h3>
+                    <span class="stat-sub">Orders being processed or in transport</span>
+                </div>
+                <div class="stat-box expense">
+                    <span class="stat-label">Total Procurement Spent</span>
+                    <h3 class="stat-value text-secondary" id="kpiTotalSpent">BDT 0</h3>
+                    <span class="stat-sub" id="kpiCompletedSummary">0 completed bulk deliveries</span>
+                </div>
+                <div class="stat-box profit">
+                    <span class="stat-label">Direct Farmer Partners</span>
+                    <h3 class="stat-value text-primary" id="kpiFarmerCount">0</h3>
+                    <span class="stat-sub">Verified farm sellers</span>
+                </div>
+            </div>
+
+            <!-- Main Layout Grid -->
+            <div class="dash-grid">
+                
+                <!-- Left Column: Active & Recent Bulk Orders -->
+                <div class="dash-col-main">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <div>
+                                <h3 class="dash-card-title">Live Procurement Orders & Status</h3>
+                                <span class="dash-card-subtitle">Real-time status updates directly from farm sellers</span>
+                            </div>
+                            <a href="orders.html" class="link-btn font-semibold text-sm">View All Orders &rarr;</a>
+                        </div>
+
+                        <div id="buyerOrdersList" style="margin-top: 1rem;">
+                            <div style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                                <i class="ph ph-spinner ph-spin" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                                Loading your procurement orders...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Quick Sourcing & Direct Contacts -->
+                <div class="dash-col-side">
+                    
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title">Need Custom Bulk Sourcing?</h3>
+                        </div>
+                        <p class="text-sm text-muted" style="line-height: 1.5; margin-bottom: 1.25rem;">
+                            Looking for 500+ Broiler birds daily for restaurant catering or 50+ Liters raw dairy for a university hall dining mess?
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <a href="chat.html" class="btn btn-outline btn-block" style="text-align: center;">
+                                <i class="ph ph-chat-circle-dots"></i> Message Local Farmers
+                            </a>
+                            <a href="../public/marketplace.html?tab=products" class="btn btn-primary btn-block" style="text-align: center;">
+                                <i class="ph ph-magnifying-glass"></i> Search Market Directory
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="dash-card" style="margin-top: 1.25rem;">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title">Buyer Protection Guarantee</h3>
+                        </div>
+                        <ul style="padding-left: 1.2rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+                            <li>Direct price transparent farm sourcing</li>
+                            <li>Zero commission or hidden fees</li>
+                            <li>Real-time multi-stage dispatch tracking</li>
+                            <li>Direct phone communication with farm owners</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- Common Scripts -->
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script src="../../js/common/auth-guard.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+            if (!user) return;
+
+            // Personalize Title
+            const businessTitleEl = document.getElementById('buyerBusinessTitle');
+            if (businessTitleEl) {
+                businessTitleEl.textContent = user.businessName || user.name || 'Commercial Procurement Portal';
+            }
+            const roleTagEl = document.getElementById('buyerRoleTag');
+            if (roleTagEl) {
+                roleTagEl.textContent = user.businessName ? `${user.businessName} • ${user.district || 'Bangladesh'}` : 'HoReCa & Wholesale Direct Buyer';
+            }
+
+            await loadBuyerDashboardData(user.userId);
+        });
+
+        async function loadBuyerDashboardData(buyerId) {
+            try {
+                const orders = await apiRequest(`/order/search?buyerId=${buyerId}`, 'GET');
+                
+                let activeCount = 0;
+                let completedCount = 0;
+                let totalSpent = 0;
+                const farmerSet = new Set();
+
+                orders.forEach(o => {
+                    const status = (o.orderStatus || 'ORDER_RECEIVED').toUpperCase();
+                    if (status === 'DELIVERED' || status === 'COMPLETED') {
+                        completedCount++;
+                        totalSpent += (o.totalAgreedPrice || 0);
+                    } else if (status !== 'CANCELLED') {
+                        activeCount++;
+                    }
+                    if (o.sellerId) farmerSet.add(o.sellerId);
+                });
+
+                // Update KPIs
+                document.getElementById('kpiActiveOrders').textContent = activeCount;
+                document.getElementById('kpiTotalSpent').textContent = `BDT ${totalSpent.toLocaleString()}`;
+                document.getElementById('kpiCompletedSummary').textContent = `${completedCount} completed bulk deliveries`;
+                document.getElementById('kpiFarmerCount').textContent = farmerSet.size;
+
+                const badgeEl = document.getElementById('sidebarOrderBadge');
+                if (badgeEl && activeCount > 0) {
+                    badgeEl.style.display = 'inline-block';
+                    badgeEl.textContent = `${activeCount} Active`;
+                }
+
+                renderOrdersList(orders);
+            } catch (err) {
+                console.error("Failed to load buyer orders:", err);
+                document.getElementById('buyerOrdersList').innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
+                        <i class="ph ph-warning-circle" style="font-size: 1.75rem;"></i>
+                        <p style="margin-top: 0.5rem;">Could not fetch orders. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function getStageIndex(status) {
+            const s = (status || 'ORDER_RECEIVED').toUpperCase();
+            if (s === 'ORDER_RECEIVED' || s === 'PENDING') return 1;
+            if (s === 'PAYMENT_RECEIVED' || s === 'CONFIRMED') return 2;
+            if (s === 'PROCESSING' || s === 'PACKED') return 3;
+            if (s === 'IN_TRANSPORT' || s === 'SHIPPED') return 4;
+            if (s === 'OUT_FOR_DELIVERY') return 5;
+            if (s === 'DELIVERED' || s === 'COMPLETED') return 6;
+            return 1;
+        }
+
+        function getStatusBadge(status) {
+            const s = (status || 'ORDER_RECEIVED').toUpperCase();
+            if (s === 'DELIVERED' || s === 'COMPLETED') return '<span class="badge badge-success">Delivered & Received</span>';
+            if (s === 'IN_TRANSPORT' || s === 'OUT_FOR_DELIVERY') return '<span class="badge badge-warning">In Transport / Out for Delivery</span>';
+            if (s === 'PAYMENT_RECEIVED' || s === 'PROCESSING') return '<span class="badge badge-primary">Processing & Packing</span>';
+            return '<span class="badge badge-warning">Order Placed</span>';
+        }
+
+        function renderOrdersList(orders) {
+            const container = document.getElementById('buyerOrdersList');
+            if (!orders || orders.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem 1.5rem; background: var(--surface-subtle); border-radius: var(--radius-md); border: 1px dashed var(--border-color);">
+                        <i class="ph ph-shopping-bag-open" style="font-size: 2.75rem; color: var(--text-muted); margin-bottom: 0.75rem; display: inline-block;"></i>
+                        <h4 style="font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">No Procurement Orders Yet</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); max-width: 400px; margin: 0 auto 1.25rem;">
+                            You haven't placed any bulk farm produce orders yet. Explore verified direct farm listings on the marketplace!
+                        </p>
+                        <a href="../public/marketplace.html?tab=products" class="btn btn-primary btn-sm">
+                            <i class="ph ph-shopping-bag"></i> Browse Fresh Farm Produce
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Show latest 5 orders
+            const recentOrders = orders.slice(0, 5);
+            let html = '<div style="display: flex; flex-direction: column; gap: 14px;">';
+
+            recentOrders.forEach(o => {
+                const stageIdx = getStageIndex(o.orderStatus);
+                const isCompleted = stageIdx === 6;
+                const statusBadge = getStatusBadge(o.orderStatus);
+                const totalFormatted = (o.totalAgreedPrice || 0).toLocaleString();
+                const sellerName = o.sellerName || 'Verified Farm Seller';
+
+                html += `
+                    <div style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; transition: box-shadow 0.2s ease;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                            <div>
+                                <span class="text-xs text-muted" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Order #${o.orderReference || o.orderId}</span>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">
+                                    ${o.listingTitle || 'Bulk Farm Produce'}
+                                </h4>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">
+                                    <span><i class="ph ph-user"></i> Seller: <strong>${sellerName}</strong></span>
+                                    <span style="margin-left: 12px;"><i class="ph ph-box"></i> Qty: <strong>${(o.quantity || 1)} Units</strong></span>
+                                    <span style="margin-left: 12px;"><i class="ph ph-currency-circle-dollar"></i> Total: <strong>BDT ${totalFormatted}</strong></span>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                ${statusBadge}
+                                <div class="text-xs text-muted" style="margin-top: 4px;">
+                                    ${o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mini Stepper Indicator -->
+                        <div style="background: var(--surface-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="font-size: 0.825rem; font-weight: 600; color: var(--text-main);">
+                                <i class="ph-fill ph-truck" style="color: var(--primary-color);"></i>
+                                Stage ${stageIdx}/6: <span style="color: var(--primary-color);">${(o.orderStatus || 'ORDER_RECEIVED').replace(/_/g, ' ')}</span>
+                            </div>
+                            <div class="stepper-mini">
+                                <div class="stepper-mini-dot ${stageIdx >= 1 ? (stageIdx > 1 ? 'completed' : 'active') : ''}"></div>
+                                <div class="stepper-mini-line ${stageIdx > 1 ? 'completed' : ''}"></div>
+                                <div class="stepper-mini-dot ${stageIdx >= 2 ? (stageIdx > 2 ? 'completed' : 'active') : ''}"></div>
+                                <div class="stepper-mini-line ${stageIdx > 2 ? 'completed' : ''}"></div>
+                                <div class="stepper-mini-dot ${stageIdx >= 3 ? (stageIdx > 3 ? 'completed' : 'active') : ''}"></div>
+                                <div class="stepper-mini-line ${stageIdx > 3 ? 'completed' : ''}"></div>
+                                <div class="stepper-mini-dot ${stageIdx >= 4 ? (stageIdx > 4 ? 'completed' : 'active') : ''}"></div>
+                                <div class="stepper-mini-line ${stageIdx > 4 ? 'completed' : ''}"></div>
+                                <div class="stepper-mini-dot ${stageIdx >= 5 ? (stageIdx > 5 ? 'completed' : 'active') : ''}"></div>
+                                <div class="stepper-mini-line ${stageIdx > 5 ? 'completed' : ''}"></div>
+                                <div class="stepper-mini-dot ${stageIdx >= 6 ? 'completed' : ''}"></div>
+                            </div>
+                            <a href="orders.html" class="link-btn font-semibold text-xs">Track Dispatch &rarr;</a>
+                        </div>
+                        ${o.paymentNote ? `<div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; font-style: italic;"><i class="ph ph-note"></i> Note: ${o.paymentNote}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

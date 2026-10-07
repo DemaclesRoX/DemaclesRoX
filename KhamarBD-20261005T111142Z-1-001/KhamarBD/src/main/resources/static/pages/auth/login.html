@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(135deg, #0F5132 0%, #0F2D1F 100%);
+        }
+        .auth-card {
+            background-color: var(--surface-color);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 440px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .auth-brand {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .auth-brand a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+        .auth-brand p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 0.35rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            
+            <div class="auth-brand">
+                <a href="../../index.html">
+                    <i class="ph-fill ph-plant" style="color: var(--secondary-color);"></i> KhamarBD
+                </a>
+                <p>Sign in to your farm management account</p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Phone Number or Email</label>
+                    <input type="text" id="usernameInput" class="form-control" placeholder="e.g. 017XXXXXXXX or email" required>
+                </div>
+
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                        <label class="form-label" style="margin: 0;">Password</label>
+                        <a href="forgot-password.html" class="text-xs link-btn">Forgot password?</a>
+                    </div>
+                    <input type="password" id="passwordInput" class="form-control" placeholder="Enter password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1.5rem;">
+                    Sign In
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color); font-size: 0.9rem;">
+                <span class="text-muted">Don't have an account yet?</span>
+                <a href="register.html" class="link-btn font-semibold" style="margin-left: 4px;">Create New Account</a>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4;">
+                    Register as <strong>Farmer</strong>, <strong>Commercial Buyer (Hotel/Mess/Paikar)</strong>, <strong>Supplier</strong>, or <strong>Specialist</strong>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script>
+        async function handleLogin(event) {
+            if(event) event.preventDefault();
+            const phone = document.getElementById('usernameInput').value.trim();
+            try {
+                const users = await apiRequest("/user/search", "GET");
+                const user = users.find(u => (u.phone === phone || u.email === phone));
+                
+                if (user) {
+                    setCurrentUser(user);
+                    const role = (user.primaryRole || 'FARMER').toLowerCase();
+                    redirectToRoleDashboard(role);
+                } else {
+                    alert("Invalid phone number or user not found!");
+                }
+            } catch(e) {
+                alert("Login Error: " + e.message);
+            }
+        }
+
+        function redirectToRoleDashboard(role) {
+            const redirectTarget = sessionStorage.getItem('khamarbd_redirect');
+            if (redirectTarget && !redirectTarget.includes('/pages/auth/')) {
+                sessionStorage.removeItem('khamarbd_redirect');
+                window.location.href = redirectTarget;
+                return;
+            }
+
+            if (role === 'buyer') {
+                window.location.href = '../buyer/dashboard.html';
+            } else if (role === 'supplier') {
+                window.location.href = '../supplier/dashboard.html';
+            } else if (role === 'specialist' || role === 'vet' || role === 'doctor') {
+                window.location.href = '../specialist/dashboard.html';
+            } else if (role === 'admin') {
+                window.location.href = '../admin/dashboard.html';
+            } else {
+                window.location.href = '../dashboard.html';
+            }
+        }
+    </script>
+
+</body>
+</html>

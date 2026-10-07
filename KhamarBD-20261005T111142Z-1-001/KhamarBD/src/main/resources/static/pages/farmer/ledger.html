@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Ledger - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .ledger-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-box {
+            background: var(--surface-color, #ffffff);
+            border-radius: var(--radius-md, 10px);
+            padding: 1.25rem 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.05));
+        }
+        .stat-box.income { border-left: 5px solid var(--success-color, #16a34a); }
+        .stat-box.expense { border-left: 5px solid var(--danger-color, #dc2626); }
+        .stat-box.profit { border-left: 5px solid var(--primary-color, #0F5132); }
+        
+        .stat-label {
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            display: block;
+        }
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 0.35rem 0 0.25rem;
+            color: var(--text-main);
+        }
+        .stat-sub {
+            font-size: 0.775rem;
+            color: var(--text-muted);
+        }
+        .text-income { color: var(--success-color, #16a34a) !important; font-weight: 700; }
+        .text-expense { color: var(--danger-color, #dc2626) !important; font-weight: 700; }
+
+        .type-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        .type-toggle input[type="radio"] {
+            display: none;
+        }
+        .type-label {
+            flex: 1;
+            padding: 0.65rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md, 8px);
+            text-align: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        #typeIncome:checked + .type-label {
+            border-color: var(--success-color, #16a34a);
+            background: rgba(22, 163, 74, 0.1);
+            color: var(--success-color, #16a34a);
+        }
+        #typeExpense:checked + .type-label {
+            border-color: var(--danger-color, #dc2626);
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger-color, #dc2626);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="../dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> My Farms
+                </a>
+                <a href="tracking-unit.html" class="nav-item">
+                    <i class="ph ph-tag"></i> Tracking Units
+                </a>
+                <a href="routines.html" class="nav-item">
+                    <i class="ph ph-list-dashes"></i> Routines & Tasks
+                </a>
+                <a href="ledger.html" class="nav-item active">
+                    <i class="ph ph-notebook"></i> Farm Ledger
+                </a>
+                <a href="prescriptions.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Prescriptions
+                </a>
+                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-user-circle-gear"></i> Consultations
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Inquiries
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-shopping-bag"></i> Sell Produce
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="../public/marketplace.html" class="nav-item">
+                    <i class="ph ph-shopping-cart"></i> Marketplace
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-notebook" style="color: var(--primary-color);"></i> Farm Financial Ledger</h2>
+                    <p class="text-muted">Unit-level income and expense accounting with gross margin tracking</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openEntryModal()">
+                        <i class="ph ph-plus-circle"></i> Record Entry
+                    </button>
+                </div>
+            </div>
+
+            <!-- Summary KPI Cards -->
+            <div class="ledger-kpi-grid">
+                <div class="stat-box income">
+                    <span class="stat-label">Total Recorded Income</span>
+                    <h3 class="stat-value text-income" id="totalIncomeVal">BDT 0</h3>
+                    <span class="stat-sub">Across farm batches & produce sales</span>
+                </div>
+                <div class="stat-box expense">
+                    <span class="stat-label">Total Recorded Expenses</span>
+                    <h3 class="stat-value text-expense" id="totalExpenseVal">BDT 0</h3>
+                    <span class="stat-sub">Feed, medicine, labor & inputs</span>
+                </div>
+                <div class="stat-box profit">
+                    <span class="stat-label">Net Operating Margin</span>
+                    <h3 class="stat-value" id="netMarginVal">BDT 0</h3>
+                    <span class="stat-sub" id="marginPercentVal">0% profit margin</span>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                <div class="filter-group">
+                    <label>Filter by Unit:</label>
+                    <select class="form-control" id="filterUnit" onchange="applyFilters()">
+                        <option value="">All Units</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Transaction Type:</label>
+                    <select class="form-control" id="filterType" onchange="applyFilters()">
+                        <option value="">All Transactions</option>
+                        <option value="INCOME">Income Only</option>
+                        <option value="EXPENSE">Expense Only</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Search Notes/Category:</label>
+                    <input type="text" id="filterSearch" class="form-control" placeholder="Search entries..." oninput="applyFilters()">
+                </div>
+                <button class="btn btn-outline btn-sm" style="margin-left: auto;" onclick="exportCSV()">
+                    <i class="ph ph-download-simple"></i> Export CSV
+                </button>
+            </div>
+
+            <!-- Ledger Table -->
+            <div class="table-responsive" style="background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <table class="ledger-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--bg-light); border-bottom: 1px solid var(--border-color); text-align: left;">
+                            <th style="padding: 12px 16px;">Date</th>
+                            <th style="padding: 12px 16px;">Category Code</th>
+                            <th style="padding: 12px 16px;">Tracking Unit</th>
+                            <th style="padding: 12px 16px;">Description / Reference</th>
+                            <th style="padding: 12px 16px; text-align: right;">Income (In)</th>
+                            <th style="padding: 12px 16px; text-align: right;">Expense (Out)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledgerTableBody">
+                        <tr>
+                            <td colspan="6" style="padding: 3rem; text-align: center; color: var(--text-muted);">
+                                <i class="ph ph-spinner ph-spin" style="font-size: 2rem; color: var(--primary-color);"></i>
+                                <p style="margin-top: 0.5rem;">Loading financial ledger entries...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Add Entry Modal -->
+    <div class="modal" id="entryModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Record Financial Entry</h3>
+                <button class="close-btn" onclick="closeEntryModal()">&times;</button>
+            </div>
+            
+            <form id="ledgerForm" onsubmit="submitEntry(event)">
+                <div class="type-toggle">
+                    <input type="radio" name="entryType" id="typeIncome" value="INCOME" onchange="updateCategories()">
+                    <label for="typeIncome" class="type-label"><i class="ph ph-plus-circle"></i> Income (জমা)</label>
+                    
+                    <input type="radio" name="entryType" id="typeExpense" value="EXPENSE" checked onchange="updateCategories()">
+                    <label for="typeExpense" class="type-label"><i class="ph ph-minus-circle"></i> Expense (খরচ)</label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" id="entryDate" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tracking Unit / Batch</label>
+                    <select class="form-control" id="entryUnit" required>
+                        <option value="">Select Target Unit...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" id="categorySelect" required>
+                        <!-- Injected dynamically based on Income/Expense -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Amount (BDT)</label>
+                    <input type="number" id="entryAmount" class="form-control" placeholder="e.g. 3500" min="1" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description / Invoice Note</label>
+                    <textarea id="entryNotes" class="form-control" rows="2" placeholder="Specify invoice number, supplier name, quantity or reason..."></textarea>
+                </div>
+
+                <div class="modal-footer" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 1.25rem;">
+                    <button type="button" class="btn btn-outline" onclick="closeEntryModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveEntryBtn">
+                        <i class="ph ph-check-circle"></i> Save Entry
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script src="../../js/common/auth-guard.js"></script>
+    <script>
+    const incomeCategories = [
+        { code: "INC-01", name: "INC-01: Milk / Dairy Sales" },
+        { code: "INC-02", name: "INC-02: Live Poultry / Broiler / Sonali Sale" },
+        { code: "INC-03", name: "INC-03: Fish & Fingerling Harvest Sale" },
+        { code: "INC-04", name: "INC-04: Crop & Vegetable Harvest Sale" },
+        { code: "INC-05", name: "INC-05: Table Eggs Wholesale" },
+        { code: "INC-06", name: "INC-06: Manure & Organic Compost Sale" },
+        { code: "INC-07", name: "INC-07: Other Farm Revenue" }
+    ];
+
+    const expenseCategories = [
+        { code: "FEED-01", name: "FEED-01: Poultry Feed (Broiler/Layer/Sonali)" },
+        { code: "FEED-02", name: "FEED-02: Cattle & Dairy Concentrate Feed" },
+        { code: "FEED-03", name: "FEED-03: Fish & Aqua Floating Feed" },
+        { code: "SEED-01", name: "SEED-01: Rice, Crop & Vegetable Seeds" },
+        { code: "FRTZ-01", name: "FRTZ-01: Fertilizer (Urea/TSP/MoP/Organic)" },
+        { code: "PEST-01", name: "PEST-01: Pesticides, Fungicides & Herbicides" },
+        { code: "MED-01", name: "MED-01: Animal Vaccines, Antibiotics & Vet Care" },
+        { code: "MED-02", name: "MED-02: Aqua Chemicals & Water Treatment" },
+        { code: "EQP-01", name: "EQP-01: Machinery, Tools & Irrigation Equipment" },
+        { code: "STK-01", name: "STK-01: Day Old Chicks (DOC) & Fish Fingerlings" },
+        { code: "EXP-05", name: "EXP-05: Farm Labor & Wages" },
+        { code: "EXP-06", name: "EXP-06: Electricity, Fuel, Gas & Utility" },
+        { code: "EXP-07", name: "EXP-07: Shed, Pond & Fence Repair" },
+        { code: "EXP-08", name: "EXP-08: Transport, Packaging & Van Rent" },
+        { code: "EXP-09", name: "EXP-09: Specialist / Vet Consultation Fees" },
+        { code: "EXP-10", name: "EXP-10: Miscellaneous Operational Expense" }
+    ];
+
+    let allEntries = [];
+    let currentUser = null;
+    let userFarms = [];
+    let userLots = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+        if (!currentUser) {
+            currentUser = { userId: 1, name: 'Farmer' };
+        }
+
+        // Set default date to today
+        const todayStr = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('entryDate');
+        if (dateInput) dateInput.value = todayStr;
+
+        updateCategories();
+        await loadUnits();
+        await loadLedger();
+    });
+
+    function updateCategories() {
+        const isIncome = document.getElementById('typeIncome') && document.getElementById('typeIncome').checked;
+        const list = isIncome ? incomeCategories : expenseCategories;
+        const select = document.getElementById('categorySelect');
+        if (select) {
+            select.innerHTML = list.map(c => `<option value="${c.code}">${c.name}</option>`).join('');
+        }
+    }
+
+    function openEntryModal() {
+        document.getElementById('entryModal').classList.add('active');
+        const dateInput = document.getElementById('entryDate');
+        if (dateInput && !dateInput.value) {
+            dateInput.value = new Date().toISOString().split('T')[0];
+        }
+        updateCategories();
+    }
+
+    function closeEntryModal() {
+        document.getElementById('entryModal').classList.remove('active');
+    }
+
+    async function loadUnits() {
+        if (!currentUser) return;
+        try {
+            const lots = await apiRequest('/lot/search?userId=' + currentUser.userId, 'GET');
+            userLots = Array.isArray(lots) ? lots : [];
+
+            // Also check farms
+            const farms = await apiRequest('/farm/search?userId=' + currentUser.userId, 'GET');
+            userFarms = Array.isArray(farms) ? farms : [];
+
+            const select = document.getElementById('entryUnit');
+            const filter = document.getElementById('filterUnit');
+
+            if (select) select.innerHTML = '<option value="">Select Target Unit / Batch...</option>';
+            if (filter) filter.innerHTML = '<option value="">All Units</option>';
+
+            userLots.forEach(lot => {
+                const optText = `${lot.identifierTag || ('Unit #' + lot.lotId)} (${lot.speciesOrBreed || lot.category || 'Batch'})`;
+                if (select) select.innerHTML += `<option value="${lot.lotId}">${optText}</option>`;
+                if (filter) filter.innerHTML += `<option value="${lot.lotId}">${optText}</option>`;
+            });
+
+            // If user has farms with no units, allow selecting whole farm
+            if (userLots.length === 0 && userFarms.length > 0) {
+                userFarms.forEach(f => {
+                    if (select) select.innerHTML += `<option value="farm_${f.farmId}">Farm: ${f.farmName}</option>`;
+                    if (filter) filter.innerHTML += `<option value="farm_${f.farmId}">Farm: ${f.farmName}</option>`;
+                });
+            }
+        } catch(e) {
+            console.error("Failed to load units:", e);
+        }
+    }
+
+    async function loadLedger() {
+        try {
+            const entries = await apiRequest('/ledger/search', 'GET');
+            allEntries = Array.isArray(entries) ? entries : [];
+            applyFilters();
+        } catch(e) {
+            console.error("Failed to load ledger:", e);
+            const tbody = document.getElementById('ledgerTableBody');
+            if (tbody) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="padding: 2.5rem; text-align: center; color: var(--danger-color);">
+                            Failed to load ledger entries: ${e.message}
+                        </td>
+                    </tr>`;
+            }
+        }
+    }
+
+    function applyFilters() {
+        const unitFilter = (document.getElementById('filterUnit') ? document.getElementById('filterUnit').value : '').trim();
+        const typeFilter = (document.getElementById('filterType') ? document.getElementById('filterType').value : '').trim().toUpperCase();
+        const keyword = (document.getElementById('filterSearch') ? document.getElementById('filterSearch').value : '').trim().toLowerCase();
+
+        const filtered = allEntries.filter(entry => {
+            // Unit filter
+            if (unitFilter) {
+                if (unitFilter.startsWith('farm_')) {
+                    const fId = parseInt(unitFilter.replace('farm_', ''));
+                    if (entry.farmId !== fId && (!entry.farm || entry.farm.farmId !== fId)) return false;
+                } else {
+                    const lId = parseInt(unitFilter);
+                    if (entry.lotId !== lId && (!entry.lotOrAnimal || entry.lotOrAnimal.lotId !== lId)) return false;
+                }
+            }
+
+            // Type filter
+            if (typeFilter && (entry.entryType || '').toUpperCase() !== typeFilter) {
+                return false;
+            }
+
+            // Keyword filter
+            if (keyword) {
+                const cat = (entry.category || '').toLowerCase();
+                const notes = (entry.notes || '').toLowerCase();
+                const tag = (entry.lotTag || (entry.lotOrAnimal ? entry.lotOrAnimal.identifierTag : '') || '').toLowerCase();
+                if (!cat.includes(keyword) && !notes.includes(keyword) && !tag.includes(keyword)) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        renderTable(filtered);
+    }
+
+    function renderTable(entries) {
+        const tbody = document.getElementById('ledgerTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        
+        let totalIncome = 0;
+        let totalExpense = 0;
+        
+        if (!entries || entries.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="padding: 3.5rem 1rem; text-align: center; color: var(--text-muted);">
+                        <i class="ph ph-notebook" style="font-size: 3rem; color: #94a3b8; margin-bottom: 0.5rem; display: inline-block;"></i>
+                        <h4 style="margin: 0; color: var(--text-main); font-size: 1.1rem;">No Financial Entries Recorded Yet</h4>
+                        <p style="margin: 0.35rem 0 1rem; font-size: 0.875rem;">Click "Record Entry" above to log your feed purchases, harvest sales, or operational expenses.</p>
+                    </td>
+                </tr>`;
+        } else {
+            entries.forEach(entry => {
+                const isIncome = (entry.entryType || '').toUpperCase() === 'INCOME';
+                const amountNum = parseFloat(entry.amount) || 0;
+                if (isIncome) totalIncome += amountNum;
+                else totalExpense += amountNum;
+                
+                const amountStr = 'BDT ' + amountNum.toLocaleString();
+                const badgeClass = isIncome ? 'badge-success' : 'badge-danger';
+                const unitTag = entry.lotTag || (entry.lotOrAnimal ? entry.lotOrAnimal.identifierTag : (entry.farmName || 'General Farm'));
+                
+                let dateStr = 'Recent';
+                if (entry.eventDate) {
+                    try {
+                        dateStr = new Date(entry.eventDate).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'});
+                    } catch(e) {
+                        dateStr = entry.eventDate;
+                    }
+                }
+                
+                tbody.innerHTML += `
+                    <tr style="border-bottom: 1px solid var(--border-light, #f8fafc);">
+                        <td style="padding: 12px 16px; font-weight: 600;">${dateStr}</td>
+                        <td style="padding: 12px 16px;"><span class="badge ${badgeClass}">${entry.category || 'General'}</span></td>
+                        <td style="padding: 12px 16px;"><span class="badge" style="background: var(--bg-light); color: var(--text-main); border: 1px solid var(--border-color); font-weight: 700;">${unitTag}</span></td>
+                        <td style="padding: 12px 16px; color: var(--text-muted); font-size: 0.9rem;">${entry.notes || '-'}</td>
+                        <td style="padding: 12px 16px; text-align: right; color: var(--success-color); font-weight: 700;">${isIncome ? amountStr : '-'}</td>
+                        <td style="padding: 12px 16px; text-align: right; color: var(--danger-color); font-weight: 700;">${!isIncome ? amountStr : '-'}</td>
+                    </tr>`;
+            });
+        }
+        
+        // Update KPIs
+        const incomeEl = document.getElementById('totalIncomeVal');
+        if (incomeEl) incomeEl.innerText = 'BDT ' + totalIncome.toLocaleString();
+
+        const expenseEl = document.getElementById('totalExpenseVal');
+        if (expenseEl) expenseEl.innerText = 'BDT ' + totalExpense.toLocaleString();
+
+        const netMargin = totalIncome - totalExpense;
+        const netMarginEl = document.getElementById('netMarginVal');
+        if (netMarginEl) {
+            netMarginEl.innerText = 'BDT ' + netMargin.toLocaleString();
+            netMarginEl.className = 'stat-value ' + (netMargin >= 0 ? 'text-income' : 'text-expense');
+        }
+
+        const marginPercentEl = document.getElementById('marginPercentVal');
+        if (marginPercentEl) {
+            if (totalIncome > 0) {
+                const pct = ((netMargin / totalIncome) * 100).toFixed(1);
+                marginPercentEl.innerText = `${pct}% net margin`;
+            } else {
+                marginPercentEl.innerText = totalExpense > 0 ? 'Net expense phase' : '0% margin';
+            }
+        }
+    }
+
+    async function submitEntry(event) {
+        if (event) event.preventDefault();
+
+        const entryType = document.getElementById('typeIncome').checked ? 'INCOME' : 'EXPENSE';
+        const cat = document.getElementById('categorySelect').value;
+        const amount = document.getElementById('entryAmount').value;
+        const date = document.getElementById('entryDate').value;
+        const unitVal = document.getElementById('entryUnit').value;
+        const notes = document.getElementById('entryNotes').value;
+
+        if (!amount || !date || !cat) {
+            alert('Please fill in all required fields (Amount, Date, Category).');
+            return;
+        }
+
+        const saveBtn = document.getElementById('saveEntryBtn');
+        if (saveBtn) {
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Saving...';
+        }
+
+        try {
+            const payload = {
+                entryType: entryType,
+                category: cat,
+                amount: parseFloat(amount),
+                eventDate: date,
+                notes: notes,
+                createdBy: currentUser ? currentUser.userId : 1
+            };
+
+            if (unitVal) {
+                if (unitVal.startsWith('farm_')) {
+                    payload.farmId = parseInt(unitVal.replace('farm_', ''));
+                } else {
+                    payload.lotId = parseInt(unitVal);
+                }
+            } else if (userLots.length > 0) {
+                payload.lotId = userLots[0].lotId;
+            } else if (userFarms.length > 0) {
+                payload.farmId = userFarms[0].farmId;
+            }
+
+            const res = await apiRequest('/ledger/create', 'POST', payload);
+            closeEntryModal();
+            alert(`✅ Recorded ${entryType} of BDT ${parseFloat(amount).toLocaleString()} successfully in Farm Ledger!`);
+            
+            // Reset form fields
+            document.getElementById('entryAmount').value = '';
+            document.getElementById('entryNotes').value = '';
+            
+            await loadLedger();
+        } catch(err) {
+            console.error("Save entry error:", err);
+            alert('Error recording ledger entry: ' + err.message);
+        } finally {
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="ph ph-check-circle"></i> Save Entry';
+            }
+        }
+    }
+
+    function exportCSV() {
+        let csv = [];
+        const rows = document.querySelectorAll(".ledger-table tr");
+        for (let i = 0; i < rows.length; i++) {
+            let row = [], cols = rows[i].querySelectorAll("td, th");
+            for (let j = 0; j < cols.length; j++) {
+                let text = cols[j].innerText.replace(/"/g, '""').trim();
+                row.push('"' + text + '"');
+            }
+            if (row.length > 0) csv.push(row.join(","));
+        }
+        const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'farm_financial_ledger.csv');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+    </script>
+</body>
+</html>

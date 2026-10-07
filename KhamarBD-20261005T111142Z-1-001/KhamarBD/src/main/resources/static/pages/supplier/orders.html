@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Orders & Fulfillment Dispatch - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        /* Responsive Stepper Styles */
+        .stepper-scroll-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 1.25rem 0 0.75rem 0;
+            padding-bottom: 6px;
+        }
+        .stepper-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            min-width: 580px;
+            position: relative;
+            background: rgba(248, 250, 252, 0.85);
+            padding: 1rem 0.85rem;
+            border-radius: var(--radius-md, 10px);
+            border: 1px solid var(--border-color);
+        }
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+            text-align: center;
+            cursor: pointer;
+            padding: 0 4px;
+        }
+        .step-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #64748b;
+            z-index: 2;
+            transition: all 0.25s ease;
+        }
+        .step-item.completed .step-circle {
+            background: #16a34a;
+            border-color: #16a34a;
+            color: #ffffff;
+        }
+        .step-item.active .step-circle {
+            background: var(--primary-color, #0F5132);
+            border-color: var(--primary-color, #0F5132);
+            color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(15, 81, 50, 0.2);
+        }
+        .step-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 6px;
+            color: #64748b;
+            line-height: 1.25;
+        }
+        .step-item.completed .step-label {
+            color: #16a34a;
+            font-weight: 700;
+        }
+        .step-item.active .step-label {
+            color: var(--primary-color, #0F5132);
+            font-weight: 800;
+        }
+        .step-line {
+            position: absolute;
+            top: 17px;
+            left: 50%;
+            width: 100%;
+            height: 3px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+        .step-item.completed .step-line {
+            background: #16a34a;
+        }
+
+        /* Stage Buttons */
+        .stage-control-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border-color);
+        }
+        .stage-badge-btn {
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm, 6px);
+            border: 1px solid var(--border-color);
+            background: #ffffff;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .stage-badge-btn:hover {
+            border-color: var(--primary-color);
+            background: rgba(15, 81, 50, 0.05);
+            color: var(--primary-color);
+        }
+        .stage-badge-btn.current {
+            background: var(--primary-color, #0F5132);
+            border-color: var(--primary-color, #0F5132);
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(15, 81, 50, 0.25);
+        }
+
+        /* Order Card Layout */
+        .order-card-container {
+            background: var(--surface-color, #ffffff);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md, 10px);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.05));
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .order-card-container:hover {
+            box-shadow: var(--shadow-md, 0 4px 10px rgba(0,0,0,0.08));
+        }
+
+        /* Responsive Action Row */
+        .dispatch-action-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: stretch;
+            margin-top: 12px;
+            width: 100%;
+        }
+        .dispatch-action-row input {
+            flex: 1 1 240px;
+            min-width: 180px;
+        }
+        .dispatch-action-row .btn {
+            flex: 0 0 auto;
+            white-space: nowrap;
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 768px) {
+            .order-card-container {
+                padding: 1rem;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px;
+            }
+            .filter-bar input#orderSearchInput {
+                max-width: 100% !important;
+                margin-left: 0 !important;
+            }
+            .stage-control-bar {
+                gap: 6px;
+            }
+            .stage-control-bar button {
+                font-size: 0.72rem;
+                padding: 5px 8px;
+            }
+            .dispatch-action-row {
+                flex-direction: column;
+            }
+            .dispatch-action-row .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Supplier Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Supplier Dashboard
+                </a>
+                <a href="listings.html" class="nav-item">
+                    <i class="ph ph-stack"></i> Product Listings
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-plus-circle"></i> Add New Product
+                </a>
+                <a href="orders.html" class="nav-item active">
+                    <i class="ph ph-package"></i> Orders & Dispatch
+                    <span class="badge badge-warning" id="sidebarOrderCount" style="margin-left: auto;">...</span>
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Customer Messages
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-storefront"></i> Business Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 1.25rem;">
+                <div>
+                    <h2 style="margin: 0; font-size: 1.45rem; font-weight: 800; color: var(--text-main);">
+                        <i class="ph ph-package" style="color: var(--primary-color);"></i> Farm Customer Orders & Fulfillment Dispatch
+                    </h2>
+                    <p class="text-muted" style="margin: 4px 0 0; font-size: 0.9rem;">
+                        Real-time orders received from farmers & commercial buyers across 64 districts
+                    </p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-outline btn-sm" onclick="refreshSupplierOrders()" title="Reload from Database">
+                        <i class="ph ph-arrows-clockwise"></i> Refresh DB Data
+                    </button>
+                    <button class="btn btn-primary btn-sm" onclick="createSampleOrderFromDB()" style="font-weight: 700;">
+                        <i class="ph ph-plus-circle"></i> Create Sample DB Order
+                    </button>
+                </div>
+            </div>
+
+            <!-- Direct Payment Notice -->
+            <div class="trust-banner" style="margin-bottom: 1.25rem; display: flex; align-items: center; gap: 10px; background: rgba(15, 81, 50, 0.08); border: 1px solid rgba(15, 81, 50, 0.2); padding: 0.9rem 1.15rem; border-radius: var(--radius-md);">
+                <i class="ph-fill ph-shield-check" style="color: var(--primary-color); font-size: 1.35rem;"></i>
+                <span style="font-size: 0.88rem; color: var(--text-main); line-height: 1.45;">
+                    <strong>Direct Off-Platform Settlement:</strong> All order payments are collected directly at your shop counter or upon delivery handover. Changing fulfillment stages updates the farmer's portal and ledger in real-time.
+                </span>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 1.25rem; background: #ffffff; padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <div class="filter-group" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <label style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin: 0;">Stage Filter:</label>
+                    <select class="form-control" id="orderStatusFilter" onchange="filterOrders()" style="min-width: 170px; padding: 6px 10px; font-size: 0.85rem;">
+                        <option value="ALL">All Stages (All Orders)</option>
+                        <option value="ORDER_RECEIVED">1. Order Received</option>
+                        <option value="PAYMENT_RECEIVED">2. Payment Received</option>
+                        <option value="PROCESSING">3. Processing / Packed</option>
+                        <option value="IN_TRANSPORT">4. In Transport</option>
+                        <option value="OUT_FOR_DELIVERY">5. Out for Delivery</option>
+                        <option value="DELIVERED">6. Farm Delivered</option>
+                        <option value="CANCELLED">Cancelled</option>
+                    </select>
+                </div>
+                <div style="flex: 1; max-width: 320px; min-width: 200px;">
+                    <input type="text" id="orderSearchInput" class="form-control" placeholder="Search order #, customer, phone, item..." style="font-size: 0.85rem; padding: 6px 12px;" oninput="filterOrders()">
+                </div>
+            </div>
+
+            <!-- Orders List Container -->
+            <div class="task-list" id="ordersListContainer">
+                <div style="padding: 3rem 1rem; text-align: center; color: var(--text-muted); background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <i class="ph ph-spinner ph-spin" style="font-size: 2.2rem; color: var(--primary-color);"></i>
+                    <p style="margin-top: 0.75rem; font-weight: 600;">Fetching live orders from database...</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        const STAGES = [
+            { key: 'ORDER_RECEIVED', label: 'Order Received', icon: 'ph-receipt' },
+            { key: 'PAYMENT_RECEIVED', label: 'Payment Confirmed', icon: 'ph-credit-card' },
+            { key: 'PROCESSING', label: 'Processing & Packed', icon: 'ph-package' },
+            { key: 'IN_TRANSPORT', label: 'In Transport', icon: 'ph-truck' },
+            { key: 'OUT_FOR_DELIVERY', label: 'Out for Delivery', icon: 'ph-moped' },
+            { key: 'DELIVERED', label: 'Farm Delivered', icon: 'ph-house-line' }
+        ];
+
+        let allOrders = [];
+        let currentSupplier = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            currentSupplier = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+            await loadOrders();
+        });
+
+        async function refreshSupplierOrders() {
+            await loadOrders();
+        }
+
+        async function loadOrders() {
+            const container = document.getElementById('ordersListContainer');
+            if (container) {
+                container.innerHTML = `
+                    <div style="padding: 3rem 1rem; text-align: center; color: var(--text-muted); background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <i class="ph ph-spinner ph-spin" style="font-size: 2.2rem; color: var(--primary-color);"></i>
+                        <p style="margin-top: 0.75rem; font-weight: 600;">Connecting to database & loading orders...</p>
+                    </div>`;
+            }
+
+            try {
+                const user = currentSupplier || { userId: 3 };
+                const supplierId = user.userId;
+
+                // 1. Query orders from DB specifically for this seller/supplier
+                let sellerOrders = [];
+                try {
+                    sellerOrders = await apiRequest(`/order/search?sellerId=${supplierId}`, 'GET');
+                } catch (e) {
+                    console.warn("Could not query sellerId:", e);
+                }
+
+                // 2. If no specific seller orders exist, also fetch all orders from database
+                if (!Array.isArray(sellerOrders) || sellerOrders.length === 0) {
+                    const allDbOrders = await apiRequest('/order/search', 'GET');
+                    if (Array.isArray(allDbOrders)) {
+                        // Filter orders matching this sellerId or general supply orders
+                        const matched = allDbOrders.filter(o => o.sellerId == supplierId);
+                        sellerOrders = matched.length > 0 ? matched : allDbOrders;
+                    }
+                }
+
+                allOrders = Array.isArray(sellerOrders) ? sellerOrders : [];
+                
+                // Update sidebar active count
+                const pendingCount = allOrders.filter(o => {
+                    const st = (o.orderStatus || 'ORDER_RECEIVED').toUpperCase();
+                    return st !== 'DELIVERED' && st !== 'CANCELLED';
+                }).length;
+                const countBadge = document.getElementById('sidebarOrderCount');
+                if (countBadge) countBadge.textContent = `${pendingCount} Active`;
+
+                filterOrders();
+            } catch (err) {
+                console.error("Failed to load orders from DB:", err);
+                if (container) {
+                    container.innerHTML = `
+                        <div style="padding: 2.5rem 1rem; text-align: center; color: var(--danger-color); background: #fff; border-radius: var(--radius-md); border: 1px solid var(--danger-soft);">
+                            <i class="ph ph-warning-circle" style="font-size: 2.5rem; margin-bottom: 0.5rem; display: inline-block;"></i>
+                            <h3 style="margin: 0; font-size: 1.15rem;">Failed to load customer orders from Database</h3>
+                            <p style="margin: 0.5rem 0 1rem; font-size: 0.9rem; color: var(--text-muted);">${err.message}</p>
+                            <button class="btn btn-outline btn-sm" onclick="loadOrders()"><i class="ph ph-arrows-clockwise"></i> Try Again</button>
+                        </div>`;
+                }
+            }
+        }
+
+        function filterOrders() {
+            const statusFilter = document.getElementById('orderStatusFilter').value.toUpperCase();
+            const search = document.getElementById('orderSearchInput').value.toLowerCase().trim();
+
+            const filtered = allOrders.filter(order => {
+                const st = (order.orderStatus || 'ORDER_RECEIVED').toUpperCase();
+                const matchStatus = (statusFilter === 'ALL') || 
+                                    (statusFilter === 'ORDER_RECEIVED' && (st === 'ORDER_RECEIVED' || st === 'PENDING')) ||
+                                    (statusFilter === 'PAYMENT_RECEIVED' && (st === 'PAYMENT_RECEIVED')) ||
+                                    (statusFilter === 'PROCESSING' && (st === 'PROCESSING' || st === 'ACCEPTED')) ||
+                                    (statusFilter === 'IN_TRANSPORT' && (st === 'IN_TRANSPORT' || st === 'IN_TRANSIT')) ||
+                                    (statusFilter === 'OUT_FOR_DELIVERY' && (st === 'OUT_FOR_DELIVERY')) ||
+                                    (statusFilter === 'DELIVERED' && (st === 'DELIVERED' || st === 'COMPLETED')) ||
+                                    (st === statusFilter);
+
+                const buyer = (order.buyerName || '').toLowerCase();
+                const phone = (order.buyerPhone || '').toLowerCase();
+                const ref = (order.orderReference || '').toLowerCase();
+                const item = (order.listingTitle || '').toLowerCase();
+                const note = (order.paymentNote || '').toLowerCase();
+                const district = (order.buyerDistrict || '').toLowerCase();
+
+                const matchSearch = !search || 
+                                    buyer.includes(search) || 
+                                    phone.includes(search) || 
+                                    ref.includes(search) || 
+                                    item.includes(search) ||
+                                    note.includes(search) ||
+                                    district.includes(search);
+
+                return matchStatus && matchSearch;
+            });
+
+            renderOrders(filtered);
+        }
+
+        function getStageIndex(status) {
+            const s = (status || 'ORDER_RECEIVED').toUpperCase();
+            if (s === 'ORDER_RECEIVED' || s === 'PENDING') return 0;
+            if (s === 'PAYMENT_RECEIVED') return 1;
+            if (s === 'PROCESSING' || s === 'ACCEPTED') return 2;
+            if (s === 'IN_TRANSPORT' || s === 'IN_TRANSIT') return 3;
+            if (s === 'OUT_FOR_DELIVERY') return 4;
+            if (s === 'DELIVERED' || s === 'COMPLETED') return 5;
+            return -1; // CANCELLED
+        }
+
+        function renderOrders(orders) {
+            const container = document.getElementById('ordersListContainer');
+            if (!container) return;
+
+            if (!orders || orders.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 3.5rem 1.5rem; text-align: center; color: var(--text-muted); background: #ffffff; border-radius: var(--radius-md); border: 1px dashed var(--border-color);">
+                        <i class="ph ph-package" style="font-size: 3.2rem; color: #94a3b8; margin-bottom: 0.75rem; display: inline-block;"></i>
+                        <h3 style="color: var(--text-main); font-size: 1.2rem; margin: 0;">No Incoming Customer Orders in Database</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0.5rem auto 1.25rem; max-width: 480px;">
+                            Orders placed by farmers for your feeds, seeds, vaccines, or equipment will appear here in real-time.
+                        </p>
+                        <button class="btn btn-primary btn-sm" onclick="createSampleOrderFromDB()" style="font-weight: 700;">
+                            <i class="ph ph-plus-circle"></i> Create Sample DB Order to Test Dispatch
+                        </button>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = orders.map(order => {
+                const orderId = order.orderId;
+                const status = (order.orderStatus || 'ORDER_RECEIVED').toUpperCase();
+                const currentIndex = getStageIndex(status);
+                const isCancelled = status === 'CANCELLED';
+
+                const ref = order.orderReference || `ORD-${orderId}`;
+                const buyer = order.buyerName || 'Farmer Customer';
+                const phone = order.buyerPhone || 'Not specified';
+                const location = [order.buyerUpazila, order.buyerDistrict].filter(Boolean).join(', ') || 'Regional Farm Customer';
+                const title = order.listingTitle || 'Agricultural Farm Supply';
+                const qty = order.quantity || 1;
+                const unit = order.listingUnit || 'Unit';
+                const total = (order.totalAgreedPrice || 0).toLocaleString();
+                const dateStr = order.createdAt ? new Date(order.createdAt).toLocaleString() : 'Recent';
+                const note = order.paymentNote || '';
+
+                // Border status color
+                let borderColor = 'var(--primary-color, #0F5132)';
+                let badgeClass = 'badge-primary';
+                if (isCancelled) {
+                    borderColor = 'var(--danger-color, #dc2626)';
+                    badgeClass = 'badge-danger';
+                } else if (currentIndex === 5) {
+                    borderColor = 'var(--success-color, #16a34a)';
+                    badgeClass = 'badge-success';
+                }
+
+                // Generate Responsive Stepper HTML
+                const stepperHtml = isCancelled ? `
+                    <div style="padding: 12px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: var(--radius-md); color: #dc2626; font-weight: 700; margin: 12px 0; text-align: center; font-size: 0.9rem;">
+                        <i class="ph ph-x-circle" style="font-size: 1.15rem; vertical-align: middle;"></i> This order has been CANCELLED / DECLINED.
+                    </div>` : `
+                    <div class="stepper-scroll-wrapper">
+                        <div class="stepper-container">
+                            ${STAGES.map((st, idx) => {
+                                let itemClass = '';
+                                if (idx < currentIndex) itemClass = 'completed';
+                                else if (idx === currentIndex) itemClass = 'active';
+
+                                const showLine = idx < STAGES.length - 1;
+                                return `
+                                    <div class="step-item ${itemClass}" onclick="updateOrderStage(${orderId}, '${st.key}')" title="Click to advance stage to: ${st.label}">
+                                        ${showLine ? `<div class="step-line"></div>` : ''}
+                                        <div class="step-circle">
+                                            <i class="ph ${idx < currentIndex ? 'ph-check' : st.icon}"></i>
+                                        </div>
+                                        <span class="step-label">${st.label}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+
+                return `
+                    <div class="order-card-container" style="border-left: 5px solid ${borderColor};">
+                        
+                        <!-- Header Row -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--border-light, #f1f5f9); padding-bottom: 10px; margin-bottom: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-main);">
+                                    Order #${ref}
+                                </h3>
+                                <span class="badge ${badgeClass}" style="font-weight: 700; font-size: 0.78rem;">
+                                    ${status.replace(/_/g, ' ')}
+                                </span>
+                            </div>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">
+                                <i class="ph ph-clock"></i> Placed: ${dateStr}
+                            </span>
+                        </div>
+
+                        <!-- Customer & Product Metadata -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 12px; font-size: 0.875rem;">
+                            <div>
+                                <span style="color: var(--text-muted); display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Customer Information</span>
+                                <strong style="color: var(--text-main); font-size: 0.95rem;">${buyer}</strong>
+                                <div style="color: var(--text-muted); font-size: 0.825rem; margin-top: 2px;">
+                                    <i class="ph ph-phone"></i> ${phone}
+                                </div>
+                                <div style="color: var(--text-muted); font-size: 0.825rem;">
+                                    <i class="ph ph-map-pin"></i> ${location}
+                                </div>
+                            </div>
+                            <div>
+                                <span style="color: var(--text-muted); display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Ordered Supply Item</span>
+                                <strong style="color: var(--text-main); font-size: 0.95rem;">${title}</strong>
+                                <div style="color: var(--primary-color); font-weight: 700; font-size: 0.9rem; margin-top: 2px;">
+                                    Quantity: ${qty} ${unit}
+                                </div>
+                                <div style="color: var(--text-main); font-weight: 800; font-size: 1.05rem; margin-top: 2px;">
+                                    Total: <span style="color: var(--primary-color);">BDT ${total}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Step-by-Step Progress Timeline -->
+                        ${stepperHtml}
+
+                        <!-- Stage Advance Buttons -->
+                        <div class="stage-control-bar">
+                            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-right: 4px;">
+                                <i class="ph ph-hand-pointing"></i> Update Stage:
+                            </span>
+                            ${STAGES.map(st => `
+                                <button class="stage-badge-btn ${status === st.key ? 'current' : ''}" onclick="updateOrderStage(${orderId}, '${st.key}')">
+                                    <i class="ph ${st.icon}"></i> ${st.label}
+                                </button>
+                            `).join('')}
+                            ${!isCancelled ? `
+                                <button class="stage-badge-btn text-danger" style="margin-left: auto; border-color: #fca5a5; color: #dc2626;" onclick="updateOrderStage(${orderId}, 'CANCELLED')">
+                                    <i class="ph ph-x"></i> Cancel Order
+                                </button>
+                            ` : `
+                                <button class="stage-badge-btn text-primary" style="margin-left: auto;" onclick="updateOrderStage(${orderId}, 'ORDER_RECEIVED')">
+                                    <i class="ph ph-arrow-counter-clockwise"></i> Reopen Order
+                                </button>
+                            `}
+                        </div>
+
+                        <!-- Tracking & Dispatch Note Action Row -->
+                        <div class="dispatch-action-row">
+                            <input type="text" id="noteInput_${orderId}" class="form-control" style="font-size: 0.85rem; padding: 7px 12px;" placeholder="Dispatch / tracking note (e.g., Courier tracking #8821, Driver: 01712-334455)..." value="${note}">
+                            <button class="btn btn-outline btn-sm" onclick="saveOrderNote(${orderId})">
+                                <i class="ph ph-floppy-disk"></i> Save Dispatch Note
+                            </button>
+                            <a href="chat.html?peerId=${order.buyerId || 1}&name=${encodeURIComponent(buyer)}&topic=Order+%23${ref}" class="btn btn-outline btn-sm">
+                                <i class="ph ph-chat-circle-dots"></i> Message Customer
+                            </a>
+                        </div>
+
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function updateOrderStage(orderId, newStatus) {
+            try {
+                const noteInput = document.getElementById(`noteInput_${orderId}`);
+                const note = noteInput ? noteInput.value.trim() : '';
+
+                const res = await apiRequest(`/order/${orderId}/status`, 'POST', {
+                    status: newStatus,
+                    paymentNote: note
+                });
+
+                // Update local list
+                const order = allOrders.find(o => o.orderId === orderId);
+                if (order) {
+                    order.orderStatus = newStatus;
+                    if (note) order.paymentNote = note;
+                }
+
+                filterOrders();
+            } catch (err) {
+                alert('Failed to update stage in database: ' + err.message);
+            }
+        }
+
+        async function saveOrderNote(orderId) {
+            const noteInput = document.getElementById(`noteInput_${orderId}`);
+            if (!noteInput) return;
+            const note = noteInput.value.trim();
+            const order = allOrders.find(o => o.orderId === orderId);
+            const currentStatus = order ? order.orderStatus : 'ORDER_RECEIVED';
+
+            try {
+                await apiRequest(`/order/${orderId}/status`, 'POST', {
+                    status: currentStatus,
+                    paymentNote: note
+                });
+                if (order) order.paymentNote = note;
+                alert('✅ Dispatch & Tracking note successfully saved to database!');
+            } catch (err) {
+                alert('Failed to save note: ' + err.message);
+            }
+        }
+
+        // Helper function to create a real live DB order linked to this supplier for instant testing
+        async function createSampleOrderFromDB() {
+            try {
+                const user = currentSupplier || { userId: 3 };
+                
+                // Fetch active listings for this supplier or marketplace
+                const listings = await apiRequest('/listing/search', 'GET');
+                const myListing = (Array.isArray(listings) && listings.find(l => l.sellerId == user.userId)) || 
+                                  (Array.isArray(listings) && listings.length > 0 ? listings[0] : null);
+
+                const listingId = myListing ? myListing.listingId : 54;
+                const price = myListing && myListing.price ? myListing.price : 2800;
+
+                const payload = {
+                    buyerId: 1, // Farmer Rahim
+                    listingId: listingId,
+                    sellerId: user.userId,
+                    quantity: 5,
+                    totalAgreedPrice: price * 5,
+                    paymentNote: 'Farmer ordered 5 units for Bogura poultry farm via Marketplace'
+                };
+
+                const created = await apiRequest('/order/create', 'POST', payload);
+                alert(`🎉 Live Customer Order Created in Database!\n\nOrder Ref: ${created.orderReference || created.orderId}\nTotal: BDT ${payload.totalAgreedPrice.toLocaleString()}\n\nStatus: ORDER_RECEIVED`);
+                await loadOrders();
+            } catch (err) {
+                alert('Could not create test order: ' + err.message);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Business Profile - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Supplier Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Supplier Dashboard
+                </a>
+                <a href="listings.html" class="nav-item">
+                    <i class="ph ph-stack"></i> Product Listings
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-plus-circle"></i> Add New Product
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Dispatch
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Customer Messages
+                </a>
+                <a href="profile.html" class="nav-item active">
+                    <i class="ph ph-storefront"></i> Business Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-storefront"></i> Commercial Supplier Profile</h2>
+                    <p class="text-muted">Manage your trade registration, shop address, and customer delivery capabilities</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="alert('Supplier profile saved successfully!')">
+                        <i class="ph ph-floppy-disk"></i> Save Profile
+                    </button>
+                </div>
+            </div>
+
+            <div class="dash-grid">
+                
+                <!-- Left Column: Profile Form -->
+                <div class="dash-col-main">
+                    <div class="dash-card">
+                        <form id="supplierProfileForm">
+                            
+                            <div class="dash-card-header">
+                                <h3><i class="ph ph-buildings"></i> Business Entity Details</h3>
+                                <span class="badge badge-success"><i class="ph ph-seal-check"></i> Verified Commercial Merchant</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Registered Business Name</label>
+                                <input type="text" class="form-control" value="Sonali Agro Feeds & Vet Pharmacy" required>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Supplier Type Code (S01 - S18)</label>
+                                    <select class="form-control" id="suppTypeCode">
+                                        <option value="S01">S01: Agricultural Input Shop</option>
+                                        <option value="S02">S02: General Feed Dealer</option>
+                                        <option value="S03" selected>S03: Poultry Feed Supplier</option>
+                                        <option value="S04">S04: Livestock Feed Supplier</option>
+                                        <option value="S05">S05: Fisheries Feed Supplier</option>
+                                        <option value="S06">S06: Seed Supplier</option>
+                                        <option value="S07">S07: Fertilizer Supplier</option>
+                                        <option value="S09">S09: Veterinary Medicine Supplier</option>
+                                        <option value="S15">S15: Fish Fingerling Supplier</option>
+                                        <option value="S18">S18: Multi-Category Agro Merchant</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Trade License / Reg Number</label>
+                                    <input type="text" class="form-control" value="TL-BOG-2024-8891" readonly style="background-color: var(--bg-light);">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Primary Business Location</label>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 0.75rem;">
+                                    <select class="form-control">
+                                        <option selected>Rajshahi Division</option>
+                                        <option>Dhaka Division</option>
+                                    </select>
+                                    <select class="form-control">
+                                        <option selected>Bogura District</option>
+                                        <option>Natore District</option>
+                                    </select>
+                                    <input type="text" class="form-control" value="Shibganj Upazila &bull; Station Road Market">
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Contact Phone (Orders & Delivery Hotline)</label>
+                                    <input type="tel" class="form-control" value="+880 1711-223344" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Contact Email</label>
+                                    <input type="email" class="form-control" value="sonali.agro@khamarbd.com">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Delivery & Dispatch Policy</label>
+                                <textarea class="form-control" rows="3">We provide direct farm-gate delivery for orders of 10+ feed bags within Bogura district via our own delivery vehicle. For smaller orders or prescription drugs, counter collection is available daily from 8:00 AM to 8:00 PM at our Shibganj station branch.</textarea>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right Column: Public Card Preview -->
+                <div class="dash-col-side">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3><i class="ph ph-storefront"></i> Merchant Badge Preview</h3>
+                        </div>
+                        <p class="text-xs text-muted" style="margin-bottom: 1rem;">
+                            How your business appears on Marketplace product cards:
+                        </p>
+
+                        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; background: var(--bg-light);">
+                            <span class="badge badge-primary">S03 Feed Dealer</span>
+                            <h4 style="margin: 8px 0 4px 0; font-size: 1.05rem;">Sonali Agro Feeds & Vet</h4>
+                            <p class="text-xs text-muted" style="margin-bottom: 8px;">Shibganj, Bogura &bull; Delivery Available</p>
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                <span class="badge badge-success text-xs">Verified Stock</span>
+                                <span class="badge badge-accent text-xs">Direct Payment</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+</body>
+</html>

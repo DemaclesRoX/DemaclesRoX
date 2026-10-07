@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specialist Directory - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="../../index.html" class="logo">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            <nav class="nav-links">
+                <a href="../../index.html#features">Features</a>
+                <a href="marketplace.html">Marketplace</a>
+                <a href="specialists.html" class="active">Specialist Directory</a>
+                <a href="../dashboard.html">Farmer App</a>
+                <a href="../auth/login.html" class="btn btn-outline">Login</a>
+                <a href="../auth/register.html" class="btn btn-primary">Register</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Header & Search -->
+    <section class="marketplace-header">
+        <div class="container">
+            <h1>Veterinary & Agronomy Specialists</h1>
+            <p>Connect with verified veterinarians and agronomists for digital consultations and electronic prescriptions.</p>
+            
+            <div class="search-bar">
+                <select id="expertiseFilter" class="form-control" style="width: 200px;">
+                    <option value="">All Expertise</option>
+                    <option value="veterinary">Veterinary Surgeon</option>
+                    <option value="aqua">Aqua Health Agronomist</option>
+                    <option value="agriculture">Crop Agronomist</option>
+                </select>
+                <input type="text" id="specialistSearch" class="form-control" placeholder="Search by name, expertise, or location...">
+                <button class="btn btn-primary"><i class="ph ph-magnifying-glass"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="marketplace-content section" style="padding-top: 2rem;">
+        <div class="container">
+            <div class="listing-grid">
+                
+                <!-- Specialist Card 1 -->
+                <div class="listing-card specialist-card">
+                    <div class="specialist-header">
+                        <div class="specialist-avatar">
+                            <i class="ph-fill ph-user-circle"></i>
+                        </div>
+                        <div>
+                            <span class="badge badge-primary">Veterinary Surgeon (DVM)</span>
+                            <h3 class="listing-title" style="margin-top: 4px;">Dr. Md. Anisur Rahman</h3>
+                            <p class="text-sm text-muted">B.Sc. (Vet Science), BAU &bull; BMDC Reg: 12345</p>
+                        </div>
+                    </div>
+                    <div class="listing-body">
+                        <div class="listing-meta">
+                            <span><i class="ph ph-briefcase"></i> Experience: 6+ Years in Poultry & Dairy Medicine</span>
+                            <span><i class="ph ph-map-pin"></i> Practice Area: Bogura & Northern Division</span>
+                            <span><i class="ph ph-clock"></i> Available: Daily 6:00 PM - 9:00 PM</span>
+                        </div>
+                        <div class="listing-price">BDT 300 <span class="unit-text">/ Consultation</span></div>
+                        <button class="btn btn-primary btn-block" onclick="bookConsultation('Dr. Md. Anisur Rahman')">
+                            <i class="ph ph-calendar-plus"></i> Request Consultation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Specialist Card 2 -->
+                <div class="listing-card specialist-card">
+                    <div class="specialist-header">
+                        <div class="specialist-avatar" style="color: var(--secondary-color);">
+                            <i class="ph-fill ph-user-circle"></i>
+                        </div>
+                        <div>
+                            <span class="badge badge-success">Aqua Health Agronomist</span>
+                            <h3 class="listing-title" style="margin-top: 4px;">Khaled Hasan, MS (Fisheries)</h3>
+                            <p class="text-sm text-muted">M.Sc. Aquaculture, BAU</p>
+                        </div>
+                    </div>
+                    <div class="listing-body">
+                        <div class="listing-meta">
+                            <span><i class="ph ph-briefcase"></i> Expertise: Water Chemistry, Probiotics & Fish Pathology</span>
+                            <span><i class="ph ph-map-pin"></i> Practice Area: Rajshahi & Natore Aquaculture Belts</span>
+                            <span><i class="ph ph-clock"></i> Available: Tue, Thu, Sat 4:00 PM - 8:00 PM</span>
+                        </div>
+                        <div class="listing-price">BDT 250 <span class="unit-text">/ Consultation</span></div>
+                        <button class="btn btn-primary btn-block" onclick="bookConsultation('Khaled Hasan, MS')">
+                            <i class="ph ph-calendar-plus"></i> Request Consultation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Specialist Card 3 -->
+                <div class="listing-card specialist-card">
+                    <div class="specialist-header">
+                        <div class="specialist-avatar" style="color: #f59e0b;">
+                            <i class="ph-fill ph-user-circle"></i>
+                        </div>
+                        <div>
+                            <span class="badge badge-accent">Crop Agronomist</span>
+                            <h3 class="listing-title" style="margin-top: 4px;">Dr. Farhana Islam</h3>
+                            <p class="text-sm text-muted">PhD in Agronomy, BSMRAU</p>
+                        </div>
+                    </div>
+                    <div class="listing-body">
+                        <div class="listing-meta">
+                            <span><i class="ph ph-briefcase"></i> Expertise: Pest Management, Soil Testing, Crop Rotation</span>
+                            <span><i class="ph ph-map-pin"></i> Practice Area: Online (All BD)</span>
+                            <span><i class="ph ph-clock"></i> Available: Mon-Fri 10:00 AM - 2:00 PM</span>
+                        </div>
+                        <div class="listing-price">BDT 400 <span class="unit-text">/ Consultation</span></div>
+                        <button class="btn btn-primary btn-block" onclick="bookConsultation('Dr. Farhana Islam')">
+                            <i class="ph ph-calendar-plus"></i> Request Consultation
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 KhamarBD | Off-platform peer-to-peer commerce and certified advisory platform
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function bookConsultation(docName) {
+            alert(`Consultation request submitted for ${docName}. Redirecting to login.`);
+            window.location.href = '../auth/login.html';
+        }
+    </script>
+</body>
+</html>

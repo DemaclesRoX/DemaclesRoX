@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specialist Portal - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Specialist Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="ph ph-squares-four"></i> Specialist Dashboard
+                </a>
+                <a href="consultation-requests.html" class="nav-item">
+                    <i class="ph ph-bell-ringing"></i> Requests
+                    <span class="badge badge-danger" style="margin-left: auto;">3 New</span>
+                </a>
+                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Consultations
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="create-prescription.html" class="nav-item">
+                    <i class="ph ph-file-plus"></i> Issue Prescription
+                </a>
+                <a href="prescription-templates.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Rx Templates (Presets)
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-user-gear"></i> Clinical Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Topbar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">
+                        <span id="topbarName">Loading...</span>
+                    </h3>
+                    <span class="badge badge-primary">Veterinary Surgeon &bull; Reg #12345</span>
+                </div>
+                
+                <div class="topbar-actions">
+                    <span class="text-xs text-muted font-semibold">Tele-Advisory Status:</span>
+                    <span class="badge badge-success"><i class="ph ph-circle-fill" style="font-size: 8px;"></i> Available Online</span>
+                    <a href="create-prescription.html" class="btn btn-primary btn-sm">
+                        <i class="ph ph-plus-circle"></i> New Prescription
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mandatory Reference Banner -->
+            <div class="rx-banner-static">
+                <i class="ph-fill ph-shield-warning"></i>
+                <span><strong>Clinical Ethics Notice:</strong> All digital prescriptions must specify statutory drug withdrawal periods. Anabolic steroids and unapproved livestock growth stimulants are strictly prohibited on this platform.</span>
+            </div>
+
+            <!-- Specialist KPI Cards -->
+            <div class="ledger-kpi-grid">
+                <div class="stat-box income">
+                    <span class="stat-label">Pending Requests</span>
+                    <h3 class="stat-value text-primary">3 Farmers</h3>
+                    <span class="stat-sub">Requires review & confirmation</span>
+                </div>
+                <div class="stat-box profit">
+                    <span class="stat-label">Total Prescriptions Issued</span>
+                    <h3 class="stat-value text-secondary">48 Digital Rx</h3>
+                    <span class="stat-sub">Across 4 agricultural sectors</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Farmer Feedback Score</span>
+                    <h3 class="stat-value">4.9 / 5.0</h3>
+                    <span class="stat-sub">Based on 32 verified consultations</span>
+                </div>
+            </div>
+
+            <div class="dash-grid">
+                
+                <!-- Left Column: Pending Consultation Inquiries -->
+                <div class="dash-col-main">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <div>
+                                <h3><i class="ph ph-bell-ringing"></i> Incoming Consultation Requests</h3>
+                                <p class="text-sm text-muted">Review clinical symptoms submitted by registered farmers</p>
+                            </div>
+                            <a href="consultation-requests.html" class="link-btn" id="viewAllRequestsLink">View All</a>
+                        </div>
+
+                        <div class="task-list" id="dashboardRequestsList">
+                            <p class="text-muted" style="padding: 1rem;">Loading incoming requests...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Quick Presets & Shortcuts -->
+                <div class="dash-col-side">
+                    
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3><i class="ph ph-lightning"></i> 1-Click Rx Presets</h3>
+                            <a href="prescription-templates.html" class="link-btn">All Presets</a>
+                        </div>
+                        <p class="text-xs text-muted" style="margin-bottom: 1rem;">
+                            Standard veterinary & aquaculture protocols based on national extension guidelines:
+                        </p>
+                        <div class="eco-shortcuts-list">
+                            <a href="create-prescription.html?template=coccidiosis" class="eco-shortcut">
+                                <i class="ph ph-pill" style="color: var(--poultry-accent);"></i>
+                                <div>
+                                    <h4>Coccidiosis / Enteritis</h4>
+                                    <p class="text-muted">Toltrazuril + Vitamin K3 protocol</p>
+                                </div>
+                            </a>
+                            <a href="create-prescription.html?template=mastitis" class="eco-shortcut">
+                                <i class="ph ph-first-aid" style="color: var(--dairy-accent);"></i>
+                                <div>
+                                    <h4>Bovine Mastitis Protocol</h4>
+                                    <p class="text-muted">Intramammary tube + NSAID</p>
+                                </div>
+                            </a>
+                            <a href="create-prescription.html?template=ammonia" class="eco-shortcut">
+                                <i class="ph ph-drop" style="color: var(--fisheries-accent);"></i>
+                                <div>
+                                    <h4>Fish Pond Ammonia Spike</h4>
+                                    <p class="text-muted">Zeolite + Yucca + Oxy-Drop</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3><i class="ph ph-info"></i> Specialist Privileges</h3>
+                        </div>
+                        <ul class="text-xs text-muted" style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 8px;">
+                            <li>Authorized to issue legally compliant digital prescriptions.</li>
+                            <li>Can view full tracking unit lifecycle history for active consultation patients.</li>
+                            <li>Direct off-platform consultation fees settled with farmers directly.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        async function loadDashboardData() {
+            const user = getCurrentUser();
+            if (user && user.name) {
+                document.getElementById('topbarName').innerText = user.name;
+            }
+
+            try {
+                const consultations = await apiRequest('/consultation/search');
+                const list = document.getElementById('dashboardRequestsList');
+                list.innerHTML = '';
+
+                const pending = consultations.filter(c => c.status === 'REQUESTED' || c.status === 'ACCEPTED');
+                const link = document.getElementById('viewAllRequestsLink');
+                if (link) link.innerText = `View All (${consultations.length})`;
+
+                if (pending.length === 0) {
+                    list.innerHTML = '<p class="text-muted" style="padding: 1rem;">No pending consultation requests.</p>';
+                    return;
+                }
+
+                // Show first 5
+                pending.slice(0, 5).forEach(c => {
+                    const accents = ['var(--poultry-accent)', 'var(--dairy-accent)', 'var(--fisheries-accent)'];
+                    const color = accents[c.consultationId % accents.length];
+                    const farmerName = c.farmerName || ('Farmer #' + (c.farmerId || ''));
+                    const farmerLoc = c.farmerLocation ? ` &bull; ${c.farmerLocation}` : '';
+                    const timeAgo = c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'Recent';
+                    const lotTag = c.lotTag || 'Farm Lot';
+
+                    list.innerHTML += `
+                        <div class="task-item" style="border-left-color: ${color};">
+                            <div class="task-info">
+                                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 4px;">
+                                    <h4 style="margin:0;"><i class="ph ph-user"></i> ${farmerName}</h4>
+                                    <span class="badge badge-accent">${lotTag}${c.lotSpeciesOrBreed ? ' (' + c.lotSpeciesOrBreed + ')' : ''}</span>
+                                    <span class="badge ${c.status === 'REQUESTED' ? 'badge-warning' : 'badge-success'}">${c.status}</span>
+                                </div>
+                                <span class="meta">${c.farmerPhone ? '<i class="ph ph-phone"></i> ' + c.farmerPhone : ''}${farmerLoc} &bull; ${timeAgo}</span>
+                                <p class="text-xs text-muted" style="margin-top: 6px;">
+                                    "${c.problemDescription || 'No symptoms provided'}"
+                                </p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+                                <a href="create-prescription.html?consultationId=${c.consultationId}&farmerId=${c.farmerId || ''}&unitId=${c.lotId || ''}" class="btn btn-primary btn-sm">
+                                    <i class="ph ph-file-plus"></i> ${c.status === 'REQUESTED' ? 'Accept & Prescribe' : 'Issue Prescription'}
+                                </a>
+                                <a href="chat.html?consultationId=${c.consultationId}" class="btn btn-outline btn-sm">
+                                    <i class="ph ph-chat-circle-dots"></i> Message
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (e) {
+                console.error('Error loading specialist dashboard consultations', e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardData();
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages & Chat - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Specialist Dashboard
+                </a>
+                <a href="consultation-requests.html" class="nav-item">
+                    <i class="ph ph-bell-ringing"></i> Requests
+                    <span class="badge badge-danger" style="margin-left: auto;">3 New</span>
+                </a>
+                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Consultations
+                </a>
+                <a href="chat.html" class="nav-item active">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="create-prescription.html" class="nav-item">
+                    <i class="ph ph-file-plus"></i> Issue Prescription
+                </a>
+                <a href="prescription-templates.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Rx Templates (Presets)
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-user-gear"></i> Clinical Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" style="padding-top: 1rem;">
+
+            <div class="chat-layout">
+
+                <!-- Chat Sidebar (Conversation threads) -->
+                <div class="chat-sidebar">
+                    <div class="chat-sidebar-header">
+                        <input type="text" id="chatSearch" class="form-control" placeholder="Search conversations...">
+                    </div>
+                    <div class="chat-list" id="chatList">
+                        <!-- Rendered dynamically from accepted consultations -->
+                    </div>
+                </div>
+
+                <!-- Chat Main Window -->
+                <div class="chat-main">
+
+                    <div class="chat-header" id="chatHeader">
+                        <div id="chatHeaderAvatar" style="display: contents;"></div>
+                        <div class="chat-header-info">
+                            <h3 id="chatRecipientName">Loading...</h3>
+                            <span class="text-xs text-muted" id="chatRecipientMeta"></span>
+                        </div>
+                        <div class="chat-header-actions">
+                            <a href="#" id="chatCallBtn" class="btn btn-outline btn-sm"><i class="ph ph-phone"></i> Call</a>
+                        </div>
+                    </div>
+
+                    <!-- Context Banner (chat linked to consultation context) -->
+                    <div class="chat-context-banner" id="chatContext">
+                        <div>
+                            <span class="badge badge-warning" id="chatContextBadge">Context: Consultation</span>
+                            <span class="context-desc" id="chatContextDesc"></span>
+                        </div>
+                        <a href="consultations.html" id="chatContextActionBtn" class="link-btn text-sm font-semibold">View Consultation</a>
+                    </div>
+
+                    <div class="chat-messages" id="messageContainer">
+                    </div>
+
+                    <form class="chat-input-area" id="chatForm">
+                        <input type="text" id="chatInput" placeholder="Type your message here..." required autocomplete="off">
+                        <button type="submit" class="btn-send"><i class="ph-fill ph-paper-plane-right"></i></button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>window.CHAT_ROLE = 'SPECIALIST';</script>
+    <script src="../../js/common/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "KhamarBD API",
+  "dateExported": "2026-10-02",
+  "version": "1.2",
+  "_comment": "REBUILT 2026-10-02: every POST body now matches the *RequestDto classes in src/main/java/com/khamarbd/backend/dto/. The previous collection sent field names (fullName, mobile, subscriptionTier, unitName, quantity, status ...) that no DTO has, so every POST returned 400. Run the folders in numbered order - each folder depends on the ids created by the one before it.",
+  "folders": [
+    { "_id": "f-user",        "name": "1. User (start here)" },
+    { "_id": "f-farm",        "name": "2. Farm" },
+    { "_id": "f-lot",         "name": "3. Lot / Animal" },
+    { "_id": "f-ledger",      "name": "4. Farm Ledger" },
+    { "_id": "f-listing",     "name": "5. Marketplace Listing" },
+    { "_id": "f-order",       "name": "6. Order Transaction" },
+    { "_id": "f-consult",     "name": "7. Specialist Consultation" },
+    { "_id": "f-prescription","name": "8. Prescription" },
+    { "_id": "f-subscription","name": "9. Subscription History" },
+    { "_id": "f-routine",     "name": "10. Routine Task" },
+    { "_id": "f-template",    "name": "11. System Template" },
+    { "_id": "f-taxonomy",    "name": "12. Taxonomy Item" },
+    { "_id": "f-weather",     "name": "13. Weather Rule" }
+  ],
+  "requests": [
+    {
+      "_id": "r-user-register",
+      "colId": "khamarbd",
+      "containerId": "f-user",
+      "name": "Register User - FARMER (becomes id 1)",
+      "url": "http://localhost:8080/user/register",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"name\":\"Rahim Uddin\",\"phone\":\"01700000001\",\"email\":\"rahim@khamarbd.test\",\"password\":\"123456\",\"primaryRole\":\"FARMER\",\"division\":\"Dhaka\",\"district\":\"Dhaka\",\"upazila\":\"Savar\"}"
+      }
+    },
+    {
+      "_id": "r-user-register-specialist",
+      "colId": "khamarbd",
+      "containerId": "f-user",
+      "name": "Register User - SPECIALIST (becomes id 2)",
+      "url": "http://localhost:8080/user/register",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"name\":\"Dr. Karim Ali\",\"phone\":\"01700000002\",\"email\":\"karim@khamarbd.test\",\"password\":\"123456\",\"primaryRole\":\"SPECIALIST\",\"division\":\"Dhaka\",\"district\":\"Dhaka\",\"upazila\":\"Savar\"}"
+      }
+    },
+    {
+      "_id": "r-user-register-supplier",
+      "colId": "khamarbd",
+      "containerId": "f-user",
+      "name": "Register User - SUPPLIER (becomes id 3)",
+      "url": "http://localhost:8080/user/register",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"name\":\"Nabin Agro Store\",\"phone\":\"01700000003\",\"email\":\"nabin@khamarbd.test\",\"password\":\"123456\",\"primaryRole\":\"SUPPLIER\",\"division\":\"Dhaka\",\"district\":\"Dhaka\",\"upazila\":\"Savar\"}"
+      }
+    },
+    {
+      "_id": "r-user-register-buyer",
+      "colId": "khamarbd",
+      "containerId": "f-user",
+      "name": "Register User - BUYER (becomes id 4)",
+      "url": "http://localhost:8080/user/register",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"name\":\"Salma Begum\",\"phone\":\"01700000004\",\"email\":\"salma@khamarbd.test\",\"password\":\"123456\",\"primaryRole\":\"BUYER\",\"division\":\"Dhaka\",\"district\":\"Dhaka\",\"upazila\":\"Savar\"}"
+      }
+    },
+    {
+      "_id": "r-user-search",
+      "colId": "khamarbd",
+      "containerId": "f-user",
+      "name": "Search Users by Role",
+      "url": "http://localhost:8080/user/search?primaryRole=FARMER",
+      "method": "GET"
+    },
+    {
+      "_id": "r-user-profile",
+      "colId": "khamarbd",
+      "containerId": "f-user",
+      "name": "Get User Profile",
+      "url": "http://localhost:8080/user/filter/1/profile",
+      "method": "GET"
+    },
+    {
+      "_id": "r-farm-create",
+      "colId": "khamarbd",
+      "containerId": "f-farm",
+      "name": "Create Farm (becomes id 1)",
+      "url": "http://localhost:8080/farm/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"userId\":1,\"farmName\":\"Rahim Poultry Farm\",\"farmType\":\"Livestock\",\"locationDetails\":\"Baroipara, Savar\"}"
+      }
+    },
+    {
+      "_id": "r-farm-search",
+      "colId": "khamarbd",
+      "containerId": "f-farm",
+      "name": "Search Farms by Type",
+      "url": "http://localhost:8080/farm/search?farmType=Livestock",
+      "method": "GET"
+    },
+    {
+      "_id": "r-farm-details",
+      "colId": "khamarbd",
+      "containerId": "f-farm",
+      "name": "Get Farm Details",
+      "url": "http://localhost:8080/farm/filter/1/details",
+      "method": "GET"
+    },
+    {
+      "_id": "r-lot-create",
+      "colId": "khamarbd",
+      "containerId": "f-lot",
+      "name": "Create Lot (becomes id 1)",
+      "url": "http://localhost:8080/lot/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"farmId\":1,\"identifierTag\":\"BROILER-A\",\"category\":\"Lot\",\"speciesOrBreed\":\"Broiler\",\"startDate\":\"2026-09-01\"}"
+      }
+    },
+    {
+      "_id": "r-lot-search",
+      "colId": "khamarbd",
+      "containerId": "f-lot",
+      "name": "Search Lots by Farm",
+      "url": "http://localhost:8080/lot/search?farmId=1",
+      "method": "GET"
+    },
+    {
+      "_id": "r-lot-details",
+      "colId": "khamarbd",
+      "containerId": "f-lot",
+      "name": "Get Lot Details",
+      "url": "http://localhost:8080/lot/filter/1/details",
+      "method": "GET"
+    },
+    {
+      "_id": "r-ledger-create",
+      "colId": "khamarbd",
+      "containerId": "f-ledger",
+      "name": "Create Ledger Entry (becomes id 1)",
+      "url": "http://localhost:8080/ledger/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"lotId\":1,\"entryType\":\"Expense\",\"category\":\"Feed\",\"amount\":4500,\"eventDate\":\"2026-10-01\",\"notes\":\"Starter feed 50kg\"}"
+      }
+    },
+    {
+      "_id": "r-ledger-search",
+      "colId": "khamarbd",
+      "containerId": "f-ledger",
+      "name": "Search Ledger by Lot",
+      "url": "http://localhost:8080/ledger/search?lotId=1",
+      "method": "GET"
+    },
+    {
+      "_id": "r-ledger-details",
+      "colId": "khamarbd",
+      "containerId": "f-ledger",
+      "name": "Get Ledger Entry Details",
+      "url": "http://localhost:8080/ledger/filter/1/details",
+      "method": "GET"
+    },
+    {
+      "_id": "r-listing-create",
+      "colId": "khamarbd",
+      "containerId": "f-listing",
+      "name": "Create Listing (seller=3, becomes id 1)",
+      "url": "http://localhost:8080/listing/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"sellerId\":3,\"lotId\":1,\"title\":\"Broiler Chicken 500 pcs\",\"productCategory\":\"LIVE_BIRD\",\"price\":180,\"quantityAvailable\":500,\"unit\":\"KG\"}"
+      }
+    },
+    {
+      "_id": "r-listing-search",
+      "colId": "khamarbd",
+      "containerId": "f-listing",
+      "name": "Search Listings by Tab (Farm Products)",
+      "url": "http://localhost:8080/listing/search?listingTab=Farm%20Products",
+      "method": "GET"
+    },
+    {
+      "_id": "r-listing-details",
+      "colId": "khamarbd",
+      "containerId": "f-listing",
+      "name": "Get Listing Details",
+      "url": "http://localhost:8080/listing/filter/1/details",
+      "method": "GET"
+    },
+    {
+      "_id": "r-order-create",
+      "colId": "khamarbd",
+      "containerId": "f-order",
+      "name": "Create Order (buyer=4, listing=1)",
+      "url": "http://localhost:8080/order/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"buyerId\":4,\"listingId\":1,\"quantity\":50,\"totalAgreedPrice\":9000}"
+      }
+    },
+    {
+      "_id": "r-order-search",
+      "colId": "khamarbd",
+      "containerId": "f-order",
+      "name": "Search Orders by Buyer",
+      "url": "http://localhost:8080/order/search?buyerId=4",
+      "method": "GET"
+    },
+    {
+      "_id": "r-order-details",
+      "colId": "khamarbd",
+      "containerId": "f-order",
+      "name": "Get Order Details",
+      "url": "http://localhost:8080/order/filter/1/details",
+      "method": "GET"
+    },
+    {
+      "_id": "r-consult-create",
+      "colId": "khamarbd",
+      "containerId": "f-consult",
+      "name": "Create Consultation (farmer=1, specialist=2, lot=1)",
+      "url": "http://localhost:8080/consultation/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"farmerId\":1,\"specialistId\":2,\"lotId\":1,\"appointmentDate\":\"2026-10-05\"}"
+      }
+    },
+    {
+      "_id": "r-consult-search",
+      "colId": "khamarbd",
+      "containerId": "f-consult",
+      "name": "Search Consultations by Farmer",
+      "url": "http://localhost:8080/consultation/search?farmerId=1",
+      "method": "GET"
+    },
+    {
+      "_id": "r-consult-details",
+      "colId": "khamarbd",
+      "containerId": "f-consult",
+      "name": "Get Consultation Details",
+      "url": "http://localhost:8080/consultation/filter/1/details",
+      "method": "GET"
+    },
+    {
+      "_id": "r-presc-create",
+      "colId": "khamarbd",
+      "containerId": "f-prescription",
+      "name": "Create Prescription (consultation=1)",
+      "url": "http://localhost:8080/prescription/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"consultationId\":1,\"issuedDate\":\"2026-10-05\",\"notes\":\"Suspected coccidiosis\",\"items\":[{\"medicineName\":\"Amprolium 20%\",\"dosage\":\"1g per 2L water\",\"duration\":\"5 days\"}]}"
+      }
+    },
+    {
+      "_id": "r-presc-search",
+      "colId": "khamarbd",
+      "containerId": "f-prescription",
+      "name": "Search Prescriptions by Farmer",
+      "url": "http://localhost:8080/prescription/search?farmerId=1",
+      "method": "GET"
+    },
+    {
+      "_id": "r-presc-details",
+      "colId": "khamarbd",
+      "containerId": "f-prescription",
+      "name": "Get Prescription Details",
+      "url": "http://localhost:8080/prescription/filter/1/details",
+      "method": "GET"
+    },
+    {
+      "_id": "r-sub-create",
+      "colId": "khamarbd",
+      "containerId": "f-subscription",
+      "name": "Create Subscription Request",
+      "url": "http://localhost:8080/subscription/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"userId\":1,\"plan\":\"BASIC\",\"status\":\"PENDING\",\"expiresAt\":\"2026-12-31\"}"
+      }
+    },
+    {
+      "_id": "r-sub-search",
+      "colId": "khamarbd",
+      "containerId": "f-subscription",
+      "name": "Search Subscriptions by User",
+      "url": "http://localhost:8080/subscription/search?userId=1",
+      "method": "GET"
+    },
+    {
+      "_id": "r-sub-details",
+      "colId": "khamarbd",
+      "containerId": "f-subscription",
+      "name": "Get Subscription Details",
+      "url": "http://localhost:8080/subscription/filter/1/details",
+      "method": "GET"
+    },
+    {
+      "_id": "r-routine-create",
+      "colId": "khamarbd",
+      "containerId": "f-routine",
+      "name": "Create Routine Task (lot=1)",
+      "url": "http://localhost:8080/routine-task/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"lotId\":1,\"taskTitle\":\"Morning Feeding\",\"actionType\":\"FEEDING\",\"dueDate\":\"2026-10-03\",\"costPrompt\":true}"
+      }
+    },
+    {
+      "_id": "r-routine-search",
+      "colId": "khamarbd",
+      "containerId": "f-routine",
+      "name": "Search Tasks by Lot + Status",
+      "url": "http://localhost:8080/routine-task/search?lotId=1&status=PENDING",
+      "method": "GET"
+    },
+    {
+      "_id": "r-routine-patch",
+      "colId": "khamarbd",
+      "containerId": "f-routine",
+      "name": "Update Task Status -> DONE",
+      "url": "http://localhost:8080/routine-task/1/status?status=DONE",
+      "method": "PATCH"
+    },
+    {
+      "_id": "r-template-create",
+      "colId": "khamarbd",
+      "containerId": "f-template",
+      "name": "Create System Template",
+      "url": "http://localhost:8080/template/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"templateType\":\"ROUTINE\",\"sector\":\"POULTRY\",\"templateName\":\"Broiler 42-Day Schedule\",\"contentJson\":\"[]\"}"
+      }
+    },
+    {
+      "_id": "r-template-search",
+      "colId": "khamarbd",
+      "containerId": "f-template",
+      "name": "Search Templates by Type + Sector",
+      "url": "http://localhost:8080/template/search?templateType=ROUTINE&sector=POULTRY",
+      "method": "GET"
+    },
+    {
+      "_id": "r-taxonomy-create",
+      "colId": "khamarbd",
+      "containerId": "f-taxonomy",
+      "name": "Create Taxonomy Item",
+      "url": "http://localhost:8080/taxonomy/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"domain\":\"UNIT\",\"sector\":\"POULTRY\",\"categoryCode\":\"WEIGHT\",\"nameBn\":\"Kilo\",\"nameEn\":\"KG\"}"
+      }
+    },
+    {
+      "_id": "r-taxonomy-search",
+      "colId": "khamarbd",
+      "containerId": "f-taxonomy",
+      "name": "Search Taxonomy by Domain",
+      "url": "http://localhost:8080/taxonomy/search?domain=UNIT&sector=POULTRY",
+      "method": "GET"
+    },
+    {
+      "_id": "r-weather-create",
+      "colId": "khamarbd",
+      "containerId": "f-weather",
+      "name": "Create Weather Rule (stub endpoint)",
+      "url": "http://localhost:8080/weather-rule/create",
+      "method": "POST",
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": {
+        "type": "json",
+        "raw": "{\"sector\":\"POULTRY\",\"conditionParameter\":\"TEMPERATURE\",\"operator\":\">\",\"thresholdValue\":38.5,\"alertMessage\":\"High temperature - increase ventilation\"}"
+      }
+    },
+    {
+      "_id": "r-weather-active",
+      "colId": "khamarbd",
+      "containerId": "f-weather",
+      "name": "Get Active Rules by Sector (stub endpoint)",
+      "url": "http://localhost:8080/weather-rule/active?sector=POULTRY",
+      "method": "GET"
+    }
+  ]
+}

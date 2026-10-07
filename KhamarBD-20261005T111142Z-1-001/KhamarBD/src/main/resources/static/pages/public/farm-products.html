@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Products - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="../../index.html" class="logo">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            <nav class="nav-links">
+                <a href="../../index.html#features">Features</a>
+                <a href="marketplace.html">Marketplace</a>
+                <a href="farm-products.html" class="active">Farm Products</a>
+                <a href="../dashboard.html">Farmer App</a>
+                <a href="../auth/login.html" class="btn btn-outline">Login</a>
+                <a href="../auth/register.html" class="btn btn-primary">Register</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Header & Search -->
+    <section class="marketplace-header">
+        <div class="container">
+            <h1>Farm Products (Direct from Farmers)</h1>
+            <p>Buy fresh produce, live flocks, and harvests directly from verified local farmers.</p>
+            
+            <div class="search-bar">
+                <select id="categoryFilter" class="form-control" style="width: 180px;">
+                    <option value="">All Categories</option>
+                    <option value="poultry">Poultry</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="fisheries">Fisheries</option>
+                    <option value="agriculture">Agriculture</option>
+                </select>
+                <input type="text" id="productSearch" class="form-control" placeholder="Search for live broiler, milk, fish...">
+                <button class="btn btn-primary"><i class="ph ph-magnifying-glass"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="marketplace-content section" style="padding-top: 2rem;">
+        <div class="container">
+            <div class="listing-grid">
+                
+                <!-- Product Card 1 -->
+                <div class="listing-card">
+                    <div class="listing-badge-tag"><span class="badge badge-success">Farmer Direct</span></div>
+                    <div class="listing-body">
+                        <span class="listing-category">Poultry Meat Flock</span>
+                        <h3 class="listing-title">Live Broiler Flock (Target Avg 1.8 kg - 2.0 kg)</h3>
+                        <div class="listing-price">BDT 165 <span class="unit-text">/ kg Live Weight</span></div>
+                        <div class="listing-meta">
+                            <span><i class="ph ph-user"></i> Seller: Md. Shafiqul Islam (Verified Farmer)</span>
+                            <span><i class="ph ph-map-pin"></i> Farm Location: Kahalu, Bogura</span>
+                            <span><i class="ph ph-shield-check"></i> 100% Antibiotic Withdrawal Compliant</span>
+                        </div>
+                        <a href="../farmer/chat.html" class="btn btn-outline btn-block">
+                            <i class="ph ph-chat-circle-dots"></i> Message Farmer to Negotiate
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="listing-card">
+                    <div class="listing-badge-tag"><span class="badge badge-success">Farmer Direct</span></div>
+                    <div class="listing-body">
+                        <span class="listing-category">Fresh Raw Dairy</span>
+                        <h3 class="listing-title">Chilled Pure Cow Milk (Daily Supply Contract)</h3>
+                        <div class="listing-price">BDT 70 <span class="unit-text">/ Liter</span></div>
+                        <div class="listing-meta">
+                            <span><i class="ph ph-user"></i> Seller: Rahim Modern Dairy Farm</span>
+                            <span><i class="ph ph-map-pin"></i> Farm Location: Shajahanpur, Bogura</span>
+                            <span><i class="ph ph-drop"></i> Daily volume: 30-40 Liters available</span>
+                        </div>
+                        <a href="../farmer/chat.html" class="btn btn-outline btn-block">
+                            <i class="ph ph-chat-circle-dots"></i> Message Farmer to Negotiate
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="listing-card">
+                    <div class="listing-badge-tag"><span class="badge badge-success">Farmer Direct</span></div>
+                    <div class="listing-body">
+                        <span class="listing-category">Fisheries Harvest</span>
+                        <h3 class="listing-title">Live Fresh Pangasius & Tilapia Lot</h3>
+                        <div class="listing-price">BDT 150 <span class="unit-text">/ kg Live Weight</span></div>
+                        <div class="listing-meta">
+                            <span><i class="ph ph-user"></i> Seller: Chalanbeel Aqua Farm</span>
+                            <span><i class="ph ph-map-pin"></i> Pond Location: Singra, Natore</span>
+                            <span><i class="ph ph-package"></i> Batch harvest: 1,500 kg total</span>
+                        </div>
+                        <a href="../farmer/chat.html" class="btn btn-outline btn-block">
+                            <i class="ph ph-chat-circle-dots"></i> Message Farmer to Negotiate
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="listing-card">
+                    <div class="listing-badge-tag"><span class="badge badge-success">Farmer Direct</span></div>
+                    <div class="listing-body">
+                        <span class="listing-category">Agriculture Crop</span>
+                        <h3 class="listing-title">BRRI Dhan 89 (Fresh Harvest Paddy)</h3>
+                        <div class="listing-price">BDT 1,250 <span class="unit-text">/ Maund (40 kg)</span></div>
+                        <div class="listing-meta">
+                            <span><i class="ph ph-user"></i> Seller: Abdul Karim</span>
+                            <span><i class="ph ph-map-pin"></i> Location: Shibganj, Bogura</span>
+                            <span><i class="ph ph-package"></i> Stock: 200 Maunds available</span>
+                        </div>
+                        <a href="../farmer/chat.html" class="btn btn-outline btn-block">
+                            <i class="ph ph-chat-circle-dots"></i> Message Farmer to Negotiate
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 KhamarBD | Off-platform peer-to-peer commerce and certified advisory platform
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

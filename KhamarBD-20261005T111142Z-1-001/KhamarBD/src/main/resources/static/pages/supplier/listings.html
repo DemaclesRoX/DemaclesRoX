@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Product Listings - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Supplier Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Supplier Dashboard
+                </a>
+                <a href="listings.html" class="nav-item active">
+                    <i class="ph ph-stack"></i> Product Listings
+                </a>
+                <a href="add-product.html" class="nav-item">
+                    <i class="ph ph-plus-circle"></i> Add New Product
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Dispatch
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Customer Messages
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-storefront"></i> Business Profile
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-stack"></i> Managed Product Listings</h2>
+                    <p class="text-muted">Manage your commercial farm supplies inventory published to the public marketplace</p>
+                </div>
+                <div class="header-actions">
+                    <a href="add-product.html" class="btn btn-primary">
+                        <i class="ph ph-plus-circle"></i> Add New Product
+                    </a>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Filter by Category:</label>
+                    <select class="form-control" id="catFilter" onchange="filterListings()">
+                        <option value="">All Categories</option>
+                        <option value="feed">Poultry / Livestock Feed</option>
+                        <option value="medicine">Veterinary Medicine</option>
+                        <option value="crop">Seeds & Fertilizers</option>
+                        <option value="equipment">Farm Equipment & Tools</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Status:</label>
+                    <select class="form-control" id="statusFilter" onchange="filterListings()">
+                        <option value="">All Statuses</option>
+                        <option value="ACTIVE">Active (Visible)</option>
+                        <option value="INACTIVE">Inactive / Paused</option>
+                        <option value="OUT_OF_STOCK">Out of Stock</option>
+                    </select>
+                </div>
+                <input type="text" id="searchFilter" class="form-control" placeholder="Search listing title..." style="max-width: 250px; margin-left: auto;" oninput="filterListings()">
+            </div>
+
+            <!-- Listings Table -->
+            <div class="table-responsive">
+                <table class="ledger-table">
+                    <thead>
+                        <tr>
+                            <th>Product Title</th>
+                            <th>Category</th>
+                            <th>Price (BDT)</th>
+                            <th>Unit</th>
+                            <th>Available Qty</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listingsTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                                <i class="ph ph-spinner ph-spin" style="font-size: 1.5rem;"></i> Loading your products...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        let allListings = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = getCurrentUser() || { userId: 2 };
+            await loadListings(user.userId);
+        });
+
+        async function loadListings(userId) {
+            try {
+                let data = await apiRequest(`/listing/search?sellerId=${userId}`, 'GET');
+                if (!data || data.length === 0) {
+                    data = await apiRequest('/listing/search?listingTab=Farm Supplies', 'GET');
+                }
+                allListings = data || [];
+                renderListings(allListings);
+            } catch (err) {
+                console.error(err);
+                document.getElementById('listingsTableBody').innerHTML = `
+                    <tr><td colspan="7" style="text-align:center; padding: 2rem; color:red;">
+                        Failed to load product listings: ${err.message}
+                    </td></tr>`;
+            }
+        }
+
+        function filterListings() {
+            const cat = document.getElementById('catFilter').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value.toUpperCase();
+            const query = document.getElementById('searchFilter').value.toLowerCase().trim();
+
+            const filtered = allListings.filter(item => {
+                const matchCat = !cat || (item.productCategory || '').toLowerCase().includes(cat);
+                const itemStatus = (item.listingStatus || 'ACTIVE').toUpperCase();
+                const matchStatus = !status || (status === 'OUT_OF_STOCK' ? (item.quantityAvailable <= 0) : itemStatus === status);
+                const matchQuery = !query || (item.title || '').toLowerCase().includes(query) || (item.brandName || '').toLowerCase().includes(query);
+                return matchCat && matchStatus && matchQuery;
+            });
+
+            renderListings(filtered);
+        }
+
+        function renderListings(items) {
+            const tbody = document.getElementById('listingsTableBody');
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                            <i class="ph ph-stack" style="font-size: 2.5rem; opacity: 0.5; margin-bottom: 0.5rem; display: block;"></i>
+                            No products found matching the criteria.
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = items.map(item => {
+                const title = item.title || 'Untitled Product';
+                const brand = item.brandName ? `Brand: ${item.brandName}` : (item.farmSector || 'Farm Supplies');
+                const category = item.productCategory || 'General Supply';
+                const price = (item.price || 0).toLocaleString();
+                const unit = item.unit || 'Unit';
+                const qty = item.quantityAvailable || 0;
+                const status = (item.listingStatus || 'ACTIVE').toUpperCase();
+
+                let statusBadge = '<span class="badge badge-success">Active</span>';
+                if (qty <= 0) {
+                    statusBadge = '<span class="badge badge-muted">Out of Stock</span>';
+                } else if (qty <= 10) {
+                    statusBadge = '<span class="badge badge-warning">Low Stock</span>';
+                } else if (status === 'INACTIVE') {
+                    statusBadge = '<span class="badge badge-muted">Inactive</span>';
+                }
+
+                return `
+                    <tr>
+                        <td>
+                            <strong>${title}</strong>
+                            <span class="text-xs text-muted" style="display: block;">${brand}</span>
+                        </td>
+                        <td><span class="badge badge-primary">${category}</span></td>
+                        <td class="font-semibold text-primary">BDT ${price}</td>
+                        <td>${unit}</td>
+                        <td><strong>${qty}</strong> ${unit}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <button class="btn-icon text-primary" title="View in Marketplace" onclick="window.open('../public/marketplace.html?tab=supplies', '_blank')">
+                                    <i class="ph ph-arrow-square-out"></i>
+                                </button>
+                                <button class="btn-icon ${status === 'ACTIVE' ? 'text-warning' : 'text-success'}" title="${status === 'ACTIVE' ? 'Pause Listing' : 'Activate'}" onclick="toggleStatus(${item.listingId}, '${status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'}')">
+                                    <i class="ph ${status === 'ACTIVE' ? 'ph-pause-circle' : 'ph-play-circle'}"></i>
+                                </button>
+                                <button class="btn-icon text-danger" title="Delete Listing" onclick="deleteItem(${item.listingId}, '${title.replace(/'/g, "\\'")}')">
+                                    <i class="ph ph-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function toggleStatus(id, newStatus) {
+            try {
+                await apiRequest(`/listing/filter/${id}/status`, 'POST', { status: newStatus });
+                const item = allListings.find(l => l.listingId === id);
+                if (item) item.listingStatus = newStatus;
+                filterListings();
+            } catch (err) {
+                alert('Failed to update status: ' + err.message);
+            }
+        }
+
+        async function deleteItem(id, title) {
+            if (!confirm(`Are you sure you want to permanently remove "${title}" from your catalog?`)) return;
+            try {
+                await apiRequest(`/listing/filter/${id}/delete`, 'POST');
+                allListings = allListings.filter(l => l.listingId !== id);
+                filterListings();
+                alert(`Product "${title}" was removed successfully.`);
+            } catch (err) {
+                alert('Failed to delete product: ' + err.message);
+            }
+        }
+    </script>
+</body>
+</html>

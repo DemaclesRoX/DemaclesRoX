@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Produce - Post to Marketplace - KhamarBD</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .photo-preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+        .photo-preset-card {
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface-color);
+            text-align: center;
+            position: relative;
+        }
+        .photo-preset-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .photo-preset-card.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-light, #22c55e);
+        }
+        .photo-preset-card.selected::after {
+            content: "✓";
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--primary-color);
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .photo-preset-img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            display: block;
+        }
+        .photo-preset-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.25rem;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .photo-preview-box {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 1rem;
+            background: var(--bg-main);
+            border: 1px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            margin-top: 0.75rem;
+        }
+        .photo-preview-img {
+            width: 110px;
+            height: 90px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+            background: #fff;
+        }
+        .calc-box {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(22, 163, 74, 0.04));
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        .calc-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .calc-value {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary-color, #16a34a);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Farmer Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="../../index.html" class="sidebar-brand">
+                <i class="ph-fill ph-plant"></i> KhamarBD
+            </a>
+            
+            <nav class="sidebar-nav">
+                <a href="../dashboard.html" class="nav-item">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="farms.html" class="nav-item">
+                    <i class="ph ph-farm"></i> My Farms
+                </a>
+                <a href="tracking-unit.html" class="nav-item">
+                    <i class="ph ph-tag"></i> Tracking Units
+                </a>
+                <a href="routines.html" class="nav-item">
+                    <i class="ph ph-list-dashes"></i> Routines & Tasks
+                </a>
+                <a href="ledger.html" class="nav-item">
+                    <i class="ph ph-notebook"></i> Farm Ledger
+                </a>
+                <a href="prescriptions.html" class="nav-item">
+                    <i class="ph ph-stethoscope"></i> Prescriptions
+                </a>
+                <a href="consultations.html" class="nav-item">
+                    <i class="ph ph-user-circle-gear"></i> Consultations
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <i class="ph ph-package"></i> Orders & Inquiries
+                </a>
+                <a href="add-product.html" class="nav-item active">
+                    <i class="ph ph-shopping-bag"></i> Sell Produce
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chats-circle"></i> Messages
+                </a>
+                <a href="../public/marketplace.html" class="nav-item">
+                    <i class="ph ph-shopping-cart"></i> Marketplace
+                </a>
+                <a href="../../index.html" class="nav-item" style="margin-top: auto;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="page-header-row">
+                <div>
+                    <h2><i class="ph ph-storefront" style="color: var(--primary-color);"></i> Sell Farm Produce</h2>
+                    <p class="text-muted">Post your harvest and farm outputs directly to KhamarBD Agro Marketplace</p>
+                </div>
+                <div class="header-actions">
+                    <a href="../public/marketplace.html?tab=products" class="btn btn-outline">
+                        <i class="ph ph-eye"></i> View Live Marketplace
+                    </a>
+                </div>
+            </div>
+
+            <!-- Verification Banner -->
+            <div class="rx-banner-static" style="background-color: var(--success-bg, #e8f5e9); color: var(--success-color, #2e7d32); border-left-color: var(--success-color, #2e7d32); margin-bottom: 1.5rem;">
+                <i class="ph-fill ph-shield-check" style="font-size: 1.5rem;"></i>
+                <div>
+                    <strong>Verified Farm Listing:</strong> Listings created from your registered farm units will display the <span class="badge badge-success">Verified Farm</span> badge to buyers across the country.
+                </div>
+            </div>
+
+            <div class="dash-card" style="max-width: 950px; margin-bottom: 3rem;">
+                <form id="addProductForm" onsubmit="event.preventDefault(); publishProduce();">
+                    
+                    <!-- Section 1: Source & Category -->
+                    <div class="dash-card-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1.25rem;">
+                        <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph ph-plant"></i> 1. Produce Identification & Source
+                        </h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700;">Source Tracking Unit (Optional)</label>
+                            <select class="form-control" id="prodLot" onchange="handleUnitSelection()">
+                                <option value="">Select a tracking unit (optional)...</option>
+                            </select>
+                            <small class="text-muted">Selecting a unit auto-fills sector, breed/type, and details.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700;">Farm Sector *</label>
+                            <select class="form-control" id="prodSector" onchange="handleSectorChange()" required>
+                                <option value="POULTRY">Poultry (Chicken, Ducks, Eggs)</option>
+                                <option value="DAIRY">Dairy & Livestock (Milk, Cattle, Goat)</option>
+                                <option value="FISHERIES">Fisheries (Fish, Fingerlings, Prawn)</option>
+                                <option value="AGRICULTURE">Agriculture & Crops (Paddy, Grains, Veggies)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.25rem;">
+                        <label class="form-label" style="font-weight: 700;">Product Title *</label>
+                        <input type="text" id="prodTitle" class="form-control" placeholder="e.g. Live Broiler Flock (Avg 2.0 kg) or Fresh Raw Cow Milk" minlength="4" maxlength="150" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700;">Category / Sub-Type *</label>
+                            <input type="text" id="prodCategory" class="form-control" list="categorySuggestions" placeholder="e.g. Live Meat Birds, Fresh Milk, Table Fish" required>
+                            <datalist id="categorySuggestions">
+                                <option value="Live Meat Bird (Broiler / Sonali)">
+                                <option value="Layer Table Eggs">
+                                <option value="Chilled Raw Cow Milk">
+                                <option value="Live Pond Rui & Katla">
+                                <option value="Live Tilapia / Pangas">
+                                <option value="Boro Paddy / Aromatic Rice">
+                                <option value="Fresh Organic Vegetables">
+                            </datalist>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700;">Farm / Brand Name</label>
+                            <input type="text" id="prodBrand" class="form-control" placeholder="e.g. Green Valley Farm (Verified)">
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Photo Selection & Upload -->
+                    <div class="dash-card-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-top: 2rem; margin-bottom: 1.25rem;">
+                        <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph ph-image"></i> 2. Product Photo
+                        </h3>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Choose from Presets or Upload Your Own Photo</label>
+                        
+                        <!-- Presets Grid -->
+                        <div class="photo-preset-grid" id="presetGallery">
+                            <!-- Injected dynamically based on sector -->
+                        </div>
+
+                        <!-- Custom Image File / URL Input -->
+                        <div style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+                            <label class="btn btn-outline btn-sm" style="cursor: pointer; margin: 0;">
+                                <i class="ph ph-upload-simple"></i> Upload from Device
+                                <input type="file" id="photoFileInput" accept="image/*" style="display: none;" onchange="handleFileUpload(event)">
+                            </label>
+                            <span class="text-muted" style="font-size: 0.85rem;">or paste image URL:</span>
+                            <input type="url" id="customPhotoUrl" class="form-control form-control-sm" placeholder="https://example.com/photo.jpg" style="flex: 1; min-width: 200px;" oninput="handleCustomUrl(this.value)">
+                        </div>
+
+                        <!-- Photo Preview Area -->
+                        <div class="photo-preview-box" id="previewArea">
+                            <img id="previewImg" class="photo-preview-img" src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=400&auto=format&fit=crop&q=80" alt="Produce Preview">
+                            <div>
+                                <div style="font-weight: 700; color: var(--text-main); font-size: 0.95rem;" id="previewLabel">Selected Photo Preview</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">This image will appear on your marketplace listing card.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Pricing & Quantity -->
+                    <div class="dash-card-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-top: 2rem; margin-bottom: 1.25rem;">
+                        <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph ph-currency-circle-dollar"></i> 3. Pricing, Volume & Availability
+                        </h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700;">Price per Unit (BDT) *</label>
+                            <input type="number" id="prodPrice" class="form-control" placeholder="e.g. 175" min="1" step="0.5" oninput="calculateTotalValue()" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700;">Sales Unit *</label>
+                            <select class="form-control" id="prodUnit" onchange="calculateTotalValue()" required>
+                                <option value="Kg">Kg</option>
+                                <option value="Liter">Liter</option>
+                                <option value="Piece">Piece / Bird</option>
+                                <option value="Maund">Maund (40 Kg)</option>
+                                <option value="Ton">Ton</option>
+                                <option value="Dozen">Dozen</option>
+                                <option value="Tray">Tray (30 pcs)</option>
+                                <option value="Bag">Bag / Sack</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700;">Available Stock / Quantity *</label>
+                            <input type="number" id="prodStock" class="form-control" placeholder="e.g. 1200" min="1" oninput="calculateTotalValue()" required>
+                        </div>
+                    </div>
+
+                    <!-- Calculation Display -->
+                    <div class="calc-box">
+                        <div>
+                            <div class="calc-title">Estimated Total Listing Value</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);" id="calcSummary">0 units × BDT 0</div>
+                        </div>
+                        <div class="calc-value" id="calcTotal">BDT 0</div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-top: 1.5rem; margin-bottom: 1.25rem;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700;">Harvest / Available Date *</label>
+                            <input type="date" id="prodDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700;">District *</label>
+                            <input type="text" id="prodDistrict" class="form-control" placeholder="e.g. Bogura" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700;">Upazila *</label>
+                            <input type="text" id="prodUpazila" class="form-control" placeholder="e.g. Kahalu" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label class="form-label" style="font-weight: 700;">Detailed Description & Quality Highlights</label>
+                        <textarea id="prodDesc" class="form-control" rows="4" placeholder="Detail the average weight, feed diet, antibiotic withdrawal compliance, delivery or farm-gate pickup conditions..."></textarea>
+                    </div>
+
+                    <div class="modal-footer" style="padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 1rem;">
+                        <a href="orders.html" class="btn btn-outline">Cancel</a>
+                        <button type="submit" id="btnPublish" class="btn btn-primary btn-lg" style="padding: 0.75rem 2rem;">
+                            <i class="ph ph-paper-plane-tilt"></i> Publish to Marketplace
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/common/navbar.js"></script>
+    <script>
+        let currentUser = null;
+        let farmerUnits = [];
+        let selectedImageUrl = 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=500&auto=format&fit=crop&q=80';
+
+        const PRESET_PHOTOS = {
+            'POULTRY': [
+                { title: 'Broiler Chicken', url: 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Sonali Chicken', url: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Fresh Table Eggs', url: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Ducks / Flock', url: 'https://images.unsplash.com/photo-1555857211-f40b0805ff0c?w=500&auto=format&fit=crop&q=80' }
+            ],
+            'DAIRY': [
+                { title: 'Fresh Cow Milk', url: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Dairy Cattle / Cow', url: 'https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Desi Goat', url: 'https://images.unsplash.com/photo-1524024973431-2ad916746881?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Farm Ghee / Butter', url: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=500&auto=format&fit=crop&q=80' }
+            ],
+            'FISHERIES': [
+                { title: 'Rui & Katla Fish', url: 'https://images.unsplash.com/photo-1534043464124-3be32fe00099?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Live Tilapia', url: 'https://images.unsplash.com/photo-1524704654690-b56c05c78a00?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Prawn / Shrimp', url: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Fish Fingerlings', url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80' }
+            ],
+            'AGRICULTURE': [
+                { title: 'Paddy / Rice Harvest', url: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Fresh Farm Vegetables', url: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Yellow Maize / Corn', url: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=500&auto=format&fit=crop&q=80' },
+                { title: 'Mustard / Seeds', url: 'https://images.unsplash.com/photo-1508747703725-719777637510?w=500&auto=format&fit=crop&q=80' }
+            ]
+        };
+
+        function getActiveFarmer() {
+            const user = getCurrentUser();
+            if (user && user.userId) return user;
+            return { userId: 1, name: "Md. Shafiqul Islam", primaryRole: "FARMER", division: "Rajshahi", district: "Bogura", upazila: "Kahalu" };
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            currentUser = getActiveFarmer();
+            
+            // Set default date to today
+            const today = new Date().toISOString().slice(0, 10);
+            document.getElementById('prodDate').value = today;
+
+            // Auto-fill location & brand
+            document.getElementById('prodBrand').value = currentUser.businessName || `${currentUser.name}'s Farm`;
+            document.getElementById('prodDistrict').value = currentUser.district || 'Bogura';
+            document.getElementById('prodUpazila').value = currentUser.upazila || 'Kahalu';
+
+            renderPresetGallery();
+            await loadFarmerTrackingUnits();
+        });
+
+        async function loadFarmerTrackingUnits() {
+            try {
+                let units = await apiRequest('/lot/search?farmerId=' + currentUser.userId);
+                if (!Array.isArray(units) || units.length === 0) {
+                    units = await apiRequest('/lot/search');
+                }
+                farmerUnits = Array.isArray(units) ? units : [];
+
+                const lotSelect = document.getElementById('prodLot');
+                lotSelect.innerHTML = '<option value="">-- General Farm Produce (No Specific Unit) --</option>';
+
+                farmerUnits.forEach(u => {
+                    const opt = document.createElement('option');
+                    opt.value = u.lotId;
+                    opt.textContent = `${u.identifierTag} - ${u.speciesOrBreed || 'General'} (${u.category || 'Batch'})`;
+                    opt.dataset.category = u.category || 'POULTRY';
+                    opt.dataset.breed = u.speciesOrBreed || '';
+                    opt.dataset.count = u.currentCount || '';
+                    lotSelect.appendChild(opt);
+                });
+            } catch (err) {
+                console.warn("Could not load farmer tracking units:", err);
+            }
+        }
+
+        function handleUnitSelection() {
+            const lotSelect = document.getElementById('prodLot');
+            const selectedOpt = lotSelect.options[lotSelect.selectedIndex];
+            if (!selectedOpt || !selectedOpt.value) return;
+
+            const category = (selectedOpt.dataset.category || '').toUpperCase();
+            const breed = selectedOpt.dataset.breed || '';
+            const count = selectedOpt.dataset.count || '';
+
+            // Map category to sector
+            const sectorSelect = document.getElementById('prodSector');
+            if (category.includes('POULTRY') || category.includes('BROILER') || category.includes('SONALI') || category.includes('LAYER')) {
+                sectorSelect.value = 'POULTRY';
+            } else if (category.includes('DAIRY') || category.includes('COW') || category.includes('CATTLE') || category.includes('LIVESTOCK')) {
+                sectorSelect.value = 'DAIRY';
+            } else if (category.includes('FISH') || category.includes('AQUA') || category.includes('CARP') || category.includes('POND')) {
+                sectorSelect.value = 'FISHERIES';
+            } else {
+                sectorSelect.value = 'AGRICULTURE';
+            }
+
+            handleSectorChange();
+
+            // Auto-fill suggested title and stock
+            const titleInput = document.getElementById('prodTitle');
+            if (!titleInput.value || titleInput.value.startsWith('Live') || titleInput.value.startsWith('Fresh')) {
+                if (sectorSelect.value === 'POULTRY') {
+                    titleInput.value = `Live ${breed || 'Broiler'} Flock (Ready for Market)`;
+                    document.getElementById('prodCategory').value = 'Live Poultry Meat';
+                    document.getElementById('prodUnit').value = 'Kg';
+                    if (count) document.getElementById('prodStock').value = count;
+                } else if (sectorSelect.value === 'DAIRY') {
+                    titleInput.value = `Fresh Pure Cow Milk - Daily Supply (${breed || 'Holstein Cross'})`;
+                    document.getElementById('prodCategory').value = 'Fresh Raw Milk';
+                    document.getElementById('prodUnit').value = 'Liter';
+                } else if (sectorSelect.value === 'FISHERIES') {
+                    titleInput.value = `Live Fresh ${breed || 'Rui & Katla'} Fish Lot`;
+                    document.getElementById('prodCategory').value = 'Live Fresh Fish';
+                    document.getElementById('prodUnit').value = 'Kg';
+                } else {
+                    titleInput.value = `Fresh Farm Harvest - ${breed || 'Boro Rice'}`;
+                    document.getElementById('prodCategory').value = 'Crops & Grain';
+                    document.getElementById('prodUnit').value = 'Maund';
+                }
+            }
+
+            calculateTotalValue();
+        }
+
+        function handleSectorChange() {
+            renderPresetGallery();
+            
+            const sector = document.getElementById('prodSector').value;
+            const catSuggestions = document.getElementById('categorySuggestions');
+            
+            if (sector === 'POULTRY') {
+                catSuggestions.innerHTML = `
+                    <option value="Live Meat Bird (Broiler)">
+                    <option value="Live Sonali Chicken">
+                    <option value="Layer Table Eggs">
+                    <option value="Dressed Frozen Chicken">
+                `;
+            } else if (sector === 'DAIRY') {
+                catSuggestions.innerHTML = `
+                    <option value="Fresh Raw Cow Milk">
+                    <option value="Dairy Bull / Ox">
+                    <option value="Dairy Cow / Heifer">
+                    <option value="Live Desi Goat">
+                    <option value="Pure Desi Ghee">
+                `;
+            } else if (sector === 'FISHERIES') {
+                catSuggestions.innerHTML = `
+                    <option value="Live Rui & Katla Fish">
+                    <option value="Live Tilapia / Pangasius">
+                    <option value="Freshwater Prawn">
+                    <option value="Selected Fish Fingerlings">
+                `;
+            } else {
+                catSuggestions.innerHTML = `
+                    <option value="Boro Paddy / Dhan">
+                    <option value="Aromatic Miniket Rice">
+                    <option value="Fresh Organic Vegetables">
+                    <option value="Seasonal Fresh Fruits">
+                `;
+            }
+        }
+
+        function renderPresetGallery() {
+            const sector = document.getElementById('prodSector').value;
+            const presets = PRESET_PHOTOS[sector] || PRESET_PHOTOS['POULTRY'];
+            const container = document.getElementById('presetGallery');
+            container.innerHTML = '';
+
+            presets.forEach((p, idx) => {
+                const card = document.createElement('div');
+                card.className = `photo-preset-card ${idx === 0 ? 'selected' : ''}`;
+                card.innerHTML = `
+                    <img src="${p.url}" alt="${p.title}" class="photo-preset-img">
+                    <div class="photo-preset-label">${p.title}</div>
+                `;
+                card.onclick = () => {
+                    document.querySelectorAll('.photo-preset-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedImageUrl = p.url;
+                    updatePreview(p.url, p.title);
+                };
+                container.appendChild(card);
+            });
+
+            if (presets.length > 0) {
+                selectedImageUrl = presets[0].url;
+                updatePreview(presets[0].url, presets[0].title);
+            }
+        }
+
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Show immediate local preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                updatePreview(e.target.result, `Uploading: ${file.name}...`);
+            };
+            reader.readAsDataURL(file);
+
+            try {
+                const uploadedUrl = await uploadImageFile(file);
+                selectedImageUrl = uploadedUrl;
+                document.querySelectorAll('.photo-preset-card').forEach(c => c.classList.remove('selected'));
+                updatePreview(uploadedUrl, `Saved to Local Storage: ${file.name}`);
+            } catch (err) {
+                console.error("Local file upload error:", err);
+                alert("Could not upload photo locally: " + err.message);
+            }
+        }
+
+        function handleCustomUrl(url) {
+            if (!url || !url.startsWith('http')) return;
+            selectedImageUrl = url;
+            document.querySelectorAll('.photo-preset-card').forEach(c => c.classList.remove('selected'));
+            updatePreview(url, 'Custom Web Image');
+        }
+
+        function updatePreview(url, label) {
+            const img = document.getElementById('previewImg');
+            img.src = url;
+            document.getElementById('previewLabel').textContent = label || 'Selected Photo Preview';
+        }
+
+        function calculateTotalValue() {
+            const price = parseFloat(document.getElementById('prodPrice').value) || 0;
+            const stock = parseFloat(document.getElementById('prodStock').value) || 0;
+            const unit = document.getElementById('prodUnit').value || 'Unit';
+
+            const total = price * stock;
+            document.getElementById('calcSummary').textContent = `${stock.toLocaleString()} ${unit} × BDT ${price.toLocaleString()}`;
+            document.getElementById('calcTotal').textContent = `BDT ${total.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+        }
+
+        async function publishProduce() {
+            const title = document.getElementById('prodTitle').value.trim();
+            const sector = document.getElementById('prodSector').value;
+            const category = document.getElementById('prodCategory').value.trim();
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            const stock = parseFloat(document.getElementById('prodStock').value);
+            const unit = document.getElementById('prodUnit').value;
+            const brand = document.getElementById('prodBrand').value.trim() || 'Verified Farm';
+            const district = document.getElementById('prodDistrict').value.trim() || 'Bogura';
+            const upazila = document.getElementById('prodUpazila').value.trim() || 'Kahalu';
+            const desc = document.getElementById('prodDesc').value.trim();
+            const lotIdVal = document.getElementById('prodLot').value;
+
+            if (!title || isNaN(price) || isNaN(stock) || price <= 0 || stock <= 0) {
+                alert('Please enter valid product title, price, and stock quantity.');
+                return;
+            }
+
+            const btn = document.getElementById('btnPublish');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="ph ph-spinner-gap ph-spin"></i> Publishing...';
+
+            const payload = {
+                sellerId: currentUser.userId,
+                lotId: lotIdVal ? parseInt(lotIdVal) : null,
+                title: title,
+                productCategory: category || sector,
+                farmSector: sector,
+                price: price,
+                quantityAvailable: stock,
+                unit: unit,
+                brandName: brand,
+                description: desc,
+                imageUrls: selectedImageUrl,
+                division: currentUser.division || 'Rajshahi',
+                district: district,
+                upazila: upazila
+            };
+
+            try {
+                await apiRequest('/listing/create', 'POST', payload);
+                alert(`🎉 Produce "${title}" has been published successfully!\nIt is now live on the KhamarBD Marketplace.`);
+                window.location.href = '../public/marketplace.html?tab=products';
+            } catch (err) {
+                console.error(err);
+                alert('Failed to publish produce: ' + err.message);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="ph ph-paper-plane-tilt"></i> Publish to Marketplace';
+            }
+        }
+    </script>
+</body>
+</html>
